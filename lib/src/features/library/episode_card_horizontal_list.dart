@@ -33,58 +33,31 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                     elevation: 2,
                     shadowColor:
                         Theme.of(context).colorScheme.shadow.withOpacity(0.2),
-                    child: Stack(
-                      children: [
-                        // Blurred background image
-                        ClipRRect(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        image: DecorationImage(
+                          image: NetworkImage(episodes[index].image),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          child: SizedBox(
-                            height: _maxCardHeight,
-                            child: Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                ImageFiltered(
-                                  imageFilter: ImageFilter.blur(
-                                      sigmaX: 15, sigmaY: 15),
-                                  child: CachedNetworkImageBuilder(
-                                    image: episodes[index].image,
-                                  ),
-                                ),
-                                // Gradient overlay
-                                Container(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Colors.transparent,
-                                        Theme.of(context)
-                                            .colorScheme
-                                            .surface
-                                            .withOpacity(0.7),
-                                        Theme.of(context).colorScheme.surface,
-                                      ],
-                                      stops: const [0.0, 0.6, 1.0],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withOpacity(0.7),
+                              Colors.black.withOpacity(0.9),
+                            ],
+                            stops: const [0.5, 0.8, 1.0],
                           ),
                         ),
-                        Column(
+                        child: Column(
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              // Image height, should always match maxCardWidth to
-                              // display as a square.
-                              child: SizedBox(
-                                height: _maxCardWidth,
-                                child: CachedNetworkImageBuilder(
-                                  image: episodes[index].image,
-                                ),
-                              ),
-                            ),
+                            const Spacer(),
                             Padding(
                               padding: const EdgeInsets.only(
                                 bottom: 8,
@@ -105,7 +78,8 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyLarge,
+                                          .bodyLarge
+                                          ?.copyWith(color: Colors.white),
                                     ),
                                   ),
                                   Column(
@@ -147,9 +121,7 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                                               .textTheme
                                               .bodySmall
                                               ?.copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSurfaceVariant,
+                                                color: Colors.white70,
                                               ),
                                         ),
                                       ),
