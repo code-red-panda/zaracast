@@ -48,19 +48,20 @@ class EpisodeListTile extends StatelessWidget {
           ),
           onDismissed: (direction) => print('saved'),
           child: ListTile(
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: SizedBox(
-              height: 56,
-              width: 56,
-              child: CachedNetworkImageBuilder(image: episode.image),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: SizedBox(
+                height: 56,
+                width: 56,
+                child: CachedNetworkImageBuilder(image: episode.image),
+              ),
             ),
-          ),
-          subtitle: Text(formatDatePublished(episode.date)),
-          title: Text(
-            episode.name,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+            subtitle: Text(formatDatePublished(episode.date)),
+            title: Text(
+              episode.name,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
         Padding(
