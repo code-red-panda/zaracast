@@ -87,8 +87,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
                             center: Alignment.topLeft,
                             radius: 1.5,
                             colors: [
-                              _palette!.lightVibrantColor?.color ??
-                                  Colors.white,
+                              _palette!.lightVibrantColor?.color ?? Colors.white,
                               Colors.transparent,
                             ],
                           ),
@@ -96,7 +95,18 @@ class _ShowHomePageState extends State<ShowHomePage> {
                       ),
                     ),
                   ] else
-                    Container(color: Colors.black.withOpacity(0.7)),
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Colors.black.withOpacity(0.7),
+                            Colors.black.withOpacity(0.7),
+                          ],
+                        ),
+                      ),
+                    ),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
