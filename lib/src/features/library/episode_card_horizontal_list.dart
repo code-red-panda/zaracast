@@ -10,8 +10,8 @@ class EpisodeCardHorizontalList extends StatelessWidget {
   const EpisodeCardHorizontalList(this.isContinueListening, {super.key});
 
   final bool isContinueListening;
-  double get _maxCardHeight => 367;
-  double get _maxCardWidth => 225;
+  double get _maxCardHeight => 350;
+  double get _maxCardWidth => 208;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class EpisodeCardHorizontalList extends StatelessWidget {
               return SizedBox(
                 width: _maxCardWidth,
                 child: Padding(
-                  padding: EdgeInsets.only(right: 2, top: 2),
+                  padding: EdgeInsets.only(right: 8, top: 2),
                   child: Card(
                     child: Column(
                       children: [
