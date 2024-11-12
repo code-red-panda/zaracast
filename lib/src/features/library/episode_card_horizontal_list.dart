@@ -23,11 +23,16 @@ class EpisodeCardHorizontalList extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           child: ListView.builder(
             itemBuilder: (context, index) {
-              return SizedBox(
-                width: _maxCardWidth,
-                child: Padding(
-                  padding: EdgeInsets.only(right: 8, top: 2),
-                  child: Card(
+              return AnimatedScale(
+                scale: 1.0,
+                duration: const Duration(milliseconds: 200),
+                child: SizedBox(
+                  width: _maxCardWidth,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 12, top: 4, bottom: 4),
+                    child: Card(
+                      elevation: 2,
+                      shadowColor: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
                     child: Column(
                       children: [
                         ClipRRect(
@@ -77,15 +82,22 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  Visibility(
-                                    visible: isContinueListening,
-                                    child: const LinearProgressIndicator(
+                                  if (isContinueListening) ...[
+                                    const SizedBox(height: 8),
+                                    LinearProgressIndicator(
                                       value: .75,
+                                      backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+                                      borderRadius: BorderRadius.circular(2),
                                     ),
-                                  ),
-                                  Text(
-                                    isContinueListening ? '11m' : '4 hours ago',
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: Text(
+                                      isContinueListening ? '11m remaining' : '4 hours ago',
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),

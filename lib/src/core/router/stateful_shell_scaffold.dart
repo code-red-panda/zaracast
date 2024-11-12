@@ -66,6 +66,10 @@ class StatefulShellScaffold extends StatelessWidget {
                           'This Is The Episode With A Really Long Title That Should Get Truncated At Some Point',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            height: 1.2,
+                            letterSpacing: -0.2,
+                          ),
                         ),
                       ),
                       Row(
