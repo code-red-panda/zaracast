@@ -1,11 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:zaracast/src/models/show_model.dart';
 import 'package:zaracast/src/shared/icon_buttons/back_icon_button.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
 
-class FollowedShowsPage extends StatelessWidget {
+class FollowedShowsPage extends StatefulWidget {
   const FollowedShowsPage({super.key});
+
+  @override
+  State<FollowedShowsPage> createState() => _FollowedShowsPageState();
+}
+
+class _FollowedShowsPageState extends State<FollowedShowsPage> {
+  final Map<int, PaletteGenerator?> _palettes = {};
+
+  @override
+  void initState() {
+    super.initState();
+    for (var show in shows) {
+      _updatePalette(show);
+    }
+  }
+
+  Future<void> _updatePalette(Show show) async {
+    final generator = await PaletteGenerator.fromImageProvider(
+      NetworkImage(show.image),
+      size: const Size(200, 200), // Smaller size for faster processing
+    );
+    setState(() {
+      _palettes[show.id] = generator;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +72,10 @@ class FollowedShowsPage extends StatelessWidget {
                             end: Alignment.bottomCenter,
                             colors: [
                               Colors.transparent,
-                              Colors.transparent,
-                              Colors.black.withOpacity(0.9),
+                              _palettes[show.id]?.darkMutedColor?.color?.withOpacity(0.6) ?? 
+                                  Colors.transparent,
+                              _palettes[show.id]?.dominantColor?.color?.withOpacity(0.9) ?? 
+                                  Colors.black.withOpacity(0.9),
                             ],
                             stops: const [0.6, 0.8, 1.0],
                           ),
