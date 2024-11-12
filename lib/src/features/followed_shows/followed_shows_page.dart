@@ -32,39 +32,62 @@ class FollowedShowsPage extends StatelessWidget {
                   onTap: () => context.push('/show/${show.id}'),
                   child: Card(
                     clipBehavior: Clip.antiAlias,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Hero(
-                              tag: 'show_image_${show.id}',
-                              child: CachedNetworkImageBuilder(
-                                image: show.image,
-                              ),
-                            ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(show.image),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withOpacity(0.7),
+                              Colors.black.withOpacity(0.9),
+                            ],
+                            stops: const [0.6, 0.8, 1.0],
                           ),
                         ),
-                        SizedBox(
-                          height: 85,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              subtitle: Text(
-                                '6 days ago',
-                                maxLines: 1,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              title: Text(
-                                show.name,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    show.name,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          color: Colors.white,
+                                          height: 1.2,
+                                        ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    '6 days ago',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(color: Colors.white70),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
+                          ],
                         ),
+                      ),
+                    ),
                       ],
                     ),
                   ),
