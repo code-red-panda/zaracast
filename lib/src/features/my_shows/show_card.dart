@@ -19,8 +19,11 @@ class ShowCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: AspectRatio(
           aspectRatio: 1,
-          child: CachedNetworkImageBuilder(
-            image: show.image,
+          child: Hero(
+            tag: 'show_image_${show.id}',
+            child: CachedNetworkImageBuilder(
+              image: show.image,
+            ),
           ),
         ),
       ),

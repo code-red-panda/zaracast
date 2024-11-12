@@ -67,8 +67,11 @@ class _ShowHomePageState extends State<ShowHomePage> {
                               child: SizedBox(
                                 width: 140,
                                 height: 140,
-                                child: CachedNetworkImageBuilder(
-                                  image: show.image,
+                                child: Hero(
+                                  tag: 'show_image_${show.id}',
+                                  child: CachedNetworkImageBuilder(
+                                    image: show.image,
+                                  ),
                                 ),
                               ),
                             ),
