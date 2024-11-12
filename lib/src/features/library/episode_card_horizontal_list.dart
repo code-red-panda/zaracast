@@ -24,119 +24,99 @@ class EpisodeCardHorizontalList extends StatelessWidget {
           height: _maxCardHeight,
           width: MediaQuery.of(context).size.width,
           child: ListView.builder(
+            itemCount: episodes.length,
+            scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return SizedBox(
                 width: _maxCardWidth,
                 child: Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: Card(
-                    child: Container(
-                      height: 325,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        image: DecorationImage(
-                          alignment: Alignment.topCenter,
-                          image: CachedNetworkImageProvider(episodes[index].image),
-                          fit: BoxFit.cover,
-                          height: 275,
-                      ),),
-                      child: Container(
-                        decoration: BoxDecoration(
+                    color: Colors.black,
+                    child: Stack(
+                      alignment: Alignment.topCenter,
+                      children: [
+                        ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black.withOpacity(0.8),
-                              Colors.black.withOpacity(0.9),
-                            ],
-                            stops: const [0.55, 0.65, 1.0],
+                          child: CachedNetworkImageBuilder(
+                            image: episodes[index].image,
+                            height: 275,
                           ),
                         ),
-                        child: Column(
-                          children: [
-                            const Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                bottom: 8,
-                                left: 16,
-                                right: 16,
-                                top: 8,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    height: 50,
-                                    child: Text(
-                                      episodes[index].name,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(color: Colors.white),
-                                    ),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      const Padding(
-                                        padding: EdgeInsets.only(bottom: 4),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            PlayIconButton(),
-                                            PlayNextIconButton(),
-                                            AddToQueueIconButton(),
-                                            MarkAsPlayedIconButton(),
-                                          ],
-                                        ),
-                                      ),
-                                      if (isContinueListening) ...[
-                                        const SizedBox(height: 8),
-                                        LinearProgressIndicator(
-                                          value: .75,
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .surfaceVariant,
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                        ),
-                                      ],
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: Text(
-                                          isContinueListening
-                                              ? '11m remaining'
-                                              : '4 hours ago',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall
-                                              ?.copyWith(
-                                                color: Colors.white,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.black,
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.black.withOpacity(.6),
+                                Colors.black,
+                              ],
+                              stops: const [0.65, 0.75, 1.0],
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 8,
+                              left: 16,
+                              right: 16,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  episodes[index].name,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(color: Colors.white),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    PlayIconButton(),
+                                    PlayNextIconButton(),
+                                    AddToQueueIconButton(),
+                                    MarkAsPlayedIconButton(),
+                                  ],
+                                ),
+                                if (isContinueListening) ...[
+                                  const SizedBox(height: 8),
+                                  LinearProgressIndicator(
+                                    value: .75,
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .surfaceVariant,
+                                    borderRadius: BorderRadius.circular(2),
                                   ),
                                 ],
-                              ),
+                                Text(
+                                  isContinueListening
+                                      ? '11m remaining'
+                                      : '4 hours ago',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: Colors.white,
+                                      ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 ),
               );
             },
-            itemCount: episodes.length,
-            scrollDirection: Axis.horizontal,
           ),
         ),
       ),
