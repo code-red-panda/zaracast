@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:zaracast/src/models/episode_model.dart';
 import 'package:zaracast/src/shared/icon_buttons/add_to_queue_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/mark_as_played_icon_button.dart';
@@ -8,12 +8,38 @@ import 'package:zaracast/src/shared/icon_buttons/play_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/play_next_icon_button.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
 
-class EpisodeCardHorizontalList extends StatelessWidget {
+class EpisodeCardHorizontalList extends StatefulWidget {
   const EpisodeCardHorizontalList(this.isContinueListening, {super.key});
 
   final bool isContinueListening;
   double get _maxCardHeight => 325;
   double get _maxCardWidth => 225;
+
+  @override
+  State<EpisodeCardHorizontalList> createState() =>
+      _EpisodeCardHorizontalListState();
+}
+
+class _EpisodeCardHorizontalListState extends State<EpisodeCardHorizontalList> {
+  final Map<int, PaletteGenerator?> _palettes = {};
+
+  @override
+  void initState() {
+    super.initState();
+    for (var episode in episodes) {
+      _updatePalette(episode);
+    }
+  }
+
+  Future<void> _updatePalette(Episode episode) async {
+    final generator = await PaletteGenerator.fromImageProvider(
+      NetworkImage(episode.image),
+      size: const Size(200, 200), // Smaller size for faster processing
+    );
+    setState(() {
+      _palettes[episode.id] = generator;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +77,16 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            color: Colors.black,
                             gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
                                 Colors.transparent,
-                                Colors.black.withOpacity(.6),
-                                Colors.black,
+                                _palettes[episodes[index].id]?.darkMutedColor?.color
+                                        ?.withOpacity(0.6) ??
+                                    Colors.black.withOpacity(0.6),
+                                _palettes[episodes[index].id]?.dominantColor?.color ??
+                                    Colors.black,
                               ],
                               stops: const [0.65, 0.75, 1.0],
                             ),
