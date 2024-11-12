@@ -10,8 +10,8 @@ class EpisodeCardHorizontalList extends StatelessWidget {
   const EpisodeCardHorizontalList(this.isContinueListening, {super.key});
 
   final bool isContinueListening;
-  double get _maxCardHeight => 350;
-  double get _maxCardWidth => 208;
+  double get _maxCardHeight => 358;
+  double get _maxCardWidth => 212;
 
   @override
   Widget build(BuildContext context) {
@@ -29,82 +29,95 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                 child: SizedBox(
                   width: _maxCardWidth,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 12, top: 4, bottom: 4),
+                    padding:
+                        const EdgeInsets.only(right: 12, top: 4, bottom: 4),
                     child: Card(
                       elevation: 2,
-                      shadowColor: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
-                    child: Column(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          // Image height, should always match maxCardWidth to
-                          // display as a square.
-                          child: SizedBox(
-                            height: _maxCardWidth,
-                            child: CachedNetworkImageBuilder(
-                              image: episodes[index].image,
+                      shadowColor:
+                          Theme.of(context).colorScheme.shadow.withOpacity(0.2),
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            // Image height, should always match maxCardWidth to
+                            // display as a square.
+                            child: SizedBox(
+                              height: _maxCardWidth,
+                              child: CachedNetworkImageBuilder(
+                                image: episodes[index].image,
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 8,
-                            left: 16,
-                            right: 16,
-                            top: 8,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                height: 50,
-                                child: Text(
-                                  episodes[index].name,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.only(bottom: 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        PlayIconButton(),
-                                        PlayNextIconButton(),
-                                        AddToQueueIconButton(),
-                                        MarkAsPlayedIconButton(),
-                                      ],
-                                    ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 8,
+                              left: 16,
+                              right: 16,
+                              top: 8,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  child: Text(
+                                    episodes[index].name,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
                                   ),
-                                  if (isContinueListening) ...[
-                                    const SizedBox(height: 8),
-                                    LinearProgressIndicator(
-                                      value: .75,
-                                      backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-                                      borderRadius: BorderRadius.circular(2),
-                                    ),
-                                  ],
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 4),
-                                    child: Text(
-                                      isContinueListening ? '11m remaining' : '4 hours ago',
-                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.only(bottom: 4),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          PlayIconButton(),
+                                          PlayNextIconButton(),
+                                          AddToQueueIconButton(),
+                                          MarkAsPlayedIconButton(),
+                                        ],
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    if (isContinueListening) ...[
+                                      const SizedBox(height: 8),
+                                      LinearProgressIndicator(
+                                        value: .75,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .surfaceVariant,
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
+                                    ],
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4),
+                                      child: Text(
+                                        isContinueListening
+                                            ? '11m remaining'
+                                            : '4 hours ago',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurfaceVariant,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
