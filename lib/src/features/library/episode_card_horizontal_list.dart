@@ -10,7 +10,7 @@ class EpisodeCardHorizontalList extends StatelessWidget {
   const EpisodeCardHorizontalList(this.isContinueListening, {super.key});
 
   final bool isContinueListening;
-  double get _maxCardHeight => 363;
+  double get _maxCardHeight => 367;
   double get _maxCardWidth => 225;
 
   @override
