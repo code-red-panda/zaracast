@@ -22,7 +22,32 @@ class EpisodeListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListTile(
+        Dismissible(
+          key: ValueKey(episode.id),
+          direction: DismissDirection.endToStart,
+          background: Container(
+            alignment: Alignment.centerRight,
+            color: Theme.of(context).colorScheme.primaryContainer,
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'Save',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.save_rounded,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+              ],
+            ),
+          ),
+          onDismissed: (direction) => print('saved'),
+          child: ListTile(
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(4),
             child: SizedBox(
