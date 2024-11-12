@@ -46,113 +46,90 @@ class EpisodeListTile extends StatelessWidget {
       ),
       confirmDismiss: (direction) {
         print('saved');
-        return Future.value(false); // Prevents dismissal
+        return Future.value(false);
       },
-      child: Column(
-        children: [
-          ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(4),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Large show artwork
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
               child: SizedBox(
-                height: 56,
-                width: 56,
+                height: 120,
+                width: 120,
                 child: CachedNetworkImageBuilder(image: episode.image),
               ),
             ),
-            subtitle: Text(formatDatePublished(episode.date)),
-            title: Text(
-              episode.name,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          Padding(
-          padding: const EdgeInsets.only(left: 16, right: 24),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
+            const SizedBox(width: 16),
+            // Episode details and controls
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: 56,
-                    child: Column(
-                      crossAxisAlignment: episode.isPlayed
-                          ? CrossAxisAlignment.center
-                          : CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Visibility(
-                          visible: !episode.isPlayed,
-                          child: LinearProgressIndicator(
-                            value: episode.durationRemaining / episode.duration,
-                          ),
-                        ),
-                        Text(
+                  Text(
+                    episode.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    formatDatePublished(episode.date),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: 8),
+                  // Progress indicator
+                  if (!episode.isPlayed) ...[
+                    LinearProgressIndicator(
+                      value: episode.durationRemaining / episode.duration,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      formatDuration(episode.durationRemaining),
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                  const SizedBox(height: 8),
+                  // Controls row
+                  Row(
+                    children: [
+                      // Primary play button
+                      FilledButton.icon(
+                        onPressed: () => print('play'),
+                        icon: Icon(
                           episode.isPlayed
-                              ? 'Played'
-                              : formatDuration(episode.durationRemaining),
-                          maxLines: 1,
-                          overflow: TextOverflow.clip,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        )
+                              ? Icons.replay_rounded
+                              : Icons.play_arrow_rounded,
+                        ),
+                        label: Text(
+                          episode.isPlayed ? 'Replay' : 'Play',
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      // Secondary controls
+                      if (episode.sort == 0) ...[
+                        const PlayNextIconButton(),
+                        const AddToQueueIconButton(),
                       ],
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Visibility(
-                    visible: true,
-                    replacement: const PauseIconButton(),
-                    child: episode.isPlayed
-                        ? const ReplayIconButton()
-                        : const PlayIconButton(),
-                  ),
-                  const SizedBox(width: 8),
-                  Visibility(
-                    visible: episode.sort == 0,
-                    child: const Padding(
-                      padding: EdgeInsets.only(right: 8),
-                      child: PlayNextIconButton(),
-                    ),
-                  ),
-                  Visibility(
-                    visible: episode.sort == 0,
-                    child: const Padding(
-                      padding: EdgeInsets.only(right: 8),
-                      child: AddToQueueIconButton(),
-                    ),
-                  ),
-                  Visibility(
-                    visible: !episode.isPlayed,
-                    child: const Padding(
-                      padding: EdgeInsets.only(right: 8),
-                      child: MarkAsPlayedIconButton(),
-                    ),
+                      if (!episode.isPlayed) const MarkAsPlayedIconButton(),
+                    ],
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Visibility(
-                    visible: episode.sort > 0,
-                    child: const Padding(
-                      padding: EdgeInsets.only(right: 4),
-                      child: AddedToQueueIcon(),
-                    ),
-                  ),
-                  Visibility(
-                    visible: episode.isPlayed,
-                    child: const Padding(
-                      padding: EdgeInsets.only(right: 4),
-                      child: PlayedIcon(),
-                    ),
-                  ),
-                  Visibility(visible: episode.isSaved, child: const SaveIcon()),
-                ],
-              ),
-            ],
-          ),
-          ),
-        ],
+            ),
+            // Status icons
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                if (episode.sort > 0) const AddedToQueueIcon(),
+                if (episode.isPlayed) const PlayedIcon(),
+                if (episode.isSaved) const SaveIcon(),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
