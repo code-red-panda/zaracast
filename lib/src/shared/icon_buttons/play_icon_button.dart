@@ -11,6 +11,10 @@ class PlayIconButton extends StatelessWidget {
       onPressed: () => print('play'),
       padding: EdgeInsets.zero,
       visualDensity: VisualDensity.compact,
+      style: IconButton.styleFrom(
+        minimumSize: Size.zero,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
     );
   }
 }
