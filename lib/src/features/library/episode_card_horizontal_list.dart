@@ -37,13 +37,14 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                       fit: StackFit.expand,
                       children: [
                         Container(
-                          height: 275,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             image: DecorationImage(
-                              image: CachedNetworkImageProvider(episodes[index].image),
+                              image: CachedNetworkImageProvider(
+                                episodes[index].image,
+                              ),
                               fit: BoxFit.cover,
-                              alignment: Alignment.topCenter,
+                              // alignment: Alignment.topCenter,
                             ),
                           ),
                         ),
@@ -69,6 +70,7 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                               right: 16,
                             ),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Text(
@@ -100,16 +102,19 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(2),
                                   ),
                                 ],
-                                Text(
-                                  isContinueListening
-                                      ? '11m remaining'
-                                      : '4 hours ago',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        color: Colors.white,
-                                      ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    isContinueListening
+                                        ? '11m remaining'
+                                        : '4 hours ago',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: Colors.white,
+                                        ),
+                                  ),
                                 ),
                               ],
                             ),
