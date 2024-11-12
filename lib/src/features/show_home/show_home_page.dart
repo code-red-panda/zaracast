@@ -1,5 +1,5 @@
-import 'package:palette_generator/palette_generator.dart';
 import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:zaracast/src/features/latest_episodes/episode_list_tile.dart';
 import 'package:zaracast/src/models/episode_model.dart';
 import 'package:zaracast/src/models/show_model.dart';
@@ -87,7 +87,8 @@ class _ShowHomePageState extends State<ShowHomePage> {
                             center: Alignment.topLeft,
                             radius: 1.5,
                             colors: [
-                              _palette!.lightVibrantColor?.color ?? Colors.white,
+                              _palette!.lightVibrantColor?.color ??
+                                  Colors.white,
                               Colors.transparent,
                             ],
                           ),
@@ -139,12 +140,12 @@ class _ShowHomePageState extends State<ShowHomePage> {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    'Technology',
+                                    '#Technology',
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium
                                         ?.copyWith(
-                                          color: Colors.white.withOpacity(0.8),
+                                          color: Colors.white,
                                         ),
                                   ),
                                 ],
@@ -158,7 +159,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
                             FilledButton.icon(
                               onPressed: () {},
                               icon: const Icon(Icons.play_arrow_rounded),
-                              label: const Text('Play Latest'),
+                              label: const Text('Play latest'),
                             ),
                             const SizedBox(width: 12),
                             const FollowShowIconButton(),
@@ -170,7 +171,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
                 ],
               ),
             ),
-            leading: const BackIconButton(),
+            leading: const BackIconButton(color: Colors.white),
           ),
           SliverPersistentHeader(
             pinned: true,
@@ -181,7 +182,6 @@ class _ShowHomePageState extends State<ShowHomePage> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16.0, vertical: 8.0),
                   child: Row(
-
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SegmentedButton<int>(
@@ -203,7 +203,8 @@ class _ShowHomePageState extends State<ShowHomePage> {
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         onPressed: () => print('sort date'),
-                        style: ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
+                        style: ButtonStyle(
+                            padding: WidgetStatePropertyAll(EdgeInsets.zero)),
                       ),
                     ],
                   ),
