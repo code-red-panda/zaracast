@@ -34,13 +34,16 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                   child: Card(
                     color: Colors.black,
                     child: Stack(
-                      alignment: Alignment.topCenter,
+                      fit: StackFit.expand,
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: CachedNetworkImageBuilder(
-                            image: episodes[index].image,
-                            height: 275,
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: CachedNetworkImageBuilder(
+                              image: episodes[index].image,
+                              height: 275,
+                            ),
                           ),
                         ),
                         Container(
