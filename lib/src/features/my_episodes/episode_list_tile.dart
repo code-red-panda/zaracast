@@ -105,7 +105,8 @@ class EpisodeListTile extends StatelessWidget {
                     // child:
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
                         PlayIconButton(),
                         PlayNextIconButton(),
                         AddToQueueIconButton(),
