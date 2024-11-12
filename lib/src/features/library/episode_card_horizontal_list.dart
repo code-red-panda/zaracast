@@ -31,16 +31,14 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 8),
                   child: Card(
                     child: Container(
+                      height: 325,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         image: DecorationImage(
                           alignment: Alignment.topCenter,
-                          image:
-                              CachedNetworkImageProvider(episodes[index].image),
+                          image: CachedNetworkImageProvider(episodes[index].image),
                           fit: BoxFit.cover,
-
-                          //scale: .75,
-                        ),
+                          targetHeight: 275,
                       ),
                       child: Container(
                         decoration: BoxDecoration(
@@ -53,7 +51,7 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                               Colors.black.withOpacity(0.8),
                               Colors.black.withOpacity(0.9),
                             ],
-                            stops: const [0.65, 0.75, 1.0],
+                            stops: const [0.55, 0.65, 1.0],
                           ),
                         ),
                         child: Column(
