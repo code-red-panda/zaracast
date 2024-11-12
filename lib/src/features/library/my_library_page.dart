@@ -13,7 +13,10 @@ class LibraryPage extends StatelessWidget {
         const SliverAppBar.large(title: Text('My Library')),
         SliverToBoxAdapter(
           child: ListTile(
-            leading: const Icon(Icons.podcasts),
+            leading: Icon(
+              Icons.podcasts_rounded,
+              color: Theme.of(context).colorScheme.primary,
+            ),
             onTap: () => context.push('/shows'),
             title: Text(
               'Shows',
@@ -25,7 +28,10 @@ class LibraryPage extends StatelessWidget {
         const SliverToBoxAdapter(child: Divider(indent: 16, endIndent: 24)),
         SliverToBoxAdapter(
           child: ListTile(
-            leading: const Icon(Icons.list_rounded),
+            leading: Icon(
+              Icons.list_rounded,
+              color: Theme.of(context).colorScheme.primary,
+            ),
             onTap: () => context.push('/episodes'),
             title: Text(
               'Episodes',

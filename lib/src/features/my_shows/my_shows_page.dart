@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zaracast/src/shared/icon_buttons/back_icon_button.dart';
-import 'package:zaracast/src/features/my_shows/show_card.dart';
 import 'package:zaracast/src/models/show_model.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
 
@@ -18,13 +17,13 @@ class MyShowsPage extends StatelessWidget {
             title: Text('My Shows'),
           ),
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverGrid.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 0.75,
+                mainAxisSpacing: 4,
+                crossAxisSpacing: 4,
+                childAspectRatio: 0.7,
               ),
               itemCount: shows.length,
               itemBuilder: (context, index) {
@@ -35,36 +34,36 @@ class MyShowsPage extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: Hero(
-                            tag: 'show_image_${show.id}',
-                            child: CachedNetworkImageBuilder(
-                              image: show.image,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Hero(
+                              tag: 'show_image_${show.id}',
+                              child: CachedNetworkImageBuilder(
+                                image: show.image,
+                              ),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
+                        SizedBox(
+                          height: 85,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              subtitle: Text(
+                                '6 days ago',
+                                maxLines: 1,
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                              title: Text(
                                 show.name,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Technology',
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       ],
