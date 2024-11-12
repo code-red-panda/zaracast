@@ -38,7 +38,7 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                           alignment: Alignment.topCenter,
                           image: CachedNetworkImageProvider(episodes[index].image),
                           fit: BoxFit.cover,
-                          targetHeight: 275,
+                          height: 275,
                       ),),
                       child: Container(
                         decoration: BoxDecoration(
