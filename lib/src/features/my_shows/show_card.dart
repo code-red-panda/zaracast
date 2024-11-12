@@ -16,9 +16,9 @@ class ShowCard extends StatelessWidget {
     return InkWell(
       onTap: () => context.push('/shows/${show.id}'),
       child: Card(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: CachedNetworkImageBuilder(image: show.image),
+        clipBehavior: Clip.antiAlias,
+        child: CachedNetworkImageBuilder(
+          image: show.image,
         ),
       ),
     );

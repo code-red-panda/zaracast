@@ -18,12 +18,12 @@ class MyShowsPage extends StatelessWidget {
             title: Text('My Shows'),
           ),
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             sliver: SliverGrid.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
                 childAspectRatio: 0.75,
               ),
               itemCount: shows.length,
