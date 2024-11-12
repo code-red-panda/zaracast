@@ -51,71 +51,73 @@ class EpisodeListTile extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
         child: SizedBox(
-          height: 120,
+          height: 128,
           width: double.infinity,
           child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Large show artwork
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: SizedBox(
-                    height: 120,
-                    width: 120,
-                    child: CachedNetworkImageBuilder(image: episode.image),
-                  ),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Large show artwork
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: SizedBox(
+                  height: 128,
+                  width: 128,
+                  child: CachedNetworkImageBuilder(image: episode.image),
                 ),
-                const SizedBox(width: 16),
-                // Episode details and controls
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        episode.name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        formatDatePublished(episode.date),
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 60,
-                            child: LinearProgressIndicator(
-                              value: episode.durationRemaining / episode.duration,
-                            ),
+              ),
+              const SizedBox(width: 0),
+              // Episode details and controls
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      episode.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      formatDatePublished(episode.date),
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: LinearProgressIndicator(
+                            value: episode.durationRemaining / episode.duration,
                           ),
-                          const SizedBox(width: 4),
-                          Text(
+                        ),
+                        //const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
                             formatDuration(episode.durationRemaining),
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: const [
-                            PlayIconButton(),
-                            SizedBox(width: 8),
-                            PlayNextIconButton(),
-                            AddToQueueIconButton(),
-                            MarkAsPlayedIconButton(),
-                          ],
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    // const SingleChildScrollView(
+                    //   scrollDirection: Axis.horizontal,
+                    // child:
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        PlayIconButton(),
+                        PlayNextIconButton(),
+                        AddToQueueIconButton(),
+                        MarkAsPlayedIconButton(),
+                      ],
+                      //   ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
