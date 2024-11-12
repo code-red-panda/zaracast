@@ -65,7 +65,6 @@ class EpisodeListTile extends StatelessWidget {
                   child: CachedNetworkImageBuilder(image: episode.image),
                 ),
               ),
-              const SizedBox(width: 0),
               // Episode details and controls
               Expanded(
                 child: Column(
