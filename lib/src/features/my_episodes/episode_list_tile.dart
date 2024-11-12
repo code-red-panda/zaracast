@@ -8,6 +8,7 @@ import 'package:zaracast/src/shared/icon_buttons/pause_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/play_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/play_next_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/replay_icon_button.dart';
+import 'package:zaracast/src/shared/icons/added_to_queue_icon.dart';
 import 'package:zaracast/src/shared/icons/played_icon.dart';
 import 'package:zaracast/src/shared/icons/save_icon.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
@@ -78,22 +79,46 @@ class EpisodeListTile extends StatelessWidget {
                         : const PlayIconButton(),
                   ),
                   const SizedBox(width: 8),
-                  const PlayNextIconButton(),
-                  const SizedBox(width: 8),
-                  const AddToQueueIconButton(),
-                  const SizedBox(width: 8),
+                  Visibility(
+                    visible: episode.sort == 0,
+                    child: const Padding(
+                      padding: EdgeInsets.only(right: 8),
+                      child: PlayNextIconButton(),
+                    ),
+                  ),
+                  Visibility(
+                    visible: episode.sort == 0,
+                    child: const Padding(
+                      padding: EdgeInsets.only(right: 8),
+                      child: AddToQueueIconButton(),
+                    ),
+                  ),
                   Visibility(
                     visible: !episode.isPlayed,
-                    child: const MarkAsPlayedIconButton(),
+                    child: const Padding(
+                      padding: EdgeInsets.only(right: 8),
+                      child: MarkAsPlayedIconButton(),
+                    ),
                   ),
-                  const SizedBox(width: 8),
                 ],
               ),
               Row(
                 children: [
-                  Visibility(visible: episode.isPlayed, child: PlayedIcon()),
-                  const SizedBox(width: 4),
-                  Visibility(visible: episode.isSaved, child: SaveIcon()),
+                  Visibility(
+                    visible: episode.sort > 0,
+                    child: const Padding(
+                      padding: EdgeInsets.only(right: 4),
+                      child: AddedToQueueIcon(),
+                    ),
+                  ),
+                  Visibility(
+                    visible: episode.isPlayed,
+                    child: const Padding(
+                      padding: EdgeInsets.only(right: 4),
+                      child: PlayedIcon(),
+                    ),
+                  ),
+                  Visibility(visible: episode.isSaved, child: const SaveIcon()),
                 ],
               ),
             ],
