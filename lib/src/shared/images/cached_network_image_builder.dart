@@ -66,7 +66,7 @@ class _CachedNetworkImageBuilderState extends State<CachedNetworkImageBuilder> {
           }
           return const Center(child: Icon(Icons.image_not_supported));
         },
-        fit: BoxFit.cover,
+        fit: BoxFit.fill,
         placeholder: (context, url) => const Center(child: Icon(Icons.image)),
       ),
     );
