@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:zaracast/src/models/episode_model.dart';
@@ -11,7 +12,7 @@ class EpisodeCardHorizontalList extends StatelessWidget {
   const EpisodeCardHorizontalList(this.isContinueListening, {super.key});
 
   final bool isContinueListening;
-  double get _maxCardHeight => 358;
+  double get _maxCardHeight => 325;
   double get _maxCardWidth => 225;
 
   @override
@@ -27,18 +28,18 @@ class EpisodeCardHorizontalList extends StatelessWidget {
               return SizedBox(
                 width: _maxCardWidth,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.only(right: 12, top: 4, bottom: 4),
+                  padding: const EdgeInsets.only(right: 8),
                   child: Card(
-                    elevation: 2,
-                    shadowColor:
-                        Theme.of(context).colorScheme.shadow.withOpacity(0.2),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         image: DecorationImage(
-                          image: NetworkImage(episodes[index].image),
+                          alignment: Alignment.topCenter,
+                          image:
+                              CachedNetworkImageProvider(episodes[index].image),
                           fit: BoxFit.cover,
+
+                          //scale: .75,
                         ),
                       ),
                       child: Container(
@@ -49,10 +50,10 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                             end: Alignment.bottomCenter,
                             colors: [
                               Colors.transparent,
-                              Colors.black.withOpacity(0.7),
+                              Colors.black.withOpacity(0.8),
                               Colors.black.withOpacity(0.9),
                             ],
-                            stops: const [0.5, 0.8, 1.0],
+                            stops: const [0.65, 0.75, 1.0],
                           ),
                         ),
                         child: Column(
@@ -78,13 +79,12 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyLarge
+                                          .bodyMedium
                                           ?.copyWith(color: Colors.white),
                                     ),
                                   ),
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       const Padding(
                                         padding: EdgeInsets.only(bottom: 4),
@@ -111,8 +111,7 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                                         ),
                                       ],
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 4),
+                                        padding: const EdgeInsets.only(top: 4),
                                         child: Text(
                                           isContinueListening
                                               ? '11m remaining'
@@ -121,7 +120,7 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                                               .textTheme
                                               .bodySmall
                                               ?.copyWith(
-                                                color: Colors.white70,
+                                                color: Colors.white,
                                               ),
                                         ),
                                       ),
@@ -132,7 +131,7 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
