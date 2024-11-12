@@ -49,86 +49,84 @@ class EpisodeListTile extends StatelessWidget {
         return Future.value(false);
       },
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Large show artwork
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: SizedBox(
-                height: 120,
-                width: 120,
-                child: CachedNetworkImageBuilder(image: episode.image),
-              ),
-            ),
-            const SizedBox(width: 16),
-            // Episode details and controls
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    episode.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.titleMedium,
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+        child: SizedBox(
+          height: 120,
+          width: MediaQuery.of(context).size.width,
+          child: Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Large show artwork
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: SizedBox(
+                    height: 120,
+                    width: 120,
+                    child: CachedNetworkImageBuilder(image: episode.image),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    formatDatePublished(episode.date),
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  const SizedBox(height: 8),
-                  // Progress indicator
-                  if (!episode.isPlayed) ...[
-                    LinearProgressIndicator(
-                      value: episode.durationRemaining / episode.duration,
+                ),
+                const SizedBox(width: 16),
+                // Episode details and controls
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      episode.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      formatDuration(episode.durationRemaining),
+                      formatDatePublished(episode.date),
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
-                  ],
-                  const SizedBox(height: 8),
-                  // Controls row
-                  Row(
-                    children: [
-                      // Primary play button
-                      FilledButton.icon(
-                        onPressed: () => print('play'),
-                        icon: Icon(
-                          episode.isPlayed
-                              ? Icons.replay_rounded
-                              : Icons.play_arrow_rounded,
+                    Row(
+                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 60,
+                          child: LinearProgressIndicator(
+                            value:
+                                episode.durationRemaining / episode.duration,
+                          ),
                         ),
-                        label: Text(
-                          episode.isPlayed ? 'Replay' : 'Play',
+                        const SizedBox(width: 4),
+                        SizedBox(
+                          width: 20,
+                          child: Text(
+                            formatDuration(episode.durationRemaining),
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      // Secondary controls
-                      if (episode.sort == 0) ...[
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        // Primary play button
+                        const PlayIconButton(),
+                        const SizedBox(width: 8),
+                        // Secondary controls
+                                
                         const PlayNextIconButton(),
                         const AddToQueueIconButton(),
+                        const MarkAsPlayedIconButton(),
                       ],
-                      if (!episode.isPlayed) const MarkAsPlayedIconButton(),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            // Status icons
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                if (episode.sort > 0) const AddedToQueueIcon(),
-                if (episode.isPlayed) const PlayedIcon(),
-                if (episode.isSaved) const SaveIcon(),
+                    ),
+                            
+                    //const SizedBox(height: 8),
+                    // Progress indicator
+                            
+                    // const SizedBox(height: 8),
+                    // Controls row
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
