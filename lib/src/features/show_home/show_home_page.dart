@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:zaracast/src/features/latest_episodes/episode_list_tile.dart';
 import 'package:zaracast/src/models/episode_model.dart';
@@ -19,6 +19,24 @@ class ShowHomePage extends StatefulWidget {
 class _ShowHomePageState extends State<ShowHomePage> {
   Set<int> _index = {0};
   final double _expandedHeight = 340;
+  PaletteGenerator? _palette;
+
+  @override
+  void initState() {
+    super.initState();
+    _updatePalette();
+  }
+
+  Future<void> _updatePalette() async {
+    final show = shows[widget.id - 1];
+    final generator = await PaletteGenerator.fromImageProvider(
+      NetworkImage(show.image),
+      size: const Size(200, 200), // Smaller size for faster processing
+    );
+    setState(() {
+      _palette = generator;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +63,39 @@ class _ShowHomePageState extends State<ShowHomePage> {
                   CachedNetworkImageBuilder(
                     image: show.image,
                   ),
-                  ClipRRect(
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 100, sigmaY: 0),
-                      child: Container(
-                        color: Colors.black.withOpacity(0.5),
+                  if (_palette != null) ...[
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            _palette!.darkMutedColor?.color ?? Colors.black,
+                            _palette!.dominantColor?.color ?? Colors.black,
+                            _palette!.darkVibrantColor?.color ?? Colors.black,
+                          ],
+                          stops: const [0.0, 0.5, 1.0],
+                        ),
                       ),
                     ),
-                  ),
+                    // Add a subtle pattern overlay
+                    Opacity(
+                      opacity: 0.1,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: RadialGradient(
+                            center: Alignment.topLeft,
+                            radius: 1.5,
+                            colors: [
+                              _palette!.lightVibrantColor?.color ?? Colors.white,
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ] else
+                    Container(color: Colors.black.withOpacity(0.7)),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
