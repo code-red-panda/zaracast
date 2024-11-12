@@ -26,7 +26,7 @@ class EpisodeCardHorizontalList extends StatelessWidget {
               return SizedBox(
                 width: _maxCardWidth,
                 child: Padding(
-                  padding: EdgeInsets.only(right: 4, top: 4),
+                  padding: EdgeInsets.only(right: 2, top: 2),
                   child: Card(
                     child: Column(
                       children: [
