@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:zaracast/src/models/episode_model.dart';
 import 'package:zaracast/src/shared/icon_buttons/add_to_queue_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/mark_as_played_icon_button.dart';
@@ -35,19 +36,54 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                       elevation: 2,
                       shadowColor:
                           Theme.of(context).colorScheme.shadow.withOpacity(0.2),
-                      child: Column(
+                      child: Stack(
                         children: [
+                          // Blurred background image
                           ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            // Image height, should always match maxCardWidth to
-                            // display as a square.
                             child: SizedBox(
-                              height: _maxCardWidth,
-                              child: CachedNetworkImageBuilder(
-                                image: episodes[index].image,
+                              height: _maxCardHeight,
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  ImageFiltered(
+                                    imageFilter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                                    child: CachedNetworkImageBuilder(
+                                      image: episodes[index].image,
+                                    ),
+                                  ),
+                                  // Gradient overlay
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Colors.transparent,
+                                          Theme.of(context).colorScheme.surface.withOpacity(0.7),
+                                          Theme.of(context).colorScheme.surface,
+                                        ],
+                                        stops: const [0.0, 0.6, 1.0],
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
+                          Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                // Image height, should always match maxCardWidth to
+                                // display as a square.
+                                child: SizedBox(
+                                  height: _maxCardWidth,
+                                  child: CachedNetworkImageBuilder(
+                                    image: episodes[index].image,
+                                  ),
+                                ),
+                              ),
                           Padding(
                             padding: const EdgeInsets.only(
                               bottom: 8,
