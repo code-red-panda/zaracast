@@ -39,7 +39,7 @@ class EpisodeCardHorizontalList extends StatelessWidget {
                           image: CachedNetworkImageProvider(episodes[index].image),
                           fit: BoxFit.cover,
                           targetHeight: 275,
-                      ),
+                      ),),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
