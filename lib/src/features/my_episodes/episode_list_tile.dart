@@ -20,37 +20,37 @@ class EpisodeListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Dismissible(
-          key: ValueKey(episode.id),
-          direction: DismissDirection.endToStart,
-          background: Container(
-            alignment: Alignment.centerRight,
-            color: Theme.of(context).colorScheme.primaryContainer,
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'Save',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Icon(
-                  Icons.save_rounded,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                ),
-              ],
+    return Dismissible(
+      key: ValueKey(episode.id),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        alignment: Alignment.centerRight,
+        color: Theme.of(context).colorScheme.primaryContainer,
+        padding: const EdgeInsets.only(right: 16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              'Save',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
             ),
-          ),
-          confirmDismiss: (direction) {
-            print('saved');
-            return Future.value(false); // Prevents dismissal
-          },
-          child: ListTile(
+            const SizedBox(width: 8),
+            Icon(
+              Icons.save_rounded,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+          ],
+        ),
+      ),
+      confirmDismiss: (direction) {
+        print('saved');
+        return Future.value(false); // Prevents dismissal
+      },
+      child: Column(
+        children: [
+          ListTile(
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(4),
               child: SizedBox(
@@ -66,8 +66,7 @@ class EpisodeListTile extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-        ),
-        Padding(
+          Padding(
           padding: const EdgeInsets.only(left: 16, right: 24),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,8 +151,9 @@ class EpisodeListTile extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }
