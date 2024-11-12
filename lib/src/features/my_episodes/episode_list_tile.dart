@@ -46,7 +46,10 @@ class EpisodeListTile extends StatelessWidget {
               ],
             ),
           ),
-          onDismissed: (direction) => print('saved'),
+          confirmDismiss: (direction) {
+            print('saved');
+            return Future.value(false); // Prevents dismissal
+          },
           child: ListTile(
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(4),
