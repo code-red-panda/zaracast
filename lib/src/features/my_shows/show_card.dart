@@ -17,8 +17,11 @@ class ShowCard extends StatelessWidget {
       onTap: () => context.push('/shows/${show.id}'),
       child: Card(
         clipBehavior: Clip.antiAlias,
-        child: CachedNetworkImageBuilder(
-          image: show.image,
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: CachedNetworkImageBuilder(
+            image: show.image,
+          ),
         ),
       ),
     );
