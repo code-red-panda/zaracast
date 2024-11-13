@@ -64,7 +64,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
                     child: CachedNetworkImageBuilder(image: show.image),
                   ),
                   Container(
-                    height: 340,
+                    height: _expandedHeight,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
@@ -74,8 +74,9 @@ class _ShowHomePageState extends State<ShowHomePage> {
                           _palette?.dominantColor?.color.withOpacity(0.85) ??
                               Colors.black.withOpacity(0.85),
                           _palette?.dominantColor?.color ?? Colors.black,
+                          _palette?.dominantColor?.color ?? Colors.black,
                         ],
-                        stops: const [0.3, 0.7, 1.0],
+                        stops: const [0.2, 0.6, 0.77, 1.0],
                       ),
                     ),
                   ),
