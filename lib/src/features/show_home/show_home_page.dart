@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:zaracast/src/features/latest_episodes/episode_list_tile.dart';
@@ -18,7 +19,7 @@ class ShowHomePage extends StatefulWidget {
 
 class _ShowHomePageState extends State<ShowHomePage> {
   Set<int> _index = {0};
-  final double _expandedHeight = 340;
+  final double _expandedHeight = 440;
   PaletteGenerator? _palette;
 
   @override
@@ -29,10 +30,12 @@ class _ShowHomePageState extends State<ShowHomePage> {
 
   Future<void> _updatePalette() async {
     final show = shows[widget.id - 1];
+    print('palette show id ${show.name}');
     final generator = await PaletteGenerator.fromImageProvider(
-      NetworkImage(show.image),
+      CachedNetworkImageProvider(show.image),
       size: const Size(200, 200), // Smaller size for faster processing
     );
+    print('generator null ${generator.runtimeType}');
     setState(() {
       _palette = generator;
     });
@@ -51,62 +54,29 @@ class _ShowHomePageState extends State<ShowHomePage> {
             expandedHeight: _expandedHeight,
             pinned: true,
             stretch: true,
-            backgroundColor: Colors.transparent,
+            //backgroundColor: Colors.green,
             flexibleSpace: FlexibleSpaceBar(
-              stretchModes: const [
-                StretchMode.zoomBackground,
-                StretchMode.blurBackground,
-              ],
               background: Stack(
-                fit: StackFit.expand,
+                // fit: StackFit,
                 children: [
-                  CachedNetworkImageBuilder(
-                    image: show.image,
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          _palette?.dominantColor?.color.withOpacity(0.5) ??
+                              Colors.white,
+                          _palette?.dominantColor?.color.withOpacity(0.75) ??
+                              Colors.green,
+                          _palette?.dominantColor?.color ?? Colors.pink,
+                        ],
+                        stops: const [0.1, 0.65, 0.75, 1.0],
+                      ),
+                    ),
                   ),
-                  if (_palette != null) ...[
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            _palette!.darkMutedColor?.color ?? Colors.black,
-                            _palette!.dominantColor?.color ?? Colors.black,
-                            _palette!.darkVibrantColor?.color ?? Colors.black,
-                          ],
-                          stops: const [0.0, 0.5, 1.0],
-                        ),
-                      ),
-                    ),
-                    // Add a subtle pattern overlay
-                    Opacity(
-                      opacity: 0.1,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: RadialGradient(
-                            center: Alignment.topLeft,
-                            radius: 1.5,
-                            colors: [
-                              _palette!.lightVibrantColor?.color ?? Colors.white,
-                              Colors.transparent,
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ] else
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Colors.black.withOpacity(0.7),
-                            Colors.black.withOpacity(0.7),
-                          ],
-                        ),
-                      ),
-                    ),
+                  CachedNetworkImageBuilder(image: show.image, height: 340),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
@@ -116,23 +86,6 @@ class _ShowHomePageState extends State<ShowHomePage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: SizedBox(
-                                width: 140,
-                                height: 140,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Hero(
-                                    tag: 'show_image_${show.id}',
-                                    child: CachedNetworkImageBuilder(
-                                      image: show.image,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
