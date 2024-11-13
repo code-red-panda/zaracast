@@ -59,24 +59,26 @@ class _ShowHomePageState extends State<ShowHomePage> {
               background: Stack(
                 // fit: StackFit,
                 children: [
+                  SizedBox(
+                    height: 340,
+                    child: CachedNetworkImageBuilder(image: show.image),
+                  ),
                   Container(
+                    height: 340,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          _palette?.dominantColor?.color.withOpacity(0.5) ??
-                              Colors.white,
-                          _palette?.dominantColor?.color.withOpacity(0.75) ??
-                              Colors.green,
-                          _palette?.dominantColor?.color ?? Colors.pink,
+                          _palette?.dominantColor?.color.withOpacity(0.85) ??
+                              Colors.black.withOpacity(0.85),
+                          _palette?.dominantColor?.color ?? Colors.black,
                         ],
-                        stops: const [0.1, 0.65, 0.75, 1.0],
+                        stops: const [0.3, 0.7, 1.0],
                       ),
                     ),
                   ),
-                  CachedNetworkImageBuilder(image: show.image, height: 340),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
