@@ -60,47 +60,53 @@ class _ShowHomePageState extends State<ShowHomePage> {
               stretchModes: const [StretchMode.blurBackground],
               background: Stack(
                 children: [
-                  CachedNetworkImageBuilder(
-                    image: show.image,
-                    height: _expandedHeight - 100,
-                  ),
-                  Column(
+                  Stack(
                     children: [
-                      Expanded(
-                        flex: 90,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.transparent,
-                                _palette?.dominantColor?.color.withOpacity(0.85) ??
-                                    Colors.black.withOpacity(0.85),
-                              ],
-                              stops: const [0.2, 1.0],
-                            ),
+                      CachedNetworkImageBuilder(
+                        image: show.image,
+                        height: _expandedHeight - 100,
+                      ),
+                      Container(
+                        height: _expandedHeight - 100,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              _palette?.dominantColor?.color.withOpacity(0.85) ??
+                                  Colors.black.withOpacity(0.85),
+                            ],
+                            stops: const [0.2, 0.8],
                           ),
                         ),
                       ),
-                      Expanded(
-                        flex: 10,
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: (_expandedHeight - 100) * 0.15, // 15% of image height
                         child: ClipRect(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    _palette?.dominantColor?.color.withOpacity(0.85) ??
-                                        Colors.black.withOpacity(0.85),
-                                    _palette?.dominantColor?.color ?? Colors.black,
-                                  ],
+                          child: Stack(
+                            children: [
+                              BackdropFilter(
+                                filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
+                                child: Container(color: Colors.transparent),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      _palette?.dominantColor?.color.withOpacity(0.3) ??
+                                          Colors.black.withOpacity(0.3),
+                                      _palette?.dominantColor?.color ?? Colors.black,
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ),
