@@ -56,15 +56,14 @@ class _ShowHomePageState extends State<ShowHomePage> {
             stretch: true,
             //backgroundColor: Colors.green,
             flexibleSpace: FlexibleSpaceBar(
+              stretchModes: const [StretchMode.blurBackground],
               background: Stack(
-                // fit: StackFit,
                 children: [
-                  SizedBox(
-                    height: 340,
-                    child: CachedNetworkImageBuilder(image: show.image),
+                  CachedNetworkImageBuilder(
+                    image: show.image,
+                    height: _expandedHeight - 100,
                   ),
                   Container(
-                    height: _expandedHeight,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
