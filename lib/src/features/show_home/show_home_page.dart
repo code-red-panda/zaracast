@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'dart:ui';
 import 'package:zaracast/src/features/latest_episodes/episode_list_tile.dart';
 import 'package:zaracast/src/models/episode_model.dart';
 import 'package:zaracast/src/models/show_model.dart';
@@ -63,21 +64,47 @@ class _ShowHomePageState extends State<ShowHomePage> {
                     image: show.image,
                     height: _expandedHeight - 100,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          _palette?.dominantColor?.color.withOpacity(0.85) ??
-                              Colors.black.withOpacity(0.85),
-                          _palette?.dominantColor?.color ?? Colors.black,
-                          _palette?.dominantColor?.color ?? Colors.black,
-                        ],
-                        stops: const [0.2, 0.6, 0.77, 1.0],
+                  Column(
+                    children: [
+                      Expanded(
+                        flex: 90,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                _palette?.dominantColor?.color.withOpacity(0.85) ??
+                                    Colors.black.withOpacity(0.85),
+                              ],
+                              stops: const [0.2, 1.0],
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        flex: 10,
+                        child: ClipRect(
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    _palette?.dominantColor?.color.withOpacity(0.85) ??
+                                        Colors.black.withOpacity(0.85),
+                                    _palette?.dominantColor?.color ?? Colors.black,
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16),
