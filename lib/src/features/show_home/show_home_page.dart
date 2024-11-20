@@ -60,8 +60,8 @@ class _ShowHomePageState extends State<ShowHomePage> {
                       center: Alignment.center,
                       radius: 1.2,
                       colors: [
-                        Colors.black54,
                         Colors.black87,
+                        Colors.black,
                         Colors.black,
                       ],
                       stops: const [0.0, 0.5, 1.0],
