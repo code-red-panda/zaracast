@@ -53,35 +53,42 @@ class _ShowHomePageState extends State<ShowHomePage> {
           SliverAppBar.large(
             expandedHeight: _expandedHeight,
             flexibleSpace: FlexibleSpaceBar(
-              background: ShaderMask(
-                shaderCallback: (bounds) => LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    _palette?.darkVibrantColor?.color?.withOpacity(0.9) ?? Colors.black,
-                    _palette?.darkMutedColor?.color?.withOpacity(0.7) ?? Colors.black87,
-                    _palette?.dominantColor?.color?.withOpacity(0.8) ?? Colors.black54,
-                  ],
-                  stops: const [0.1, 0.5, 0.9],
-                ).createShader(bounds),
-                blendMode: BlendMode.darken,
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+              background: Stack(
+                children: [
+                  ShaderMask(
+                    shaderCallback: (bounds) => LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                       colors: [
-                        _palette?.darkVibrantColor?.color?.withOpacity(0.5) ?? Colors.black54,
-                        _palette?.dominantColor?.color?.withOpacity(0.3) ?? Colors.black38,
+                        _palette?.darkVibrantColor?.color?.withOpacity(0.9) ??
+                            Colors.black,
+                        _palette?.darkMutedColor?.color?.withOpacity(0.7) ??
+                            Colors.black87,
+                        _palette?.dominantColor?.color?.withOpacity(0.8) ??
+                            Colors.black54,
                       ],
+                      stops: const [0.1, 0.5, 0.9],
+                    ).createShader(bounds),
+                    blendMode: BlendMode.darken,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            _palette?.darkVibrantColor?.color
+                                    ?.withOpacity(0.5) ??
+                                Colors.black54,
+                            _palette?.dominantColor?.color?.withOpacity(0.3) ??
+                                Colors.black38,
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                  child: Column(
-                  children: [
-                    SizedBox(
-                      height: 64,
-                    ),
-                    ClipRRect(
+                  Align(
+                    alignment: Alignment.center,
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(24),
                       child: SizedBox(
                         height: 256,
@@ -91,35 +98,8 @@ class _ShowHomePageState extends State<ShowHomePage> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 16, left: 32, right: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            show.name,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineMedium
-                                ?.copyWith(color: Colors.white),
-                          ),
-                          Text(
-                            '#technology',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(color: Colors.white),
-                          ),
-                          FilledButton(
-                              onPressed: () => print('play'),
-                              child: Text('Play latest'))
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             leading: IconButton.filledTonal(
