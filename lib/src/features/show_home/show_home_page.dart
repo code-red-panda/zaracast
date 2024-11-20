@@ -108,10 +108,11 @@ class _ShowHomePageState extends State<ShowHomePage> {
                         SizedBox(height: 8),
                         ElevatedButton(
                             style: ButtonStyle(
-                              backgroundColor: WidgetStatePropertyAll(_palette?.dominantColor?.color) ,
+                              backgroundColor: MaterialStatePropertyAll(Colors.grey[300]),
+                              foregroundColor: const MaterialStatePropertyAll(Colors.black87),
                             ),
                             onPressed: () => print('play'),
-                            child: Text('Play latest')),
+                            child: const Text('Play latest')),
                       ],
                     ),
                   ),
