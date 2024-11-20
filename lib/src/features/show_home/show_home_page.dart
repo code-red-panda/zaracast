@@ -56,35 +56,18 @@ class _ShowHomePageState extends State<ShowHomePage> {
               background: Stack(
                 children: [
                   ShaderMask(
-                    shaderCallback: (bounds) => LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                    shaderCallback: (bounds) => RadialGradient(
+                      center: Alignment.center,
+                      radius: 1.2,
                       colors: [
-                        _palette?.dominantColor?.color?.withOpacity(0.9) ??
-                            Colors.black,
-                        // _palette?.lightMutedColor?.color?.withOpacity(0.7) ??
+                        Colors.black54,
                         Colors.black87,
-                        _palette?.lightVibrantColor?.color?.withOpacity(0.8) ??
-                            Colors.black54,
+                        Colors.black,
                       ],
-                      stops: const [0.1, 0.5, 0.9],
+                      stops: const [0.0, 0.5, 1.0],
                     ).createShader(bounds),
                     blendMode: BlendMode.luminosity,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            _palette?.darkVibrantColor?.color
-                                    ?.withOpacity(0.5) ??
-                                Colors.black54,
-                            _palette?.dominantColor?.color?.withOpacity(0.3) ??
-                                Colors.black38,
-                          ],
-                        ),
-                      ),
-                    ),
+                    child: Container(),
                   ),
                   Align(
                     alignment: Alignment.center,
