@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'dart:ui';
 import 'package:zaracast/src/features/latest_episodes/episode_list_tile.dart';
 import 'package:zaracast/src/models/episode_model.dart';
 import 'package:zaracast/src/models/show_model.dart';
@@ -20,7 +19,7 @@ class ShowHomePage extends StatefulWidget {
 
 class _ShowHomePageState extends State<ShowHomePage> {
   Set<int> _index = {0};
-  final double _expandedHeight = 440;
+  final double _expandedHeight = 490;
   PaletteGenerator? _palette;
 
   @override
@@ -51,125 +50,61 @@ class _ShowHomePageState extends State<ShowHomePage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
+          SliverAppBar.large(
             expandedHeight: _expandedHeight,
-            pinned: true,
-            stretch: true,
-            //backgroundColor: Colors.green,
             flexibleSpace: FlexibleSpaceBar(
-              stretchModes: const [StretchMode.blurBackground],
-              background: Stack(
-                children: [
-                  Stack(
-                    children: [
-                      CachedNetworkImageBuilder(
-                        image: show.image,
-                        height: _expandedHeight - 100,
-                      ),
-                      Container(
-                        height: _expandedHeight - 100,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              _palette?.dominantColor?.color.withOpacity(0.85) ??
-                                  Colors.black.withOpacity(0.85),
-                            ],
-                            stops: const [0.2, 0.8],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        height: (_expandedHeight - 100) * 0.15, // 15% of image height
-                        child: ClipRect(
-                          child: Stack(
-                            children: [
-                              BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-                                child: Container(color: Colors.transparent),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      _palette?.dominantColor?.color.withOpacity(0.3) ??
-                                          Colors.black.withOpacity(0.3),
-                                      _palette?.dominantColor?.color ?? Colors.black,
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    show.name,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall
-                                        ?.copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    '#Technology',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium
-                                        ?.copyWith(
-                                          color: Colors.white,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            FilledButton.icon(
-                              onPressed: () {},
-                              icon: const Icon(Icons.play_arrow_rounded),
-                              label: const Text('Play latest'),
-                            ),
-                            const SizedBox(width: 12),
-                            const FollowShowIconButton(),
-                          ],
-                        ),
-                      ],
+              background: ColoredBox(
+                color: _palette?.darkVibrantColor?.color ?? Colors.green,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 64,
                     ),
-                  ),
-                ],
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      child: SizedBox(
+                        height: 256,
+                        width: 256,
+                        child: CachedNetworkImageBuilder(
+                          image: show.image,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          bottom: 16, left: 32, right: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            show.name,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            '#technology',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(color: Colors.white),
+                          ),
+                          FilledButton(
+                              onPressed: () => print('play'),
+                              child: Text('Play latest'))
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-            leading: const BackIconButton(color: Colors.white),
+            leading: IconButton.filledTonal(
+                onPressed: Navigator.of(context).pop,
+                icon: Icon(Icons.arrow_back_rounded)),
+            title: Text(show.name),
           ),
           SliverPersistentHeader(
             pinned: true,
