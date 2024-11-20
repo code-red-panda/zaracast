@@ -88,13 +88,26 @@ class _ShowHomePageState extends State<ShowHomePage> {
                   ),
                   Align(
                     alignment: Alignment.center,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(24),
-                      child: SizedBox(
-                        height: 256,
-                        width: 256,
-                        child: CachedNetworkImageBuilder(
-                          image: show.image,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 20,
+                            offset: const Offset(0, 8),
+                            spreadRadius: 5,
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(24),
+                        child: SizedBox(
+                          height: 256,
+                          width: 256,
+                          child: CachedNetworkImageBuilder(
+                            image: show.image,
+                          ),
                         ),
                       ),
                     ),
