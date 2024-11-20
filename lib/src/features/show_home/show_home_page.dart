@@ -60,16 +60,16 @@ class _ShowHomePageState extends State<ShowHomePage> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        _palette?.darkVibrantColor?.color?.withOpacity(0.9) ??
+                        _palette?.dominantColor?.color?.withOpacity(0.9) ??
                             Colors.black,
-                        _palette?.darkMutedColor?.color?.withOpacity(0.7) ??
-                            Colors.black87,
-                        _palette?.dominantColor?.color?.withOpacity(0.8) ??
+                        // _palette?.lightMutedColor?.color?.withOpacity(0.7) ??
+                        Colors.black87,
+                        _palette?.lightVibrantColor?.color?.withOpacity(0.8) ??
                             Colors.black54,
                       ],
                       stops: const [0.1, 0.5, 0.9],
                     ).createShader(bounds),
-                    blendMode: BlendMode.darken,
+                    blendMode: BlendMode.luminosity,
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -88,28 +88,48 @@ class _ShowHomePageState extends State<ShowHomePage> {
                   ),
                   Align(
                     alignment: Alignment.center,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
-                            spreadRadius: 5,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(24),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                blurRadius: 20,
+                                offset: const Offset(0, 8),
+                                spreadRadius: 5,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(24),
-                        child: SizedBox(
-                          height: 256,
-                          width: 256,
-                          child: CachedNetworkImageBuilder(
-                            image: show.image,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(24),
+                            child: SizedBox(
+                              height: 256,
+                              width: 256,
+                              child: CachedNetworkImageBuilder(
+                                image: show.image,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        SizedBox(height: 8),
+                        Text(
+                          show.name,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge
+                              ?.copyWith(color: Colors.white),
+                        ),
+                        SizedBox(height: 8),
+                        ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStatePropertyAll(_palette?.dominantColor?.color) ,
+                            ),
+                            onPressed: () => print('play'),
+                            child: Text('Play latest')),
+                      ],
                     ),
                   ),
                 ],
