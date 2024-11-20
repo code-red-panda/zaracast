@@ -50,8 +50,7 @@ class QueueListTile extends StatelessWidget {
             child: CachedNetworkImageBuilder(image: episode.image),
           ),
         ),
-        subtitle: Text('${formatDatePublished(episode.date)} · '
-            '${formatDuration(episode.duration)}'),
+        subtitle: Text(formatDuration(episode.duration)),
         title: Text(
           episode.name,
           maxLines: 2,

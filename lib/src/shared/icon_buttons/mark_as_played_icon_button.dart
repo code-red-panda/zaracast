@@ -7,6 +7,7 @@ class MarkAsPlayedIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton.filledTonal(
       icon: const Icon(Icons.done_rounded),
+      iconSize: 16,
       onPressed: () => print('mark played'),
       visualDensity: VisualDensity.compact,
     );

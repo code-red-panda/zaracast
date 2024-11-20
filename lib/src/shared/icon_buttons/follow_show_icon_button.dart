@@ -6,9 +6,9 @@ class FollowShowIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.library_add_check_rounded),
-      onPressed: () => print('follow'),
-      //visualDensity: VisualDensity.compact,
+      icon: const Icon(Icons.library_add_outlined),
+      onPressed: () => print('play next'),
+      visualDensity: VisualDensity.compact,
     );
   }
 }

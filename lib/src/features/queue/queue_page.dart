@@ -101,10 +101,10 @@ class _QueuePageState extends State<QueuePage> {
                           }
                           return e;
                         }).toList();
-    
+
                         // Then remove from sorted episodes
                         sortedEpisodes.removeAt(index);
-    
+
                         // Update remaining sort values
                         for (var i = 0; i < sortedEpisodes.length; i++) {
                           final episode = sortedEpisodes[i];
@@ -129,8 +129,6 @@ class _QueuePageState extends State<QueuePage> {
                       });
                     },
                   ),
-                  if (index < sortedEpisodes.length - 1)
-                    const Divider(indent: 16, endIndent: 24),
                 ],
               );
             },

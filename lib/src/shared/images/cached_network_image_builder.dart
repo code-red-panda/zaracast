@@ -9,10 +9,14 @@ class CachedNetworkImageBuilder extends StatefulWidget {
   const CachedNetworkImageBuilder({
     required this.image,
     //required this.prefs,
+    this.fit = BoxFit.cover,
+    this.height,
     super.key,
   });
 
   final String image;
+  final BoxFit fit;
+  final double? height;
   //final SharedPreferences prefs;
 
   @override
@@ -66,10 +70,10 @@ class _CachedNetworkImageBuilderState extends State<CachedNetworkImageBuilder> {
           }
           return const Center(child: Icon(Icons.image_not_supported));
         },
-        fit: BoxFit.cover,
+        fit: widget.fit,
         placeholder: (context, url) => const Center(child: Icon(Icons.image)),
         width: double.infinity,
-        height: double.infinity,
+        height: widget.height,
       ),
     );
   }

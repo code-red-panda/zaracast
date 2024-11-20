@@ -7,6 +7,7 @@ class PlayNextIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton.filledTonal(
       icon: const Icon(Icons.queue_play_next),
+      iconSize: 16,
       onPressed: () => print('play next'),
       visualDensity: VisualDensity.compact,
     );

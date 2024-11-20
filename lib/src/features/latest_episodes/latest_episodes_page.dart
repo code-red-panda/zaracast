@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:zaracast/src/features/my_episodes/episode_list_tile.dart';
+import 'package:zaracast/src/features/latest_episodes/episode_list_tile.dart';
 import 'package:zaracast/src/models/episode_model.dart';
 import 'package:zaracast/src/shared/icon_buttons/back_icon_button.dart';
 
-class EpisodesPage extends StatefulWidget {
-  const EpisodesPage({super.key});
+class LatestEpisodesPage extends StatefulWidget {
+  const LatestEpisodesPage({super.key});
 
   @override
-  State<EpisodesPage> createState() => _EpisodesPageState();
+  State<LatestEpisodesPage> createState() => _LatestEpisodesPageState();
 }
 
-class _EpisodesPageState extends State<EpisodesPage> {
+class _LatestEpisodesPageState extends State<LatestEpisodesPage> {
   Set<int> _index = {0};
 
   Map<String, List<Episode>> _categorizeEpisodes(List<Episode> episodes) {
@@ -40,7 +40,7 @@ class _EpisodesPageState extends State<EpisodesPage> {
       return date.isAfter(startOfWeek.subtract(const Duration(days: 1))) &&
           date.isBefore(today);
     }).toList();
-    result['This Week'] = thisWeekEpisodes;
+    result['This week'] = thisWeekEpisodes;
     remainingEpisodes.removeWhere(thisWeekEpisodes.contains);
 
     // Last Week
@@ -49,7 +49,7 @@ class _EpisodesPageState extends State<EpisodesPage> {
       return date.isAfter(startOfLastWeek.subtract(const Duration(days: 1))) &&
           date.isBefore(startOfWeek);
     }).toList();
-    result['Last Week'] = lastWeekEpisodes;
+    result['Last week'] = lastWeekEpisodes;
     remainingEpisodes.removeWhere(lastWeekEpisodes.contains);
 
     // This Month
@@ -58,7 +58,7 @@ class _EpisodesPageState extends State<EpisodesPage> {
       return date.isAfter(startOfMonth.subtract(const Duration(days: 1))) &&
           date.isBefore(startOfLastWeek);
     }).toList();
-    result['This Month'] = thisMonthEpisodes;
+    result['This month'] = thisMonthEpisodes;
     remainingEpisodes.removeWhere(thisMonthEpisodes.contains);
 
     // Last Month
@@ -67,7 +67,7 @@ class _EpisodesPageState extends State<EpisodesPage> {
       return date.isAfter(startOfLastMonth.subtract(const Duration(days: 1))) &&
           date.isBefore(startOfMonth);
     }).toList();
-    result['Last Month'] = lastMonthEpisodes;
+    result['Last month'] = lastMonthEpisodes;
 
     return result;
   }
@@ -80,7 +80,7 @@ class _EpisodesPageState extends State<EpisodesPage> {
         slivers: [
           const SliverAppBar.large(
             leading: BackIconButton(),
-            title: Text('My Episodes'),
+            title: Text('Latest episodes'),
           ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -105,10 +105,10 @@ class _EpisodesPageState extends State<EpisodesPage> {
                 final categorizedEpisodes = _categorizeEpisodes(episodes);
                 final categories = [
                   'Today',
-                  'This Week',
-                  'Last Week',
-                  'This Month',
-                  'Last Month',
+                  'This week',
+                  'Last week',
+                  'This month',
+                  'Last month',
                 ];
                 final widgets = <Widget>[];
 
@@ -118,7 +118,7 @@ class _EpisodesPageState extends State<EpisodesPage> {
                   if (episodesInCategory.isNotEmpty) {
                     widgets.add(
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                         child: Text(
                           category,
                           style: Theme.of(context).textTheme.titleLarge,

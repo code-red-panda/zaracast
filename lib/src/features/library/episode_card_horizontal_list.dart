@@ -12,8 +12,6 @@ class EpisodeCardHorizontalList extends StatefulWidget {
   const EpisodeCardHorizontalList(this.isContinueListening, {super.key});
 
   final bool isContinueListening;
-  double get _maxCardHeight => 325;
-  double get _maxCardWidth => 225;
 
   @override
   State<EpisodeCardHorizontalList> createState() =>
@@ -22,6 +20,9 @@ class EpisodeCardHorizontalList extends StatefulWidget {
 
 class _EpisodeCardHorizontalListState extends State<EpisodeCardHorizontalList> {
   final Map<int, PaletteGenerator?> _palettes = {};
+
+  double get _maxCardHeight => 325;
+  double get _maxCardWidth => 225;
 
   @override
   void initState() {
@@ -82,10 +83,14 @@ class _EpisodeCardHorizontalListState extends State<EpisodeCardHorizontalList> {
                               end: Alignment.bottomCenter,
                               colors: [
                                 Colors.transparent,
-                                _palettes[episodes[index].id]?.darkMutedColor?.color
+                                _palettes[episodes[index].id]
+                                        ?.darkMutedColor
+                                        ?.color
                                         ?.withOpacity(0.6) ??
                                     Colors.black.withOpacity(0.6),
-                                _palettes[episodes[index].id]?.dominantColor?.color ??
+                                _palettes[episodes[index].id]
+                                        ?.dominantColor
+                                        ?.color ??
                                     Colors.black,
                               ],
                               stops: const [0.65, 0.75, 1.0],
@@ -110,7 +115,7 @@ class _EpisodeCardHorizontalListState extends State<EpisodeCardHorizontalList> {
                                       .bodyMedium
                                       ?.copyWith(color: Colors.white),
                                 ),
-                                Row(
+                                const Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
@@ -120,7 +125,7 @@ class _EpisodeCardHorizontalListState extends State<EpisodeCardHorizontalList> {
                                     MarkAsPlayedIconButton(),
                                   ],
                                 ),
-                                if (isContinueListening) ...[
+                                if (widget.isContinueListening) ...[
                                   const SizedBox(height: 8),
                                   LinearProgressIndicator(
                                     value: .75,
@@ -133,7 +138,7 @@ class _EpisodeCardHorizontalListState extends State<EpisodeCardHorizontalList> {
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: Text(
-                                    isContinueListening
+                                    widget.isContinueListening
                                         ? '11m remaining'
                                         : '4 hours ago',
                                     style: Theme.of(context)

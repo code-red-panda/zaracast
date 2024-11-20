@@ -91,5 +91,8 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Venv
+.venv
+
 # API Keys
 lib/src/core/config/api_config.dart

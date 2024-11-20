@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zaracast/src/core/router/stateful_shell_scaffold.dart';
-import 'package:zaracast/src/features/my_episodes/my_episodes_page.dart';
-import 'package:zaracast/src/features/library/my_library_page.dart';
+import 'package:zaracast/src/features/latest_episodes/latest_episodes_page.dart';
+import 'package:zaracast/src/features/library/library_page.dart';
 import 'package:zaracast/src/features/queue/queue_page.dart';
 import 'package:zaracast/src/features/settings/settings_page.dart';
-import 'package:zaracast/src/features/show_details/show_home_page.dart';
-import 'package:zaracast/src/features/my_shows/my_shows_page.dart';
+import 'package:zaracast/src/features/show_home/show_home_page.dart';
+import 'package:zaracast/src/features/followed_shows/followed_shows_page.dart';
 
 GoRouter buildRouter() {
   print('BUILD GO ROUTER');
@@ -47,27 +47,35 @@ GoRouter buildRouter() {
                 builder: (context, state) => const LibraryPage(),
                 routes: <RouteBase>[
                   GoRoute(
-                    path: 'episodes',
-                    builder: (context, state) => const EpisodesPage(),
+                    path: 'my-shows',
+                    builder: (context, state) => const FollowedShowsPage(),
+                    routes: [
+                      GoRoute(
+                        path: ':id',
+                        builder: (context, state) {
+                          final id =
+                              getIntFromParam(state.pathParameters['id']);
+                          return ShowHomePage(id);
+                        },
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'latest-episodes',
+                    builder: (context, state) => const LatestEpisodesPage(),
                   ),
                 ],
               ),
               GoRoute(
-                path: '/shows',
-                builder: (context, state) => const MyShowsPage(),
-                routes: [
-                  GoRoute(
-                    path: ':id',
-                    builder: (context, state) {
-                      final id = getIntFromParam(state.pathParameters['id']);
-                      return ShowHomePage(id);
-                    },
-                  ),
-                ],
+                path: '/show/:id',
+                builder: (context, state) {
+                  final id = getIntFromParam(state.pathParameters['id']);
+                  return ShowHomePage(id);
+                },
               ),
               GoRoute(
                 path: '/episodes',
-                builder: (context, state) => const EpisodesPage(),
+                builder: (context, state) => const LatestEpisodesPage(),
                 routes: [
                   GoRoute(
                     path: ':id',

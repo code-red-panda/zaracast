@@ -58,43 +58,7 @@ class _FollowedShowsPageState extends State<FollowedShowsPage> {
                   onTap: () => context.push('/show/${show.id}'),
                   child: Card(
                     clipBehavior: Clip.antiAlias,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(show.image),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              _palettes[show.id]?.darkMutedColor?.color?.withOpacity(0.6) ?? 
-                                  Colors.transparent,
-                              _palettes[show.id]?.dominantColor?.color?.withOpacity(0.9) ?? 
-                                  Colors.black.withOpacity(0.9),
-                            ],
-                            stops: const [0.6, 0.8, 1.0],
-                          ),
-                        ),
-                        child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 8, right: 8),
-                            child: Text(
-                              '6 days ago',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    child: CachedNetworkImageBuilder(image: show.image)
                   ),
                 );
               },

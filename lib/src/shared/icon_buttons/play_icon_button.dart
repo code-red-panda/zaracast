@@ -5,13 +5,11 @@ class PlayIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 24,
-      height: 24,
-      child: IconButton(
-        icon: const Icon(Icons.play_arrow_rounded),
-        onPressed: () => print('play'),
-      ),
+    return IconButton.filled(
+      icon: const Icon(Icons.play_arrow_rounded),
+      iconSize: 16,
+      onPressed: () => print('play'),
+      visualDensity: VisualDensity.compact,
     );
   }
 }

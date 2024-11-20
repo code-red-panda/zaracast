@@ -19,7 +19,7 @@ class ShowHomePage extends StatefulWidget {
 
 class _ShowHomePageState extends State<ShowHomePage> {
   Set<int> _index = {0};
-  final double _expandedHeight = 490;
+  final double _expandedHeight = 500;
   PaletteGenerator? _palette;
 
   @override
@@ -51,75 +51,137 @@ class _ShowHomePageState extends State<ShowHomePage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar.large(
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 16),
+                child: FollowShowIconButton(),
+              )
+            ],
             expandedHeight: _expandedHeight,
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
                 children: [
-                  ShaderMask(
-                    shaderCallback: (bounds) => RadialGradient(
-                      center: Alignment.center,
-                      radius: 1.2,
+                  Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                       colors: [
-                        Colors.black54,
-                        Colors.black87,
-                        Colors.black,
+                        _palette?.lightVibrantColor?.color ??
+                        Colors.blueGrey.shade100,
+
+                        Theme.of(context).colorScheme.surface,
                       ],
-                      stops: const [0.0, 0.5, 1.0],
-                    ).createShader(bounds),
-                    blendMode: BlendMode.luminosity,
-                    child: Container(),
+                    )),
                   ),
-                  Align(
-                    alignment: Alignment.center,
+                  Padding(
+                    padding: EdgeInsets.only(
+                        bottom: 8,
+                        left: 64,
+                        right: 64,
+                        top: _expandedHeight * .25),
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //mainAxisSize: MainAxisSize.,
+
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(24),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
-                                blurRadius: 20,
-                                offset: const Offset(0, 8),
-                                spreadRadius: 5,
-                              ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(24),
-                            child: SizedBox(
-                              height: 256,
-                              width: 256,
-                              child: CachedNetworkImageBuilder(
-                                image: show.image,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Align(
+                              child: Container(
+                                //alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(24),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.3),
+                                      blurRadius: 20,
+                                      offset: const Offset(0, 8),
+                                      spreadRadius: 5,
+                                    ),
+                                  ],
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(24),
+                                  child: SizedBox(
+                                    //height: 256,
+                                    // width: 256,
+                                    child: CachedNetworkImageBuilder(
+                                      image: show.image,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          show.name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge
-                              ?.copyWith(color: Colors.white),
-                        ),
-                        SizedBox(height: 8),
-                        ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(Colors.grey[300]),
-                              foregroundColor: const MaterialStatePropertyAll(Colors.black87),
+                            SizedBox(height: 8),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(show.name,
+                                  style:
+                                      Theme.of(context).textTheme.titleLarge),
                             ),
-                            onPressed: () => print('play'),
-                            child: const Text('Play latest')),
+                            //?.copyWith(fontWeight: FontWeight)),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text('Jupiter Broadcasting',
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall),
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  child: ElevatedButton.icon(
+                                    style: ButtonStyle(
+                                      backgroundColor: WidgetStatePropertyAll(
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .primary),
+                                      foregroundColor: WidgetStatePropertyAll(
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary),
+                                    ),
+                                    onPressed: () => print('play'),
+                                    icon: Icon(Icons.play_arrow_rounded),
+                                    label: const Text('Play latest'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '#technology',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            Text(
+                              '#news',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            Text(
+                              'Episodes: 441',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            leading: IconButton.filledTonal(
+            leading: IconButton(
+                //color: Colors.transparent,
                 onPressed: Navigator.of(context).pop,
                 icon: Icon(Icons.arrow_back_rounded)),
             title: Text(show.name),
