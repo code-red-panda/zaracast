@@ -70,11 +70,11 @@ class EpisodeListTile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            formatDatePublished(episode.date),
+                            formatDatePublished(episode.datePublished),
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                           Text(
-                            episode.name,
+                            episode.title,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.titleMedium,

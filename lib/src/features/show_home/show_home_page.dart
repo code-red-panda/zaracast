@@ -4,7 +4,7 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:zaracast/src/core/api/models/feed_response.dart';
 import 'package:zaracast/src/core/service_locator.dart';
 import 'package:zaracast/src/features/latest_episodes/episode_list_tile.dart';
-import 'package:zaracast/src/models/episode_model.dart';
+import 'package:zaracast/src/core/api/models/episode_response.dart';
 import 'package:zaracast/src/shared/icon_buttons/back_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/follow_show_icon_button.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
@@ -23,6 +23,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
 
   PaletteGenerator? _palette;
   Feed? _feed;
+  List<EpisodeItem> _episodes = [];
   bool _isLoading = true;
 
   final _scrollController = ScrollController();
@@ -60,14 +61,16 @@ class _ShowHomePageState extends State<ShowHomePage> {
 
   Future<void> _loadFeed() async {
     try {
-      final response = await api.getFeedById(widget.id);
+      final feedResponse = await api.getFeedById(widget.id);
+      final episodeResponse = await api.getEpisodesByFeedId(widget.id);
       final generator = await PaletteGenerator.fromImageProvider(
-        CachedNetworkImageProvider(response.feed.image),
+        CachedNetworkImageProvider(feedResponse.feed.image),
         size: const Size(200, 200), // Smaller size for faster processing
       );
 
       setState(() {
-        _feed = response.feed;
+        _feed = feedResponse.feed;
+        _episodes = episodeResponse.items;
         _palette = generator;
         _isLoading = false;
       });
@@ -104,8 +107,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
       );
     }
 
-    final sortedEpisodes = episodes.where((e) => e.showId == widget.id).toList()
-      ..sort((a, b) => b.date.compareTo(a.sort));
+    final sortedEpisodes = _episodes..sort((a, b) => b.datePublished.compareTo(a.datePublished));
 
     final double _expandedHeight = MediaQuery.of(context).size.height;
     print('expanded heigh $_expandedHeight');

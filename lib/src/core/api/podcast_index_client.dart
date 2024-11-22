@@ -46,6 +46,37 @@ class PodcastIndexClient {
     }
   }
 
+  Future<EpisodeResponse> getEpisodesByFeedId(int id) async {
+    final timestamp = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
+    final authHash = sha1
+        .convert(
+          utf8.encode(apiKey + apiSecret + timestamp),
+        )
+        .toString();
+
+    final uri = Uri.https(baseUrl, '/api/1.0/episodes/byfeedid', {
+      'id': id.toString(),
+      'max': '10',
+    });
+
+    final response = await http.get(
+      uri,
+      headers: {
+        'X-Auth-Key': apiKey,
+        'X-Auth-Date': timestamp,
+        'Authorization': authHash,
+        'User-Agent': 'ZaraCast/1.0',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body) as Map<String, dynamic>;
+      return EpisodeResponse.fromJson(json);
+    } else {
+      throw Exception('Failed to get episodes: ${response.statusCode}');
+    }
+  }
+
   Future<FeedResponse> getFeedById(int id) async {
     final timestamp = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
     final authHash = sha1
