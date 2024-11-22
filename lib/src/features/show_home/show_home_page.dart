@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:zaracast/src/core/api/models/feed_response.dart';
+import 'package:zaracast/src/core/service_locator.dart';
 import 'package:zaracast/src/features/latest_episodes/episode_list_tile.dart';
 import 'package:zaracast/src/models/episode_model.dart';
-import 'package:zaracast/src/models/show_model.dart';
 import 'package:zaracast/src/shared/icon_buttons/back_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/follow_show_icon_button.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
@@ -21,6 +22,8 @@ class _ShowHomePageState extends State<ShowHomePage> {
   Set<int> _index = {0};
 
   PaletteGenerator? _palette;
+  Feed? _feed;
+  bool _isLoading = true;
 
   final _scrollController = ScrollController();
   var _showIcons = false;
@@ -34,7 +37,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
 
   @override
   void initState() {
-    _updatePalette();
+    _loadFeed();
 
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => _setThreshold(MediaQuery.of(context).size.height - 64));
@@ -55,22 +58,49 @@ class _ShowHomePageState extends State<ShowHomePage> {
     super.initState();
   }
 
-  Future<void> _updatePalette() async {
-    final show = shows[widget.id - 1];
-    print('palette show id ${show.name}');
-    final generator = await PaletteGenerator.fromImageProvider(
-      CachedNetworkImageProvider(show.image),
-      size: const Size(200, 200), // Smaller size for faster processing
-    );
-    print('generator null ${generator.runtimeType}');
-    setState(() {
-      _palette = generator;
-    });
+  Future<void> _loadFeed() async {
+    try {
+      final response = await api.getFeedById(widget.id);
+      final generator = await PaletteGenerator.fromImageProvider(
+        CachedNetworkImageProvider(response.feed.image),
+        size: const Size(200, 200), // Smaller size for faster processing
+      );
+      
+      setState(() {
+        _feed = response.feed;
+        _palette = generator;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load podcast: $e')),
+        );
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final show = shows[widget.id - 1];
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (_feed == null) {
+      return const Scaffold(
+        body: Center(
+          child: Text('Failed to load podcast'),
+        ),
+      );
+    }
+
     final sortedEpisodes = episodes.where((e) => e.showId == widget.id).toList()
       ..sort((a, b) => b.date.compareTo(a.sort));
 
@@ -128,22 +158,20 @@ class _ShowHomePageState extends State<ShowHomePage> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(24),
                             child: SizedBox(
-                              //height: 256,
-                              // width: 256,
                               child: CachedNetworkImageBuilder(
-                                image: show.image,
+                                image: _feed!.image,
                                 fit: BoxFit.fitWidth,
                               ),
                             ),
                           ),
                         ),
                         SizedBox(height: 16),
-                        Text(show.name,
+                        Text(_feed!.title,
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineMedium
                                 ?.copyWith(fontWeight: FontWeight.bold)),
-                        Text('Jupiter Broadcasting',
+                        Text(_feed!.author,
                             style: Theme.of(context).textTheme.titleMedium),
                         SizedBox(height: 8),
                         Row(
