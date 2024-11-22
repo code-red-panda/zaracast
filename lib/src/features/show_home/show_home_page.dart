@@ -65,7 +65,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
         CachedNetworkImageProvider(response.feed.image),
         size: const Size(200, 200), // Smaller size for faster processing
       );
-      
+
       setState(() {
         _feed = response.feed;
         _palette = generator;
@@ -94,8 +94,11 @@ class _ShowHomePageState extends State<ShowHomePage> {
     }
 
     if (_feed == null) {
-      return const Scaffold(
-        body: Center(
+      return Scaffold(
+        appBar: AppBar(
+          leading: const BackIconButton(),
+        ),
+        body: const Center(
           child: Text('Failed to load podcast'),
         ),
       );
@@ -203,7 +206,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
                 //color: Colors.transparent,
                 onPressed: Navigator.of(context).pop,
                 icon: Icon(Icons.arrow_back_rounded)),
-            title: Text(show.name),
+            title: Text(_feed!.title),
           ),
           SliverPersistentHeader(
             pinned: true,
