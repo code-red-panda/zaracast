@@ -19,13 +19,40 @@ class ShowHomePage extends StatefulWidget {
 
 class _ShowHomePageState extends State<ShowHomePage> {
   Set<int> _index = {0};
-  final double _expandedHeight = 500;
+
   PaletteGenerator? _palette;
+
+  final _scrollController = ScrollController();
+  var _showIcons = false;
+  double _threshold = 0;
+
+  void _setThreshold(double height) {
+    setState(() {
+      _threshold = height;
+    });
+  }
 
   @override
   void initState() {
-    super.initState();
     _updatePalette();
+
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _setThreshold(MediaQuery.of(context).size.height - 64));
+
+    _scrollController.addListener(() {
+      if (!_showIcons && _scrollController.offset >= _threshold) {
+        print('show icons');
+        setState(() {
+          _showIcons = true;
+        });
+      } else if (_showIcons && _scrollController.offset < _threshold) {
+        print('hid icons');
+        setState(() {
+          _showIcons = false;
+        });
+      }
+    });
+    super.initState();
   }
 
   Future<void> _updatePalette() async {
@@ -47,14 +74,21 @@ class _ShowHomePageState extends State<ShowHomePage> {
     final sortedEpisodes = episodes.where((e) => e.showId == widget.id).toList()
       ..sort((a, b) => b.date.compareTo(a.sort));
 
+    final double _expandedHeight = MediaQuery.of(context).size.height;
+    print('expanded heigh $_expandedHeight');
+
     return Scaffold(
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: [
           SliverAppBar.large(
             actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 16),
-                child: FollowShowIconButton(),
+              Visibility(
+                visible: _showIcons,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: FollowShowIconButton(),
+                ),
               )
             ],
             expandedHeight: _expandedHeight,
@@ -68,112 +102,69 @@ class _ShowHomePageState extends State<ShowHomePage> {
                       end: Alignment.bottomCenter,
                       colors: [
                         _palette?.lightVibrantColor?.color ??
-                        Colors.blueGrey.shade100,
-
+                            Colors.blueGrey.shade100,
                         Theme.of(context).colorScheme.surface,
                       ],
                     )),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                        bottom: 8,
-                        left: 64,
-                        right: 64,
-                        top: _expandedHeight * .25),
+                        bottom: 0, left: 40, right: 40, top: 128),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //mainAxisSize: MainAxisSize.,
-
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Align(
-                              child: Container(
-                                //alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(24),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.3),
-                                      blurRadius: 20,
-                                      offset: const Offset(0, 8),
-                                      spreadRadius: 5,
-                                    ),
-                                  ],
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(24),
-                                  child: SizedBox(
-                                    //height: 256,
-                                    // width: 256,
-                                    child: CachedNetworkImageBuilder(
-                                      image: show.image,
-                                    ),
-                                  ),
-                                ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                blurRadius: 20,
+                                offset: const Offset(0, 8),
+                                spreadRadius: 5,
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(24),
+                            child: SizedBox(
+                              //height: 256,
+                              // width: 256,
+                              child: CachedNetworkImageBuilder(
+                                image: show.image,
+                                fit: BoxFit.fitWidth,
                               ),
                             ),
-                            SizedBox(height: 8),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: Text(show.name,
-                                  style:
-                                      Theme.of(context).textTheme.titleLarge),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Text(show.name,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(fontWeight: FontWeight.bold)),
+                        Text('Jupiter Broadcasting',
+                            style: Theme.of(context).textTheme.titleMedium),
+                        SizedBox(height: 8),
+                        Row(
+                          children: [
+                            ElevatedButton.icon(
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll(
+                                    Theme.of(context).colorScheme.primary),
+                                foregroundColor: WidgetStatePropertyAll(
+                                    Theme.of(context).colorScheme.onPrimary),
+                              ),
+                              onPressed: () => print('play'),
+                              icon: Icon(Icons.play_arrow_rounded),
+                              label: const Text('Play latest'),
                             ),
-                            //?.copyWith(fontWeight: FontWeight)),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: Text('Jupiter Broadcasting',
-                                  style:
-                                      Theme.of(context).textTheme.titleSmall),
-                            ),
-                            SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  child: ElevatedButton.icon(
-                                    style: ButtonStyle(
-                                      backgroundColor: WidgetStatePropertyAll(
-                                          Theme.of(context)
-                                              .colorScheme
-                                              .primary),
-                                      foregroundColor: WidgetStatePropertyAll(
-                                          Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary),
-                                    ),
-                                    onPressed: () => print('play'),
-                                    icon: Icon(Icons.play_arrow_rounded),
-                                    label: const Text('Play latest'),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            IconButton(
+                                onPressed: () => print('info'),
+                                icon: Icon(Icons.info_outlined)),
+                            FollowShowIconButton()
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '#technology',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            Text(
-                              '#news',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            Text(
-                              'Episodes: 441',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        )
                       ],
                     ),
                   ),
@@ -228,7 +219,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
           SliverList.separated(
             separatorBuilder: (context, index) => const Divider(
               indent: 16,
-              endIndent: 24,
+              endIndent: 16,
             ),
             itemCount: sortedEpisodes.length,
             itemBuilder: (context, index) {
