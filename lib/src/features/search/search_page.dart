@@ -13,8 +13,7 @@ class _SearchPageState extends State<SearchPage> {
   final _searchController = SearchController();
   final _textController = TextEditingController();
 
-  var names = [];
-  var images = [];
+  List<Feed> _searchResults = [];
 
   @override
   void dispose() {
@@ -37,23 +36,18 @@ class _SearchPageState extends State<SearchPage> {
                 trailing: [
                   IconButton(
                       onPressed: () async {
-                        final r =
-                            await api.searchPodcasts(_textController.text);
-
-                        var newNames = [];
-                        var newImages = [];
-
-                        for (var a in r['feeds'] as List) {
-                          newNames.add(a['title']);
-                          newImages.add(a['image']);
+                        try {
+                          final response = await api.searchPodcasts(_textController.text);
+                          setState(() {
+                            _searchResults = response.feeds;
+                          });
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Search failed: $e')),
+                            );
+                          }
                         }
-
-                        //print(r);
-
-                        setState(() {
-                          names = newNames;
-                          images = newImages;
-                        });
                       },
                       icon: Icon(Icons.search_rounded))
                 ],
@@ -61,12 +55,16 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           SliverList.separated(
-            itemCount: names.length,
+            itemCount: _searchResults.length,
             separatorBuilder: (context, index) =>
-                Divider(indent: 16, endIndent: 16),
+                const Divider(indent: 16, endIndent: 16),
             itemBuilder: (context, index) {
+              final feed = _searchResults[index];
               return SearchListTile(
-                  names[index] as String, images[index] as String);
+                feed.title,
+                feed.image,
+                subtitle: feed.author,
+              );
             },
           ),
         ],

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
+import 'package:zaracast/src/core/api/models/search_response.dart';
 
 class PodcastIndexClient {
   PodcastIndexClient({
@@ -13,7 +14,7 @@ class PodcastIndexClient {
   final String apiSecret;
   final String baseUrl;
 
-  Future<Map<String, dynamic>> searchPodcasts(String term) async {
+  Future<SearchResponse> searchPodcasts(String term) async {
     final timestamp =
         (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
     final authHash = sha1
@@ -37,7 +38,8 @@ class PodcastIndexClient {
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body) as Map<String, dynamic>;
+      final json = jsonDecode(response.body) as Map<String, dynamic>;
+      return SearchResponse.fromJson(json);
     } else {
       throw Exception('Failed to search podcasts: ${response.statusCode}');
     }

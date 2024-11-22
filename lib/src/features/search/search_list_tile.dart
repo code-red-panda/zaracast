@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
 
 class SearchListTile extends StatelessWidget {
-  const SearchListTile(this.name, this.image, {super.key});
+  const SearchListTile(
+    this.name,
+    this.image, {
+    this.subtitle = '',
+    super.key,
+  });
 
   final String name;
   final String image;
+  final String subtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +25,7 @@ class SearchListTile extends StatelessWidget {
           child: CachedNetworkImageBuilder(image: image),
         ),
       ),
-      subtitle: Text('Latest: 6 days ago'),
+      subtitle: Text(subtitle),
       title: Text(
         name,
         maxLines: 2,
