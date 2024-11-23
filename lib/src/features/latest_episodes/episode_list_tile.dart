@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zaracast/src/core/api/models/episode_response.dart';
 import 'package:zaracast/src/core/functions/format_duration.dart';
 import 'package:zaracast/src/core/functions/format_publish_date.dart';
 import 'package:zaracast/src/models/episode_model.dart';
@@ -11,10 +12,11 @@ import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
 class EpisodeListTile extends StatelessWidget {
   const EpisodeListTile(this.episode, {super.key});
 
-  final Episode episode;
+  final EpisodeItem episode;
 
   @override
   Widget build(BuildContext context) {
+    print('episode image: ${episode.image}');
     return Dismissible(
       key: ValueKey(episode.id),
       direction: DismissDirection.endToStart,
@@ -94,14 +96,15 @@ class EpisodeListTile extends StatelessWidget {
                               SizedBox(
                                 width: 70,
                                 child: LinearProgressIndicator(
-                                  value: episode.durationRemaining /
-                                      episode.duration,
+                                  // TODO(red): create duration remaining
+                                  value: 600 / episode.duration,
                                 ),
                               ),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
-                                  formatDuration(episode.durationRemaining),
+                                  // TODO(red): create duration remaining
+                                  formatDuration(600),
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ),
