@@ -35,6 +35,9 @@ class Feed {
     this.image = '',
     this.lastUpdateTime = 0,
     this.categories = const {},
+    this.dead = 0,
+    this.episodeCount = 0,
+    this.medium = '',
   });
 
   factory Feed.fromJson(Map<String, dynamic> json) {
@@ -55,6 +58,9 @@ class Feed {
       image: json['image'] as String? ?? '',
       lastUpdateTime: json['lastUpdateTime'] as int? ?? 0,
       categories: categories,
+      dead: json['dead'] as int? ?? 0,
+      episodeCount: json['episodeCount'] as int? ?? 0,
+      medium: json['medium'] as String? ?? '',
     );
   }
 
@@ -66,4 +72,7 @@ class Feed {
   final String image;
   final int lastUpdateTime;
   final Map<String, String> categories;
+  final int dead;
+  final int episodeCount;
+  final String medium;
 }

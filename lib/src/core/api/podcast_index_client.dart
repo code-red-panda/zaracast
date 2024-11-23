@@ -41,7 +41,24 @@ class PodcastIndexClient {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as Map<String, dynamic>;
-      return SearchResponse.fromJson(json);
+      final rawResponse = SearchResponse.fromJson(json);
+      
+      // Filter the feeds to only include valid, active podcasts
+      final filteredFeeds = rawResponse.feeds.where((feed) {
+        return feed.dead != 1 && // Not dead
+               feed.episodeCount >= 1 && // Has episodes
+               feed.medium == 'podcast' && // Is a podcast
+               feed.image.isNotEmpty && // Has artwork
+               feed.title.isNotEmpty && // Has a title
+               feed.author.isNotEmpty; // Has an author
+      }).toList();
+
+      return SearchResponse(
+        status: rawResponse.status,
+        feeds: filteredFeeds,
+        count: filteredFeeds.length,
+        description: rawResponse.description,
+      );
     } else {
       throw Exception('Failed to search podcasts: ${response.statusCode}');
     }
