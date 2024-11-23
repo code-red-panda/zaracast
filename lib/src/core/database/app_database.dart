@@ -1,10 +1,12 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:zaracast/src/core/database/tables/episode_table.dart';
+import 'package:zaracast/src/core/database/tables/show_table.dart';
 
 part 'app_database.g.dart';
 
 @DriftDatabase(
-  tables: [],
+  tables: [Shows, Episodes],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
