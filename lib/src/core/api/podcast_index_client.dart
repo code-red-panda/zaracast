@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
+import 'package:zaracast/src/core/api/models/episode_response.dart';
 import 'package:zaracast/src/core/api/models/feed_response.dart';
 import 'package:zaracast/src/core/api/models/search_response.dart';
 
