@@ -43,7 +43,7 @@ class PodcastIndexClient {
       final json = jsonDecode(response.body) as Map<String, dynamic>;
       final rawResponse = SearchResponse.fromJson(json);
       
-      // Filter the feeds to only include valid, active podcasts
+      // Filter and sort the feeds
       final filteredFeeds = rawResponse.feeds.where((feed) {
         return feed.dead != 1 && // Not dead
                feed.episodeCount >= 1 && // Has episodes
@@ -51,7 +51,8 @@ class PodcastIndexClient {
                feed.image.isNotEmpty && // Has artwork
                feed.title.isNotEmpty && // Has a title
                feed.author.isNotEmpty; // Has an author
-      }).toList();
+      }).toList()
+        ..sort((a, b) => b.lastUpdateTime.compareTo(a.lastUpdateTime)); // Sort by most recent
 
       return SearchResponse(
         status: rawResponse.status,
