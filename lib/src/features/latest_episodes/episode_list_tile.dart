@@ -10,9 +10,14 @@ import 'package:zaracast/src/shared/icon_buttons/play_next_icon_button.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
 
 class EpisodeListTile extends StatelessWidget {
-  const EpisodeListTile(this.episode, {super.key});
+  const EpisodeListTile(
+    this.episode, {
+    required this.showImage,
+    super.key,
+  });
 
   final EpisodeItem episode;
+  final String showImage;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +63,9 @@ class EpisodeListTile extends StatelessWidget {
                 child: SizedBox(
                   height: 128,
                   width: 128,
-                  child: CachedNetworkImageBuilder(image: episode.image),
+                  child: CachedNetworkImageBuilder(
+                    image: episode.image.isEmpty ? showImage : episode.image,
+                  ),
                 ),
               ),
               Expanded(
