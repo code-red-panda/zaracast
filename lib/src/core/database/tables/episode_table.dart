@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:zaracast/src/core/database/tables/show_table.dart';
 
 class Episodes extends Table {
   IntColumn get id => integer().autoIncrement()();
