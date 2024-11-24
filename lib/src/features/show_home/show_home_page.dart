@@ -61,6 +61,53 @@ class _ShowHomePageState extends State<ShowHomePage> {
 
   Future<void> _loadFeed() async {
     try {
+      // First check if show exists in database
+      final show = await database.shows.filter((s) => s.id(widget.id)).first();
+      if (show != null) {
+        // Show exists in DB, load episodes too
+        final episodes = await database.episodes
+            .filter((e) => e.showId(widget.id))
+            .get();
+        
+        final generator = await PaletteGenerator.fromImageProvider(
+          CachedNetworkImageProvider(show.image),
+          size: const Size(200, 200),
+        );
+
+        setState(() {
+          _feed = Feed(
+            id: show.id,
+            title: show.name,
+            url: show.url,
+            link: show.link,
+            description: show.description,
+            author: show.author,
+            image: show.image,
+            artwork: show.artwork,
+            lastUpdateTime: show.lastUpdateTime,
+            episodeCount: show.episodeCount,
+          );
+          _episodes = episodes.map((e) => EpisodeItem(
+            id: e.id,
+            title: e.title,
+            link: e.link,
+            datePublished: e.datePublished,
+            description: e.description,
+            duration: e.duration,
+            image: e.image,
+          )).toList();
+          _palette = generator;
+          _isLoading = false;
+        });
+        return;
+      }
+
+      // Show not in DB, check internet and fetch from API if available
+      final hasInternet = await connectivity.hasInternetConnection();
+      if (!hasInternet) {
+        throw Exception('No internet connection available');
+      }
+
       final feedResponse = await api.getFeedById(widget.id);
       final episodeResponse = await api.getEpisodesByFeedId(widget.id);
       final generator = await PaletteGenerator.fromImageProvider(

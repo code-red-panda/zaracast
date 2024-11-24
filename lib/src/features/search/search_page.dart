@@ -25,8 +25,24 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
+    return FutureBuilder<bool>(
+      future: connectivity.hasInternetConnection(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final hasInternet = snapshot.data!;
+        if (!hasInternet) {
+          return const Scaffold(
+            body: Center(
+              child: Text('No internet connection available'),
+            ),
+          );
+        }
+
+        return Scaffold(
+          body: CustomScrollView(
         slivers: [
           SliverAppBar.large(title: Text('Search')),
           SliverToBoxAdapter(
