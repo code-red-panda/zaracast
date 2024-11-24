@@ -11,4 +11,5 @@ class Shows extends Table {
   TextColumn get url => text()();
   TextColumn get link => text()();
   TextColumn get artwork => text()();
+  IntColumn get paletteColor => integer().nullable()();
 }

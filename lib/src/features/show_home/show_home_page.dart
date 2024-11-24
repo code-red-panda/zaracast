@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:zaracast/src/core/database/app_database.dart';
 import 'package:zaracast/src/core/api/models/feed_response.dart';
 import 'package:zaracast/src/core/service_locator.dart';
 import 'package:zaracast/src/features/latest_episodes/episode_list_tile.dart';
@@ -61,7 +63,6 @@ class _ShowHomePageState extends State<ShowHomePage> {
 
   Future<void> _loadFeed() async {
     try {
-
       final feedResponse = await api.getFeedById(widget.id);
       final episodeResponse = await api.getEpisodesByFeedId(widget.id);
       final generator = await PaletteGenerator.fromImageProvider(
@@ -69,12 +70,47 @@ class _ShowHomePageState extends State<ShowHomePage> {
         size: const Size(200, 200), // Smaller size for faster processing
       );
 
+      // Insert show into database
+      final db = AppDatabase();
+      await db.into(db.shows).insertOnConflictUpdate(ShowsCompanion.insert(
+            id: Value(feedResponse.feed.id),
+            name: feedResponse.feed.title,
+            image: feedResponse.feed.image,
+            author: feedResponse.feed.author,
+            description: feedResponse.feed.description,
+            lastUpdateTime: feedResponse.feed.lastUpdateTime,
+            episodeCount: feedResponse.feed.episodeCount,
+            url: feedResponse.feed.url,
+            link: feedResponse.feed.link,
+            artwork: feedResponse.feed.artwork,
+            paletteColor: Value(generator.dominantColor?.color.value),
+          ));
+
+      // Insert episodes into database
+      await db.batch((batch) {
+        batch.insertAllOnConflictUpdate(
+          db.episodes,
+          episodeResponse.items.map((item) => EpisodesCompanion.insert(
+                id: Value(item.id),
+                title: item.title,
+                description: item.description,
+                image: item.image,
+                duration: item.duration,
+                datePublished: item.datePublished,
+                link: item.link,
+                showId: feedResponse.feed.id,
+              )),
+        );
+      });
+
       setState(() {
         _feed = feedResponse.feed;
         _episodes = episodeResponse.items;
         _palette = generator;
         _isLoading = false;
       });
+
+      await db.close();
     } catch (e) {
       setState(() {
         _isLoading = false;
