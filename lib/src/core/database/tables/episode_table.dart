@@ -7,7 +7,6 @@ class Episodes extends Table {
   TextColumn get description => text()();
   TextColumn get image => text()();
   IntColumn get duration => integer()();
-  IntColumn get durationRemaining => integer().nullable()();
   IntColumn get datePublished => integer()();
   TextColumn get link => text()();
   BoolColumn get isPlayed => boolean().withDefault(const Constant(false))();
