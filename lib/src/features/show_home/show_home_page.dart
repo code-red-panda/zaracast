@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:zaracast/src/core/database/app_database.dart';
@@ -72,7 +72,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
 
       // Insert show into database
       await db.into(db.shows).insertOnConflictUpdate(ShowsCompanion.insert(
-            id: Value(feedResponse.feed.id),
+            id: drift.Value(feedResponse.feed.id),
             name: feedResponse.feed.title,
             image: feedResponse.feed.image,
             author: feedResponse.feed.author,
@@ -82,7 +82,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
             url: feedResponse.feed.url,
             link: feedResponse.feed.link,
             artwork: feedResponse.feed.artwork,
-            paletteColor: Value(generator.dominantColor?.color.value),
+            paletteColor: drift.Value(generator.dominantColor?.color.value),
           ));
 
       // Insert episodes into database
@@ -90,7 +90,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
         batch.insertAllOnConflictUpdate(
           db.episodes,
           episodeResponse.items.map((item) => EpisodesCompanion.insert(
-                id: Value(item.id),
+                id: drift.Value(item.id),
                 title: item.title,
                 description: item.description,
                 image: item.image,

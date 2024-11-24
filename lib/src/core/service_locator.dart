@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:zaracast/src/core/api/podcast_index_client.dart';
 import 'package:zaracast/src/core/config/api_config.dart';
+import 'package:zaracast/src/core/database/app_database.dart';
 import 'package:zaracast/src/core/services/connectivity_service.dart';
 
 final getIt = GetIt.instance;
