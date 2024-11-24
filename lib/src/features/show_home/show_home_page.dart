@@ -70,37 +70,33 @@ class _ShowHomePageState extends State<ShowHomePage> {
         size: const Size(200, 200), // Smaller size for faster processing
       );
 
-      // Insert show into database
-      await db.into(db.shows).insertOnConflictUpdate(ShowsCompanion.insert(
-            id: drift.Value(feedResponse.feed.id),
-            name: feedResponse.feed.title,
-            image: feedResponse.feed.image,
-            author: feedResponse.feed.author,
-            description: feedResponse.feed.description,
-            lastUpdateTime: feedResponse.feed.lastUpdateTime,
-            episodeCount: feedResponse.feed.episodeCount,
-            url: feedResponse.feed.url,
-            link: feedResponse.feed.link,
-            artwork: feedResponse.feed.artwork,
-            paletteColor: drift.Value(generator.dominantColor?.color.value),
-          ));
+      // Insert show and episodes into database
+      await showQueries.insertShow(ShowsCompanion.insert(
+        id: drift.Value(feedResponse.feed.id),
+        name: feedResponse.feed.title,
+        image: feedResponse.feed.image,
+        author: feedResponse.feed.author,
+        description: feedResponse.feed.description,
+        lastUpdateTime: feedResponse.feed.lastUpdateTime,
+        episodeCount: feedResponse.feed.episodeCount,
+        url: feedResponse.feed.url,
+        link: feedResponse.feed.link,
+        artwork: feedResponse.feed.artwork,
+        paletteColor: drift.Value(generator.dominantColor?.color.value),
+      ));
 
-      // Insert episodes into database
-      await db.batch((batch) {
-        batch.insertAllOnConflictUpdate(
-          db.episodes,
-          episodeResponse.items.map((item) => EpisodesCompanion.insert(
-                id: drift.Value(item.id),
-                title: item.title,
-                description: item.description,
-                image: item.image,
-                duration: item.duration,
-                datePublished: item.datePublished,
-                link: item.link,
-                showId: feedResponse.feed.id,
-              )),
-        );
-      });
+      await showQueries.insertEpisodes(
+        episodeResponse.items.map((item) => EpisodesCompanion.insert(
+          id: drift.Value(item.id),
+          title: item.title,
+          description: item.description,
+          image: item.image,
+          duration: item.duration,
+          datePublished: item.datePublished,
+          link: item.link,
+          showId: feedResponse.feed.id,
+        )).toList(),
+      );
 
       setState(() {
         _feed = feedResponse.feed;
