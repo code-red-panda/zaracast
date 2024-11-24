@@ -16,7 +16,12 @@ void setupServiceLocator() {
       apiSecret: ApiConfig.podcastIndexApiSecret,
     ),
   );
+
+  getIt.registerLazySingleton<AppDatabase>(
+    () => AppDatabase(),
+  );
 }
 
 PodcastIndexClient api = getIt.get<PodcastIndexClient>();
 ConnectivityService connectivity = getIt.get<ConnectivityService>();
+AppDatabase db = getIt.get<AppDatabase>();

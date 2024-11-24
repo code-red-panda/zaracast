@@ -71,7 +71,6 @@ class _ShowHomePageState extends State<ShowHomePage> {
       );
 
       // Insert show into database
-      final db = AppDatabase();
       await db.into(db.shows).insertOnConflictUpdate(ShowsCompanion.insert(
             id: Value(feedResponse.feed.id),
             name: feedResponse.feed.title,
@@ -110,7 +109,6 @@ class _ShowHomePageState extends State<ShowHomePage> {
         _isLoading = false;
       });
 
-      await db.close();
     } catch (e) {
       setState(() {
         _isLoading = false;
