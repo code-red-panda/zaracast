@@ -256,7 +256,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
             ),
             itemCount: sortedEpisodes.length,
             itemBuilder: (context, index) {
-              return EpisodeListTile(sortedEpisodes[index]);
+              return EpisodeListTile(sortedEpisodes[index], showImage: _feed!.image);
             },
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 96)),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zaracast/src/core/api/models/search_response.dart';
 import 'package:zaracast/src/core/service_locator.dart';
 import 'package:zaracast/src/features/search/search_list_tile.dart';
 
@@ -37,7 +38,8 @@ class _SearchPageState extends State<SearchPage> {
                   IconButton(
                       onPressed: () async {
                         try {
-                          final response = await api.searchPodcasts(_textController.text);
+                          final response =
+                              await api.searchPodcasts(_textController.text);
                           setState(() {
                             _searchResults = response.feeds;
                           });
@@ -61,6 +63,7 @@ class _SearchPageState extends State<SearchPage> {
             itemBuilder: (context, index) {
               final feed = _searchResults[index];
               return SearchListTile(
+                feed.id,
                 feed.title,
                 feed.image,
                 subtitle: feed.author,
