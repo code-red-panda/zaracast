@@ -31,8 +31,12 @@ class StatefulShellScaffold extends StatelessWidget {
             label: 'Queue',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings_rounded),
-            label: 'Settings',
+            icon: Icon(Icons.search_rounded),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_rounded),
+            label: 'Profile',
           ),
         ],
         // ignore: unnecessary_lambdas
@@ -66,10 +70,11 @@ class StatefulShellScaffold extends StatelessWidget {
                           'This Is The Episode With A Really Long Title That Should Get Truncated At Some Point',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            height: 1.2,
-                            letterSpacing: -0.2,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    height: 1.2,
+                                    letterSpacing: -0.2,
+                                  ),
                         ),
                       ),
                       Row(
