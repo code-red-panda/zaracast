@@ -6,5 +6,6 @@ class PlayedEpisodes extends Table {
   IntColumn get episodeId => integer().references(Episodes, #id)();
   IntColumn get durationRemaining => integer()();
   BoolColumn get isPlayed => boolean().withDefault(const Constant(false))();
+  BoolColumn get isPlaying => boolean().withDefault(const Constant(false))();
   DateTimeColumn get lastPlayedAt => dateTime()();
 }
