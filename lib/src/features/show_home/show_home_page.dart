@@ -71,7 +71,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
       );
 
       // Insert show and episodes into database
-      await showQueries.insertShow(ShowsCompanion.insert(
+      await db.insertShow(ShowsCompanion.insert(
         id: drift.Value(feedResponse.feed.id),
         name: feedResponse.feed.title,
         image: feedResponse.feed.image,
@@ -85,7 +85,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
         paletteColor: drift.Value(generator.dominantColor?.color.value),
       ));
 
-      await showQueries.insertEpisodes(
+      await db.insertEpisodes(
         episodeResponse.items.map((item) => EpisodesCompanion.insert(
           id: drift.Value(item.id),
           title: item.title,
