@@ -111,15 +111,15 @@ class _ShowHomePageState extends State<ShowHomePage> {
       // Sync show and episodes in database
       await db.syncShow(
         ShowsCompanion.insert(
-        id: drift.Value(feedResponse.feed.id),
-        name: feedResponse.feed.title,
-        image: feedResponse.feed.image,
-        author: feedResponse.feed.author,
-        description: feedResponse.feed.description,
-        lastUpdateTime: feedResponse.feed.lastUpdateTime,
-        episodeCount: feedResponse.feed.episodeCount,
-        url: feedResponse.feed.url,
-        link: feedResponse.feed.link,
+        id: drift.Value(feed.id),
+        name: feed.title,
+        image: feed.image,
+        author: feed.author,
+        description: feed.description,
+        lastUpdateTime: feed.lastUpdateTime,
+        episodeCount: feed.episodeCount,
+        url: feed.url,
+        link: feed.link,
         artwork: feed.artwork,
         paletteColor: drift.Value(generator.dominantColor?.color.value),
         lastEpisodeFetchTime: drift.Value(DateTime.now().millisecondsSinceEpoch ~/ 1000),
@@ -132,7 +132,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
           duration: item.duration,
           datePublished: item.datePublished,
           link: item.link,
-          showId: feedResponse.feed.id,
+          showId: feed.id,
         )).toList(),
       );
 
