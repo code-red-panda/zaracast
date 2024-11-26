@@ -12,4 +12,5 @@ class Shows extends Table {
   TextColumn get link => text()();
   TextColumn get artwork => text()();
   IntColumn get paletteColor => integer().nullable()();
+  IntColumn get lastEpisodeFetchTime => integer().withDefault(const Constant(0))();
 }

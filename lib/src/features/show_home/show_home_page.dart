@@ -63,15 +63,54 @@ class _ShowHomePageState extends State<ShowHomePage> {
 
   Future<void> _loadFeed() async {
     try {
-      final feedResponse = await api.getFeedById(widget.id);
-      final episodeResponse = await api.getEpisodesByFeedId(widget.id);
+      final existingShow = await db.getShow(widget.id);
+      
+      Feed feed;
+      List<EpisodeItem> episodes;
+      
+      if (existingShow != null && !(await db.shouldSyncShow(existingShow))) {
+        // Use existing data
+        feed = Feed(
+          id: existingShow.id,
+          title: existingShow.name,
+          url: existingShow.url,
+          link: existingShow.link,
+          description: existingShow.description,
+          author: existingShow.author,
+          image: existingShow.image,
+          artwork: existingShow.artwork,
+          lastUpdateTime: existingShow.lastUpdateTime,
+          episodeCount: existingShow.episodeCount,
+        );
+        final existingEpisodes = await db.getAllEpisodes();
+        episodes = existingEpisodes
+            .where((e) => e.showId == widget.id)
+            .map((e) => EpisodeItem(
+                  id: e.id,
+                  title: e.title,
+                  link: e.link,
+                  datePublished: e.datePublished,
+                  description: e.description,
+                  duration: e.duration,
+                  image: e.image,
+                ))
+            .toList();
+      } else {
+        // Fetch fresh data
+        final feedResponse = await api.getFeedById(widget.id);
+        final episodeResponse = await api.getEpisodesByFeedId(widget.id);
+        feed = feedResponse.feed;
+        episodes = episodeResponse.items;
+      }
+
       final generator = await PaletteGenerator.fromImageProvider(
-        CachedNetworkImageProvider(feedResponse.feed.image),
+        CachedNetworkImageProvider(feed.image),
         size: const Size(200, 200), // Smaller size for faster processing
       );
 
-      // Insert show and episodes into database
-      await db.insertShow(ShowsCompanion.insert(
+      // Sync show and episodes in database
+      await db.syncShow(
+        ShowsCompanion.insert(
         id: drift.Value(feedResponse.feed.id),
         name: feedResponse.feed.title,
         image: feedResponse.feed.image,
@@ -81,12 +120,11 @@ class _ShowHomePageState extends State<ShowHomePage> {
         episodeCount: feedResponse.feed.episodeCount,
         url: feedResponse.feed.url,
         link: feedResponse.feed.link,
-        artwork: feedResponse.feed.artwork,
+        artwork: feed.artwork,
         paletteColor: drift.Value(generator.dominantColor?.color.value),
-      ));
-
-      await db.insertEpisodes(
-        episodeResponse.items.map((item) => EpisodesCompanion.insert(
+        lastEpisodeFetchTime: drift.Value(DateTime.now().millisecondsSinceEpoch ~/ 1000),
+      ),
+      episodes.map((item) => EpisodesCompanion.insert(
           id: drift.Value(item.id),
           title: item.title,
           description: item.description,

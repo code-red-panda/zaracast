@@ -40,4 +40,23 @@ class Queries {
         .get();
     return result.isNotEmpty;
   }
+
+  Future<Show?> getShow(int id) async {
+    final query = _db.select(_db.shows)..where((tbl) => tbl.id.equals(id));
+    final results = await query.get();
+    return results.isEmpty ? null : results.first;
+  }
+
+  Future<bool> shouldSyncShow(Show show) {
+    final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    final oneDayAgo = now - (24 * 60 * 60); // 24 hours in seconds
+    return Future.value(show.lastEpisodeFetchTime < oneDayAgo);
+  }
+
+  Future<void> syncShow(ShowsCompanion show, List<EpisodesCompanion> episodes) async {
+    await _db.transaction(() async {
+      await insertShow(show);
+      await insertEpisodes(episodes);
+    });
+  }
 }
