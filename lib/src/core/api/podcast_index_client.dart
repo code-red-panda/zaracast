@@ -65,7 +65,7 @@ class PodcastIndexClient {
     }
   }
 
-  Future<EpisodeResponse> getEpisodesByFeedId(int id) async {
+  Future<EpisodeResponse> getEpisodesByFeedId(int id, {int max = 10}) async {
     final timestamp = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
     final authHash = sha1
         .convert(
@@ -75,7 +75,7 @@ class PodcastIndexClient {
 
     final uri = Uri.https(baseUrl, '/api/1.0/episodes/byfeedid', {
       'id': id.toString(),
-      'max': '10',
+      'max': max.toString(),
     });
 
     final response = await http.get(

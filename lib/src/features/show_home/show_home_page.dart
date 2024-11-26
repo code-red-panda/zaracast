@@ -153,7 +153,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
                 visible: _showIcons,
                 child: Padding(
                   padding: const EdgeInsets.only(right: 16),
-                  child: FollowShowIconButton(),
+                  child: FollowShowIconButton(widget.id),
                 ),
               )
             ],
@@ -226,7 +226,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
                             IconButton(
                                 onPressed: () => print('info'),
                                 icon: Icon(Icons.info_outlined)),
-                            FollowShowIconButton()
+                            FollowShowIconButton(widget.id)
                           ],
                         ),
                       ],

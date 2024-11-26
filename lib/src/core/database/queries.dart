@@ -24,4 +24,20 @@ class Queries {
 
   Future<List<PlayedEpisode>> getAllPlayedEpisodes() =>
       _db.select(_db.playedEpisodes).get();
+
+  Future<void> followShow(int showId) async {
+    await _db.into(_db.followedShows).insert(
+          FollowedShowsCompanion.insert(
+            showId: showId,
+            followedAt: DateTime.now(),
+          ),
+        );
+  }
+
+  Future<bool> isShowFollowed(int showId) async {
+    final result = await (_db.select(_db.followedShows)
+          ..where((tbl) => tbl.showId.equals(showId)))
+        .get();
+    return result.isNotEmpty;
+  }
 }
