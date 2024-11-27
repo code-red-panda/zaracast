@@ -1,3 +1,6 @@
+import 'package:drift/drift.dart';
+import 'package:zaracast/src/core/database/app_database.dart';
+
 class FeedResponse {
   const FeedResponse({
     required this.status,
