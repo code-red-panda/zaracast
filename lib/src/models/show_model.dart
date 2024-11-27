@@ -12,13 +12,22 @@ class ShowModel {
     this.link = '',
     this.description = '',
     this.author = '',
+    this.ownerName = '',
     this.image = '',
+    this.artwork = '',
     this.lastUpdateTime = 0,
     this.explicit = false,
+    this.type = '',
     this.medium = '',
-    this.dead = 0,
+    this.language = '',
     this.episodeCount = 0,
+    this.crawlErrors = 0,
     this.categories = const {},
+    this.dead = 0,
+    this.contentType = '',
+    this.generator = '',
+    this.newestItemPubdate = '',
+    this.oldestItemPubdate = '',
   });
 
   factory ShowModel.fromJson(Map<String, dynamic> json) {
@@ -39,13 +48,22 @@ class ShowModel {
       link: json['link'] as String? ?? '',
       description: json['description'] as String? ?? '',
       author: json['author'] as String? ?? '',
+      ownerName: json['ownerName'] as String? ?? '',
       image: json['image'] as String? ?? '',
+      artwork: json['artwork'] as String? ?? '',
       lastUpdateTime: json['lastUpdateTime'] as int? ?? 0,
       explicit: json['explicit'] as bool? ?? false,
+      type: json['type'] as String? ?? '',
       medium: json['medium'] as String? ?? '',
-      dead: json['dead'] as int? ?? 0,
+      language: json['language'] as String? ?? '',
       episodeCount: json['episodeCount'] as int? ?? 0,
+      crawlErrors: json['crawlErrors'] as int? ?? 0,
       categories: categories,
+      dead: json['dead'] as int? ?? 0,
+      contentType: json['contentType'] as String? ?? '',
+      generator: json['generator'] as String? ?? '',
+      newestItemPubdate: json['newestItemPubdate'] as String? ?? '',
+      oldestItemPubdate: json['oldestItemPubdate'] as String? ?? '',
     );
   }
 
@@ -56,13 +74,22 @@ class ShowModel {
   final String link;
   final String description;
   final String author;
+  final String ownerName;
   final String image;
+  final String artwork;
   final int lastUpdateTime;
   final bool explicit;
+  final String type;
   final String medium;
-  final int dead;
+  final String language;
   final int episodeCount;
+  final int crawlErrors;
   final Map<String, String> categories;
+  final int dead;
+  final String contentType;
+  final String generator;
+  final String newestItemPubdate;
+  final String oldestItemPubdate;
 
   ShowsCompanion toShowCompanion() => ShowsCompanion.insert(
         id: Value<int>(id),
@@ -72,9 +99,21 @@ class ShowModel {
         link: link,
         description: description,
         author: author,
+        ownerName: ownerName,
         image: image,
+        artwork: artwork,
         lastUpdateTime: lastUpdateTime,
         explicit: explicit,
+        type: type,
+        medium: medium,
+        language: language,
+        episodeCount: episodeCount,
+        crawlErrors: crawlErrors,
         categories: categories,
+        dead: dead,
+        contentType: contentType,
+        generator: generator,
+        newestItemPubdate: newestItemPubdate,
+        oldestItemPubdate: oldestItemPubdate,
       );
 }
