@@ -68,4 +68,19 @@ class Feed {
   final int lastUpdateTime;
   final Map<String, String> categories;
   final int episodeCount;
+
+  ShowsCompanion toCompanion() {
+    return ShowsCompanion.insert(
+      id: Value(id),
+      name: title,
+      image: image,
+      author: author, 
+      description: description,
+      lastUpdateTime: lastUpdateTime,
+      episodeCount: episodeCount,
+      url: url,
+      link: link,
+      artwork: artwork,
+    );
+  }
 }
