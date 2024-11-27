@@ -25,6 +25,7 @@ class EpisodeResponse {
   final String description;
 }
 
+// TODO(red): rename to Episode
 class EpisodeItem {
   const EpisodeItem({
     required this.id,
