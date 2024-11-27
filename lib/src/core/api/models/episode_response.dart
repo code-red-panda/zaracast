@@ -1,3 +1,6 @@
+import 'package:drift/drift.dart';
+import 'package:zaracast/src/core/database/app_database.dart';
+
 class EpisodeResponse {
   const EpisodeResponse({
     required this.status,
@@ -8,7 +11,19 @@ class EpisodeResponse {
 
   factory EpisodeResponse.fromJson(Map<String, dynamic> json) {
     final items = (json['items'] as List<dynamic>)
-        .map((item) => EpisodeItem.fromJson(item as Map<String, dynamic>))
+        .map((item) {
+          final itemJson = item as Map<String, dynamic>;
+          return EpisodesCompanion.insert(
+            id: Value(itemJson['id'] as int),
+            title: itemJson['title'] as String,
+            link: itemJson['link'] as String,
+            datePublished: itemJson['datePublished'] as int,
+            description: itemJson['description'] as String? ?? '',
+            duration: itemJson['duration'] as int? ?? 0,
+            image: itemJson['image'] as String? ?? '',
+            showId: 0, // This needs to be set by the caller
+          );
+        })
         .toList();
 
     return EpisodeResponse(
@@ -20,40 +35,7 @@ class EpisodeResponse {
   }
 
   final String status;
-  final List<EpisodeItem> items;
+  final List<EpisodesCompanion> items;
   final int count;
   final String description;
-}
-
-// TODO(red): rename to Episode
-class EpisodeItem {
-  const EpisodeItem({
-    required this.id,
-    required this.title,
-    required this.link,
-    required this.datePublished,
-    this.description = '',
-    this.duration = 0,
-    this.image = '',
-  });
-
-  factory EpisodeItem.fromJson(Map<String, dynamic> json) {
-    return EpisodeItem(
-      id: json['id'] as int,
-      title: json['title'] as String,
-      link: json['link'] as String,
-      datePublished: json['datePublished'] as int,
-      description: json['description'] as String? ?? '',
-      duration: json['duration'] as int? ?? 0,
-      image: json['image'] as String? ?? '',
-    );
-  }
-
-  final int id;
-  final String title;
-  final String link;
-  final int datePublished;
-  final String description;
-  final int duration;
-  final String image;
 }

@@ -1,3 +1,6 @@
+import 'package:drift/drift.dart';
+import 'package:zaracast/src/core/database/app_database.dart';
+
 class SearchResponse {
   const SearchResponse({
     required this.status,
@@ -8,7 +11,29 @@ class SearchResponse {
 
   factory SearchResponse.fromJson(Map<String, dynamic> json) {
     final feeds = (json['feeds'] as List<dynamic>)
-        .map((feed) => Feed.fromJson(feed as Map<String, dynamic>))
+        .map((feed) {
+          final feedJson = feed as Map<String, dynamic>;
+          final categories = <String, String>{};
+          final categoriesJson = feedJson['categories'] as Map<String, dynamic>?;
+          if (categoriesJson != null) {
+            categories.addAll(categoriesJson.map(
+              (key, value) => MapEntry(key, value.toString()),
+            ));
+          }
+
+          return ShowsCompanion.insert(
+            id: Value(feedJson['id'] as int),
+            name: feedJson['title'] as String,
+            url: feedJson['url'] as String,
+            description: feedJson['description'] as String? ?? '',
+            author: feedJson['author'] as String? ?? '',
+            image: feedJson['image'] as String? ?? '',
+            lastUpdateTime: feedJson['lastUpdateTime'] as int? ?? 0,
+            episodeCount: feedJson['episodeCount'] as int? ?? 0,
+            link: '',
+            artwork: '',
+          );
+        })
         .toList();
 
     return SearchResponse(
@@ -20,59 +45,7 @@ class SearchResponse {
   }
 
   final String status;
-  final List<Feed> feeds;
+  final List<ShowsCompanion> feeds;
   final int count;
   final String description;
-}
-
-class Feed {
-  const Feed({
-    required this.id,
-    required this.title,
-    required this.url,
-    this.description = '',
-    this.author = '',
-    this.image = '',
-    this.lastUpdateTime = 0,
-    this.categories = const {},
-    this.dead = 0,
-    this.episodeCount = 0,
-    this.medium = '',
-  });
-
-  factory Feed.fromJson(Map<String, dynamic> json) {
-    final categories = <String, String>{};
-    final categoriesJson = json['categories'] as Map<String, dynamic>?;
-    if (categoriesJson != null) {
-      categories.addAll(categoriesJson.map(
-        (key, value) => MapEntry(key, value.toString()),
-      ));
-    }
-
-    return Feed(
-      id: json['id'] as int,
-      title: json['title'] as String,
-      url: json['url'] as String,
-      description: json['description'] as String? ?? '',
-      author: json['author'] as String? ?? '',
-      image: json['image'] as String? ?? '',
-      lastUpdateTime: json['lastUpdateTime'] as int? ?? 0,
-      categories: categories,
-      dead: json['dead'] as int? ?? 0,
-      episodeCount: json['episodeCount'] as int? ?? 0,
-      medium: json['medium'] as String? ?? '',
-    );
-  }
-
-  final int id;
-  final String title;
-  final String url;
-  final String description;
-  final String author;
-  final String image;
-  final int lastUpdateTime;
-  final Map<String, String> categories;
-  final int dead;
-  final int episodeCount;
-  final String medium;
 }
