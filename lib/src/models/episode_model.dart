@@ -26,15 +26,6 @@ class EpisodeModel {
   });
 
   factory EpisodeModel.fromJson(Map<String, dynamic> json) {
-    final categories = <String, String>{};
-    final categoriesJson = json['categories'] as Map<String, dynamic>?;
-
-    if (categoriesJson != null) {
-      categories.addAll(
-        categoriesJson.map((key, value) => MapEntry(key, value.toString())),
-      );
-    }
-
     return EpisodeModel(
       id: json['id'] as int,
       episodeGuid: json['guid'] as String,
@@ -54,6 +45,20 @@ class EpisodeModel {
       showId: json['feedId'] as int? ?? 0,
       chaptersUrl: json['chaptersUrl'] as String? ?? '',
       transcriptUrl: json['transcriptUrl'] as String? ?? '',
+      // New fields from API
+      feedGuid: json['feedGuid'] as String? ?? '',
+      feedUrl: json['feedUrl'] as String? ?? '',
+      feedImage: json['feedImage'] as String? ?? '',
+      feedId: json['feedId'] as String? ?? '',
+      feedLanguage: json['feedLanguage'] as String? ?? '',
+      feedDead: json['feedDead'] as String? ?? '',
+      contentType: json['contentType'] as String? ?? '',
+      medium: json['medium'] as String? ?? '',
+      complete: json['complete'] as bool? ?? false,
+      socialInteract: json['socialInteract'] as String? ?? '',
+      value: json['value'] as String? ?? '',
+      liveItems: json['liveItems'] as String? ?? '',
+      soundbite: json['soundbite'] as String? ?? '',
     );
   }
 
@@ -75,6 +80,21 @@ class EpisodeModel {
   final int showId;
   final String chaptersUrl;
   final String transcriptUrl;
+  
+  // New fields from API
+  final String feedGuid;
+  final String feedUrl;
+  final String feedImage;
+  final String feedId;
+  final String feedLanguage;
+  final String feedDead;
+  final String contentType;
+  final String medium;
+  final bool complete;
+  final String socialInteract;
+  final String value;
+  final String liveItems;
+  final String soundbite;
 
   EpisodesCompanion toEpisodeCompanion() => EpisodesCompanion.insert(
         id: Value<int>(id),
@@ -95,5 +115,19 @@ class EpisodeModel {
         showId: showId,
         chaptersUrl: chaptersUrl,
         transcriptUrl: transcriptUrl,
+        // New fields
+        feedGuid: feedGuid,
+        feedUrl: feedUrl,
+        feedImage: feedImage,
+        feedId: feedId,
+        feedLanguage: feedLanguage,
+        feedDead: feedDead,
+        contentType: contentType,
+        medium: medium,
+        complete: complete,
+        socialInteract: socialInteract,
+        value: value,
+        liveItems: liveItems,
+        soundbite: soundbite,
       );
 }

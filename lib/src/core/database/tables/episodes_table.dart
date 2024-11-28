@@ -20,7 +20,23 @@ class Episodes extends Table {
   IntColumn get showId => integer().references(Shows, #id)();
   TextColumn get chaptersUrl => text()();
   TextColumn get transcriptUrl => text()();
-
+  
+  // New fields from API
+  TextColumn get feedGuid => text()();
+  TextColumn get feedUrl => text()();
+  TextColumn get feedImage => text()();
+  TextColumn get feedId => text()();
+  TextColumn get feedLanguage => text()();
+  TextColumn get feedDead => text()();
+  TextColumn get contentType => text()();
+  TextColumn get medium => text()();
+  BoolColumn get complete => boolean().withDefault(const Constant(false))();
+  TextColumn get socialInteract => text()();
+  TextColumn get value => text()(); // For value4value data
+  TextColumn get liveItems => text()(); // For live episode data
+  TextColumn get soundbite => text()(); // For soundbite data
+  
+  // App-specific fields
   IntColumn get durationRemaining => integer()();
   BoolColumn get isPlayed => boolean().withDefault(const Constant(false))();
   BoolColumn get isPlaying => boolean().withDefault(const Constant(false))();
