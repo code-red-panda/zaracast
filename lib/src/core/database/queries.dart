@@ -33,8 +33,7 @@ class Queries {
 
   Future<bool> isShowFollowed(int showId) async {
     final r = await (_db.select(_db.shows)
-          ..where((tbl) => tbl.id.equals(showId)))
-          ..where((tbl) => tbl.isFollowed.equals(true))
+          ..where((tbl) => tbl.id.equals(showId) & tbl.isFollowed.equals(true)))
         .getSingleOrNull();
     return r != null;
   }
