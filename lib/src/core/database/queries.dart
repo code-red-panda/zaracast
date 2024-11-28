@@ -1,44 +1,42 @@
+import 'package:drift/drift.dart';
 import 'package:zaracast/src/core/database/app_database.dart';
+import 'package:zaracast/src/models/episode_model.dart';
+import 'package:zaracast/src/models/show_model.dart';
 
 class Queries {
   const Queries(this._db);
 
   final AppDatabase _db;
 
-  Future<void> insertShow(ShowsCompanion show) async {
-    await _db.into(_db.shows).insertOnConflictUpdate(show);
+  Future<void> insertShow(ShowModel show) async {
+    final c = show.toShowCompanion();
+    await _db.into(_db.shows).insertOnConflictUpdate(c);
   }
 
-  Future<void> insertEpisodes(List<EpisodesCompanion> episodes) async {
+  Future<void> insertEpisodes(List<EpisodeModel> episodes) async {
+    final c = episodes.map((e) => e.toEpisodeCompanion()).toList();
+
     await _db.batch((batch) {
-      batch.insertAllOnConflictUpdate(_db.episodes, episodes);
+      batch.insertAllOnConflictUpdate(_db.episodes, c);
     });
   }
 
   Future<List<Show>> getAllShows() => _db.select(_db.shows).get();
 
+// FOr debug only
   Future<List<Episode>> getAllEpisodes() => _db.select(_db.episodes).get();
 
-  Future<List<FollowedShow>> getAllFollowedShows() =>
-      _db.select(_db.followedShows).get();
-
-  Future<List<PlayedEpisode>> getAllPlayedEpisodes() =>
-      _db.select(_db.playedEpisodes).get();
-
-  Future<void> followShow(int showId) async {
-    await _db.into(_db.followedShows).insert(
-          FollowedShowsCompanion.insert(
-            showId: showId,
-            followedAt: DateTime.now(),
-          ),
-        );
+  Future<void> followShow(int showId, {bool follow = true}) async {
+    final q = _db.update(_db.shows)..where((tbl) => tbl.id.equals(showId));
+    await q.write(ShowsCompanion(isFollowed: Value(follow)));
   }
 
   Future<bool> isShowFollowed(int showId) async {
-    final result = await (_db.select(_db.followedShows)
-          ..where((tbl) => tbl.showId.equals(showId)))
-        .get();
-    return result.isNotEmpty;
+    final r = await (_db.select(_db.shows)
+          ..where((tbl) => tbl.id.equals(showId)))
+          ..where((tbl) => tbl.isFollowed.equals(true))
+        .getSingleOrNull();
+    return r != null;
   }
 
   Future<Show?> getShow(int id) async {
@@ -53,7 +51,8 @@ class Queries {
     return Future.value(show.lastEpisodeFetchTime < oneDayAgo);
   }
 
-  Future<void> syncShow(ShowsCompanion show, List<EpisodesCompanion> episodes) async {
+  Future<void> syncShow(
+      ShowsCompanion show, List<EpisodesCompanion> episodes) async {
     await _db.transaction(() async {
       await insertShow(show);
       await insertEpisodes(episodes);
