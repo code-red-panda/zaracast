@@ -18,7 +18,10 @@ class Shows extends Table {
   TextColumn get language => text()();
   IntColumn get episodeCount => integer()();
   IntColumn get crawlErrors => integer()();
-  TextColumn get categories => text()();
+  TextColumn get categories => text().map(
+        fromJson: (json) => json as String,
+        toJson: (categories) => categories,
+      )();
   IntColumn get dead => integer()();
   TextColumn get contentType => text()();
   TextColumn get generator => text()();
