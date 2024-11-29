@@ -11,9 +11,9 @@ class Shows extends Table {
   TextColumn get ownerName => text()();
   TextColumn get image => text()();
   TextColumn get artwork => text()();
-  TextColumn get lastUpdateTime => integer()();
+  IntColumn get lastUpdateTime => integer()();
   BoolColumn get explicit => boolean()();
-  TextColumn get type => text()();
+  IntColumn get type => integer()();
   TextColumn get medium => text()();
   TextColumn get language => text()();
   IntColumn get episodeCount => integer()();
@@ -22,9 +22,10 @@ class Shows extends Table {
   IntColumn get dead => integer()();
   TextColumn get contentType => text()();
   TextColumn get generator => text()();
-  TextColumn get newestItemPubdate => text()();
-  TextColumn get oldestItemPubdate => text()();
+  IntColumn get newestItemPubdate => integer()();
+
   IntColumn get paletteColor => integer().withDefault(const Constant(0))();
+  BoolColumn get isFollowed => boolean().withDefault(const Constant(false))();
 
   @override
   Set<Column> get primaryKey => {id};
