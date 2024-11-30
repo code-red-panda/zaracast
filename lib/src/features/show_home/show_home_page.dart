@@ -20,8 +20,12 @@ class ShowHomePageNotifier with ChangeNotifier {
 
   StreamSubscription<List<Episode>>? _episodes;
 
-  void initStreams() {
-    
+  void initStreams(int showId) {
+    _episodes?.cancel();
+    _episodes = db.watchEpisodes(showId).listen((episodes) {
+      // You can process episodes here if needed
+      notifyListeners();
+    });
   }
 
   void setIndex(Set<int> index) {
@@ -31,6 +35,7 @@ class ShowHomePageNotifier with ChangeNotifier {
 
   void setShow(Show show) {
     _show = show;
+    initStreams(show.id);
     notifyListeners();
   }
 
