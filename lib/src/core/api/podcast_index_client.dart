@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
-import 'package:zaracast/src/core/api/models/episode_response.dart';
-import 'package:zaracast/src/core/api/models/feed_response.dart';
-import 'package:zaracast/src/core/api/models/search_response.dart';
+import 'package:zaracast/src/core/api/models/get_episodes_response.dart';
+import 'package:zaracast/src/core/api/models/get_show_response.dart';
+import 'package:zaracast/src/core/api/models/search_shows_response.dart';
 
 class PodcastIndexClient {
   PodcastIndexClient({
@@ -16,7 +16,7 @@ class PodcastIndexClient {
   final String apiSecret;
   final String baseUrl;
 
-  Future<SearchResponse> searchPodcasts(String term) async {
+  Future<SearchShowsResponse> searchShows(String term) async {
     final timestamp =
         (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
     final authHash = sha1
@@ -41,32 +41,35 @@ class PodcastIndexClient {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as Map<String, dynamic>;
-      final rawResponse = SearchResponse.fromJson(json);
-      
-      // Filter and sort the feeds
-      final filteredFeeds = rawResponse.feeds.where((feed) {
-        return feed.dead != 1 && // Not dead
-               feed.episodeCount >= 1 && // Has episodes
-               feed.medium == 'podcast' && // Is a podcast
-               feed.image.isNotEmpty && // Has artwork
-               feed.title.isNotEmpty && // Has a title
-               feed.author.isNotEmpty; // Has an author
-      }).toList()
-        ..sort((a, b) => b.lastUpdateTime.compareTo(a.lastUpdateTime)); // Sort by most recent
+      final rawResponse = SearchShowsResponse.fromJson(json);
 
-      return SearchResponse(
+      // Filter and sort the feeds
+      final filteredShows = rawResponse.shows.where((feed) {
+        return feed.dead != 1 && // Not dead
+            feed.episodeCount >= 1 && // Has episodes
+            feed.medium == 'podcast' && // Is a podcast
+            feed.image.isNotEmpty && // Has artwork
+            feed.title.isNotEmpty && // Has a title
+            feed.author.isNotEmpty; // Has an author
+      }).toList()
+        ..sort(
+          (a, b) => b.newestItemPubdate
+              .compareTo(a.newestItemPubdate), // Sort by most recent
+        );
+
+      return SearchShowsResponse(
         status: rawResponse.status,
-        feeds: filteredFeeds,
-        count: filteredFeeds.length,
-        description: rawResponse.description,
+        shows: filteredShows,
       );
     } else {
       throw Exception('Failed to search podcasts: ${response.statusCode}');
     }
   }
 
-  Future<EpisodeResponse> getEpisodesByFeedId(int id, {int max = 10}) async {
-    final timestamp = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
+  Future<GetEpisodesResponse> getEpisodesByFeedId(int id,
+      {int max = 10}) async {
+    final timestamp =
+        (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
     final authHash = sha1
         .convert(
           utf8.encode(apiKey + apiSecret + timestamp),
@@ -90,14 +93,15 @@ class PodcastIndexClient {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as Map<String, dynamic>;
-      return EpisodeResponse.fromJson(json);
+      return GetEpisodesResponse.fromJson(json);
     } else {
       throw Exception('Failed to get episodes: ${response.statusCode}');
     }
   }
 
-  Future<FeedResponse> getFeedById(int id) async {
-    final timestamp = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
+  Future<GetShowResponse> getShowById(int id) async {
+    final timestamp =
+        (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
     final authHash = sha1
         .convert(
           utf8.encode(apiKey + apiSecret + timestamp),
@@ -120,7 +124,7 @@ class PodcastIndexClient {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as Map<String, dynamic>;
-      return FeedResponse.fromJson(json);
+      return GetShowResponse.fromJson(json);
     } else {
       throw Exception('Failed to get feed: ${response.statusCode}');
     }

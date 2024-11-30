@@ -1,5 +1,8 @@
 import 'package:drift/drift.dart';
+import 'package:zaracast/src/core/database/utils/json_converter.dart';
 
+// Nullable because these are not returned from APIs and API responses are straight
+// converted to Show data classes. But defaults ensure no nulls in the db.
 class Shows extends Table {
   IntColumn get id => integer()();
   TextColumn get podcastGuid => text()();
@@ -18,17 +21,14 @@ class Shows extends Table {
   TextColumn get language => text()();
   IntColumn get episodeCount => integer()();
   IntColumn get crawlErrors => integer()();
-  TextColumn get categories => text().map(
-        fromJson: (json) => json as String,
-        toJson: (categories) => categories,
-      )();
+  TextColumn get categories => text().map(const JsonConverter())();
   IntColumn get dead => integer()();
   TextColumn get contentType => text()();
   TextColumn get generator => text()();
-  IntColumn get newestItemPubdate => integer()();
 
+// Mine
   IntColumn get paletteColor => integer().withDefault(const Constant(0))();
-  BoolColumn get isFollowed => boolean().withDefault(const Constant(false))();
+  BoolColumn get isFollowed => boolean()();
 
   @override
   Set<Column> get primaryKey => {id};

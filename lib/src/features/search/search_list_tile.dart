@@ -1,39 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zaracast/src/core/api/models/search_shows_response.dart';
+import 'package:zaracast/src/core/functions/format_publish_date.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
 
 class SearchListTile extends StatelessWidget {
-  const SearchListTile(
-    this.name,
-    this.image, {
-    this.subtitle = '',
-    super.key,
-  });
+  const SearchListTile(this.show, {super.key});
 
-  final String name;
-  final String image;
-  final String subtitle;
+  final SearchShowsModel show;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      //contentPadding: EdgeInsets.only(left: 16, right: 16),
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(4),
-        child: SizedBox(
-          height: 56,
-          width: 56,
-          child: CachedNetworkImageBuilder(image: image),
+      leading: Badge(
+        isLabelVisible: show.explicit,
+        label: const Text('E'),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: SizedBox(
+            height: 56,
+            width: 56,
+            child: CachedNetworkImageBuilder(image: show.image),
+          ),
         ),
       ),
-      subtitle: Text(subtitle),
+      onTap: () => context.push('/show/${show.id}'),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            formatDatePublished(show.newestItemPubdate),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            show.categories.values.take(2).map((e) => '#$e').join(' '),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ],
+      ),
       title: Text(
-        name,
+        show.title,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
       trailing: IconButton(
-          onPressed: () => 'go to show',
-          icon: Icon(Icons.arrow_forward_rounded)),
+        onPressed: () => context.push('/show/${show.id}'),
+        icon: const Icon(Icons.arrow_forward_rounded),
+      ),
     );
   }
 }

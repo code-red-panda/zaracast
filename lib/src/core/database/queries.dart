@@ -1,30 +1,32 @@
 import 'package:drift/drift.dart';
 import 'package:zaracast/src/core/database/app_database.dart';
-import 'package:zaracast/src/models/episode_model.dart';
-import 'package:zaracast/src/models/show_model.dart';
 
+// TODO(red): error handling here?
 class Queries {
   const Queries(this._db);
 
   final AppDatabase _db;
 
-  Future<void> insertShow(ShowModel show) async {
-    final c = show.toShowCompanion();
-    await _db.into(_db.shows).insertOnConflictUpdate(c);
+  // TOD(red): can I use show data class instead of my own showmodel?
+  Future<void> insertShow(Show show) async {
+    await _db.into(_db.shows).insertOnConflictUpdate(show);
   }
 
-  Future<void> insertEpisodes(List<EpisodeModel> episodes) async {
-    final c = episodes.map((e) => e.toEpisodeCompanion()).toList();
-
+  Future<void> insertEpisodes(List<Episode> episodes) async {
     await _db.batch((batch) {
-      batch.insertAllOnConflictUpdate(_db.episodes, c);
+      batch.insertAllOnConflictUpdate(_db.episodes, episodes);
     });
   }
 
   Future<List<Show>> getAllShows() => _db.select(_db.shows).get();
 
-// FOr debug only
+  // FOr debug only
   Future<List<Episode>> getAllEpisodes() => _db.select(_db.episodes).get();
+
+  Future<Show?> getShow(int id) async {
+    final query = _db.select(_db.shows)..where((tbl) => tbl.id.equals(id));
+    return query.getSingleOrNull();
+  }
 
   Future<void> followShow(int showId, {bool follow = true}) async {
     final q = _db.update(_db.shows)..where((tbl) => tbl.id.equals(showId));
@@ -38,18 +40,31 @@ class Queries {
     return r != null;
   }
 
-  Future<Show?> getShow(int id) async {
-    final query = _db.select(_db.shows)..where((tbl) => tbl.id.equals(id));
-    final results = await query.get();
-    return results.isEmpty ? null : results.first;
+  Stream<List<Episode>> watchEpisodes(int showId) {
+    final query = _db.select(_db.episodes)
+      ..where((tbl) => tbl.showId.equals(showId));
+
+    //return query.map((row) => ShowModel.fromJson(row.toJson())).watch();
+    return query.watch();
   }
 
-  Future<bool> shouldSyncShow(Show show) {
-    final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    final oneDayAgo = now - (24 * 60 * 60); // 24 hours in seconds
-    return Future.value(show.lastEpisodeFetchTime < oneDayAgo);
+// TODO(red): make distinct so only diffs are streamed? I think this was an issue in zaratask
+  Stream<List<Show>> watchFollowedShows() {
+    final query = _db.select(_db.shows)
+      ..where((tbl) => tbl.isFollowed.equals(true));
+
+    //return query.map((row) => ShowModel.fromJson(row.toJson())).watch();
+    return query.watch();
   }
 
+  Stream<Show?> watchShow(int showId) {
+    final query = _db.select(_db.shows)..where((tbl) => tbl.id.equals(showId));
+
+    //return query.map((row) => ShowModel.fromJson(row.toJson())).watch();
+    return query.watchSingleOrNull();
+  }
+
+/*
   Future<void> syncShow(
       ShowsCompanion show, List<EpisodesCompanion> episodes) async {
     await _db.transaction(() async {
@@ -57,4 +72,5 @@ class Queries {
       await insertEpisodes(episodes);
     });
   }
+  */
 }

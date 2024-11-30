@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:zaracast/src/core/database/app_database.dart';
 import 'package:zaracast/src/features/latest_episodes/episode_list_tile.dart';
-import 'package:zaracast/src/models/episode_model.dart';
+import 'package:zaracast/src/core/delete/models/episode_model.dart';
 import 'package:zaracast/src/shared/icon_buttons/back_icon_button.dart';
 
+class LatestEpisodesPage extends StatelessWidget {
+  const LatestEpisodesPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+/*
 class LatestEpisodesPage extends StatefulWidget {
   const LatestEpisodesPage({super.key});
 
@@ -26,7 +37,7 @@ class _LatestEpisodesPageState extends State<LatestEpisodesPage> {
 
     // Today
     final todayEpisodes = remainingEpisodes.where((e) {
-      final date = DateTime.fromMillisecondsSinceEpoch(e.date * 1000);
+      final date = DateTime.fromMillisecondsSinceEpoch(e.datePublished * 1000);
       return date.year == today.year &&
           date.month == today.month &&
           date.day == today.day;
@@ -36,7 +47,7 @@ class _LatestEpisodesPageState extends State<LatestEpisodesPage> {
 
     // This Week
     final thisWeekEpisodes = remainingEpisodes.where((e) {
-      final date = DateTime.fromMillisecondsSinceEpoch(e.date * 1000);
+      final date = DateTime.fromMillisecondsSinceEpoch(e.datePublished * 1000);
       return date.isAfter(startOfWeek.subtract(const Duration(days: 1))) &&
           date.isBefore(today);
     }).toList();
@@ -45,7 +56,7 @@ class _LatestEpisodesPageState extends State<LatestEpisodesPage> {
 
     // Last Week
     final lastWeekEpisodes = remainingEpisodes.where((e) {
-      final date = DateTime.fromMillisecondsSinceEpoch(e.date * 1000);
+      final date = DateTime.fromMillisecondsSinceEpoch(e.datePublished * 1000);
       return date.isAfter(startOfLastWeek.subtract(const Duration(days: 1))) &&
           date.isBefore(startOfWeek);
     }).toList();
@@ -54,7 +65,7 @@ class _LatestEpisodesPageState extends State<LatestEpisodesPage> {
 
     // This Month
     final thisMonthEpisodes = remainingEpisodes.where((e) {
-      final date = DateTime.fromMillisecondsSinceEpoch(e.date * 1000);
+      final date = DateTime.fromMillisecondsSinceEpoch(e.datePublished * 1000);
       return date.isAfter(startOfMonth.subtract(const Duration(days: 1))) &&
           date.isBefore(startOfLastWeek);
     }).toList();
@@ -63,7 +74,7 @@ class _LatestEpisodesPageState extends State<LatestEpisodesPage> {
 
     // Last Month
     final lastMonthEpisodes = remainingEpisodes.where((e) {
-      final date = DateTime.fromMillisecondsSinceEpoch(e.date * 1000);
+      final date = DateTime.fromMillisecondsSinceEpoch(e.datePublished * 1000);
       return date.isAfter(startOfLastMonth.subtract(const Duration(days: 1))) &&
           date.isBefore(startOfMonth);
     }).toList();
@@ -102,6 +113,7 @@ class _LatestEpisodesPageState extends State<LatestEpisodesPage> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
+                // TODO(red): Need to update this to EpisodeItem
                 final categorizedEpisodes = _categorizeEpisodes(episodes);
                 final categories = [
                   'Today',
@@ -129,11 +141,12 @@ class _LatestEpisodesPageState extends State<LatestEpisodesPage> {
                       widgets.add(
                         Column(
                           children: [
-                            EpisodeListTile(episodesInCategory[i]),
+                            // TODO(red): Need to update this to EpisodeItem
+                            //EpisodeListTile(episodesInCategory[i]),
                             Visibility(
                               visible: i < episodesInCategory.length - 1,
                               replacement: const Divider(),
-                              child: const Divider(indent: 16, endIndent: 24),
+                              child: const Divider(indent: 16, endIndent: 16),
                             ),
                           ],
                         ),
@@ -157,3 +170,4 @@ class _LatestEpisodesPageState extends State<LatestEpisodesPage> {
     );
   }
 }
+*/

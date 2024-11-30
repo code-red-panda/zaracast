@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:zaracast/src/core/functions/format_duration.dart';
 import 'package:zaracast/src/core/functions/format_publish_date.dart';
-import 'package:zaracast/src/models/episode_model.dart';
+import 'package:zaracast/src/core/delete/models/episode_model.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
-
+/*
 class QueueListTile extends StatelessWidget {
   const QueueListTile(
     this.episode,
@@ -64,3 +64,4 @@ class QueueListTile extends StatelessWidget {
     );
   }
 }
+*/

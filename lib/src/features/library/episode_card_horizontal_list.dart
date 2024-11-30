@@ -1,13 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:zaracast/src/models/episode_model.dart';
+import 'package:zaracast/src/core/delete/models/episode_model.dart';
 import 'package:zaracast/src/shared/icon_buttons/add_to_queue_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/mark_as_played_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/play_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/play_next_icon_button.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
 
+/*
 class EpisodeCardHorizontalList extends StatefulWidget {
   const EpisodeCardHorizontalList(this.isContinueListening, {super.key});
 
@@ -165,3 +166,4 @@ class _EpisodeCardHorizontalListState extends State<EpisodeCardHorizontalList> {
     );
   }
 }
+*/

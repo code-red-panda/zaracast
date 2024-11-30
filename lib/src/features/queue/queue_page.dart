@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:zaracast/src/features/queue/queue_list_tile.dart';
-import 'package:zaracast/src/models/episode_model.dart';
+import 'package:zaracast/src/core/delete/models/episode_model.dart';
 
+class QueuePage extends StatelessWidget {
+  const QueuePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+/*
 class QueuePage extends StatefulWidget {
   const QueuePage({super.key});
 
@@ -140,3 +149,4 @@ class _QueuePageState extends State<QueuePage> {
     );
   }
 }
+*/

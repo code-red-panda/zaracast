@@ -4,7 +4,8 @@ import 'package:zaracast/src/core/router/stateful_shell_scaffold.dart';
 import 'package:zaracast/src/features/latest_episodes/latest_episodes_page.dart';
 import 'package:zaracast/src/features/library/library_page.dart';
 import 'package:zaracast/src/features/queue/queue_page.dart';
-import 'package:zaracast/src/features/settings/settings_page.dart';
+import 'package:zaracast/src/features/search/search_page.dart';
+import 'package:zaracast/src/features/profile/profile_page.dart';
 import 'package:zaracast/src/features/show_home/show_home_page.dart';
 import 'package:zaracast/src/features/followed_shows/followed_shows_page.dart';
 
@@ -100,6 +101,24 @@ GoRouter buildRouter() {
             ],
           ),
           StatefulShellBranch(
+            // Setting this will navigate the user back to /queue if they
+            // tap the bottom nav Queue icon while deep in the queue routes.
+            initialLocation: '/search',
+            routes: <RouteBase>[
+              GoRoute(
+                path: '/search',
+                builder: (context, state) => const SearchPage(),
+              ),
+              GoRoute(
+                path: '/show/:id',
+                builder: (context, state) {
+                  final id = getIntFromParam(state.pathParameters['id']);
+                  return ShowHomePage(id);
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
             // Setting this will navigate the user back to /settings if they
             // tap the bottom nav Settings icon while deep in the settings
             // routes.
@@ -107,7 +126,7 @@ GoRouter buildRouter() {
             routes: <RouteBase>[
               GoRoute(
                 path: '/settings',
-                builder: (context, state) => const SettingsPage(),
+                builder: (context, state) => const ProfilePage(),
               ),
             ],
           ),

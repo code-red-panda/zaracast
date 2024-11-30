@@ -12,10 +12,10 @@ class LibraryPage extends StatelessWidget {
       slivers: [
         const SliverAppBar.large(title: Text('Library')),
         const SliverTitleLarge('Latest from your shows'),
-        const EpisodeCardHorizontalList(false),
+        //const EpisodeCardHorizontalList(false),
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
         const SliverTitleLarge('Continue listening'),
-        const EpisodeCardHorizontalList(true),
+       // const EpisodeCardHorizontalList(true),
         const SliverToBoxAdapter(child: SizedBox(height: 8)),
         SliverToBoxAdapter(
           child: ListTile(
@@ -31,7 +31,7 @@ class LibraryPage extends StatelessWidget {
             trailing: const Icon(Icons.arrow_forward_rounded),
           ),
         ),
-        const SliverToBoxAdapter(child: Divider(indent: 16, endIndent: 24)),
+        const SliverToBoxAdapter(child: Divider(indent: 16, endIndent: 16)),
         SliverToBoxAdapter(
           child: ListTile(
             leading: Icon(

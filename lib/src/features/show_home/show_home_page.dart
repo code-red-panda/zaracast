@@ -1,337 +1,341 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:provider/provider.dart';
 import 'package:zaracast/src/core/database/app_database.dart';
-import 'package:zaracast/src/core/api/models/feed_response.dart';
+import 'package:zaracast/src/core/api/models/get_show_response.dart';
 import 'package:zaracast/src/core/service_locator.dart';
 import 'package:zaracast/src/features/latest_episodes/episode_list_tile.dart';
-import 'package:zaracast/src/core/api/models/episode_response.dart';
+import 'package:zaracast/src/core/api/models/get_episodes_response.dart';
 import 'package:zaracast/src/shared/icon_buttons/back_icon_button.dart';
-import 'package:zaracast/src/shared/icon_buttons/follow_show_icon_button.dart';
+import 'package:zaracast/src/shared/icon_buttons/follow_show_icon_buttons.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
+import 'package:zaracast/src/state/my_provider.dart';
+
+// TODO(red): for simplicity start by checking if show exists in table.
+// if not, fetch from apis then start streams
+// if does, then start streams
+// next look into if a column changes like isFollowed, can I listen to only that column?
+class ShowHomePageNotifier with ChangeNotifier {
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  void setLoading({required bool value}) {
+    _isLoading = value;
+    notifyListeners();
+  }
+}
 
 class ShowHomePage extends StatefulWidget {
-  const ShowHomePage(this.id, {super.key});
+  const ShowHomePage(this.showId, {super.key});
 
-  final int id;
+  final int showId;
 
   @override
   State<ShowHomePage> createState() => _ShowHomePageState();
 }
 
 class _ShowHomePageState extends State<ShowHomePage> {
+  var _notifier = ShowHomePageNotifier();
   Set<int> _index = {0};
-
-  PaletteGenerator? _palette;
-  Feed? _feed;
-  List<EpisodeItem> _episodes = [];
   bool _isLoading = true;
-
   final _scrollController = ScrollController();
-  var _showIcons = false;
-  double _threshold = 0;
-
-  void _setThreshold(double height) {
-    setState(() {
-      _threshold = height;
-    });
-  }
 
   @override
   void initState() {
     _loadFeed();
-
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _setThreshold(MediaQuery.of(context).size.height - 64));
-
-    _scrollController.addListener(() {
-      if (!_showIcons && _scrollController.offset >= _threshold) {
-        print('show icons');
-        setState(() {
-          _showIcons = true;
-        });
-      } else if (_showIcons && _scrollController.offset < _threshold) {
-        print('hid icons');
-        setState(() {
-          _showIcons = false;
-        });
-      }
-    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _notifier.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //  final sortedEpisodes = _notifier.episodes
+    //  ..sort((a, b) => b.datePublished.compareTo(a.datePublished));
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ShowHomePageNotifier()),
+        StreamProvider<Show?>(
+          create: (context) => db.watchShow(widget.showId),
+          initialData: null,
+        ),
+        StreamProvider<List<Episode>>(
+          create: (context) => db.watchEpisodes(widget.showId),
+          initialData: const [],
+        ),
+      ],
+      child: context.read<Show?>() == null
+          ? const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            )
+          : Scaffold(
+              body: CustomScrollView(
+                controller: _scrollController,
+                slivers: [
+                  SliverAppBar.large(
+                    actions: [_AppBarIconButtonVisibility(_scrollController)],
+                    expandedHeight: MediaQuery.of(context).size.height,
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                //Color.fromRGBO(r, g, b, opacity);
+                                //MyProvider.of<ShowHomePageNotifier>(context)._show.paletteColor;
+                                Colors.blueGrey.shade100,
+                                Theme.of(context).colorScheme.surface,
+                              ],
+                            )),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 0,
+                              left: 40,
+                              right: 40,
+                              top: 128,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.3),
+                                        blurRadius: 20,
+                                        offset: const Offset(0, 8),
+                                        spreadRadius: 5,
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(24),
+                                    child: SizedBox(
+                                      child: CachedNetworkImageBuilder(
+                                        image: context.read<Show?>()!.image,
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 16),
+                                Text(context.read<Show?>()!.title,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium
+                                        ?.copyWith(
+                                            fontWeight: FontWeight.bold)),
+                                Text(context.read<Show?>()!.author,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium),
+                                SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    ElevatedButton.icon(
+                                      style: ButtonStyle(
+                                        backgroundColor: WidgetStatePropertyAll(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary),
+                                        foregroundColor: WidgetStatePropertyAll(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary),
+                                      ),
+                                      onPressed: () => print('play'),
+                                      icon: Icon(Icons.play_arrow_rounded),
+                                      label: const Text('Play latest'),
+                                    ),
+                                    IconButton(
+                                        onPressed: () => print('info'),
+                                        icon: Icon(Icons.info_outlined)),
+                                    FollowShowIconButton()
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    leading: IconButton(
+                        //color: Colors.transparent,
+                        onPressed: Navigator.of(context).pop,
+                        icon: Icon(Icons.arrow_back_rounded)),
+                    title: Text(context.read<Show?>()!.title),
+                  ),
+                  SliverPersistentHeader(
+                    pinned: true,
+                    delegate: _SliverAppBarDelegate(
+                      child: Container(
+                        color: Theme.of(context).colorScheme.surface,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SegmentedButton<int>(
+                                emptySelectionAllowed: true,
+                                onSelectionChanged: (p0) => setState(() {
+                                  _index = p0;
+                                }),
+                                segments: const [
+                                  ButtonSegment(
+                                      value: 0, label: Text('Unplayed')),
+                                  ButtonSegment(
+                                      value: 1, label: Text('Played')),
+                                ],
+                                selected: _index,
+                              ),
+                              TextButton.icon(
+                                icon: Icon(Icons.arrow_drop_down_rounded),
+                                iconAlignment: IconAlignment.end,
+                                label: Text(
+                                  'Latest',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                onPressed: () => print('sort date'),
+                                style: ButtonStyle(
+                                    padding: WidgetStatePropertyAll(
+                                        EdgeInsets.zero)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverList.separated(
+                    separatorBuilder: (context, index) => const Divider(
+                      indent: 16,
+                      endIndent: 16,
+                    ),
+                    itemCount: 0, //sortedEpisodes.length,
+                    itemBuilder: (context, index) {
+                      return Text('ep');
+                      // return EpisodeListTile(
+                      //sortedEpisodes[index],
+                      // );
+                    },
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 96)),
+                ],
+              ),
+            ),
+    );
   }
 
   Future<void> _loadFeed() async {
     try {
-      final existingShow = await db.getShow(widget.id);
-      
-      Feed feed;
-      List<EpisodeItem> episodes;
-      
-      if (existingShow != null && !(await db.shouldSyncShow(existingShow))) {
-        // Use existing data
-        feed = Feed(
-          id: existingShow.id,
-          title: existingShow.name,
-          url: existingShow.url,
-          link: existingShow.link,
-          description: existingShow.description,
-          author: existingShow.author,
-          image: existingShow.image,
-          artwork: existingShow.artwork,
-          lastUpdateTime: existingShow.lastUpdateTime,
-          episodeCount: existingShow.episodeCount,
+      // check if show exists
+      final existingShow = await db.getShow(widget.showId);
+
+      // if not fetch from api and update database
+      if (existingShow == null) {
+        final feedResponse = await api.getShowById(widget.showId);
+        //final episodeResponse = await api.getEpisodesByFeedId(widget.showId);
+        final show = feedResponse.show;
+        final episodes = <Episode>[];
+        //episodeResponse.episodes;
+        final palette = await PaletteGenerator.fromImageProvider(
+          CachedNetworkImageProvider(show.image),
+          size: const Size(200, 200), // Smaller size for faster processing
         );
-        final existingEpisodes = await db.getAllEpisodes();
-        episodes = existingEpisodes
-            .where((e) => e.showId == widget.id)
-            .map((e) => EpisodeItem(
-                  id: e.id,
-                  title: e.title,
-                  link: e.link,
-                  datePublished: e.datePublished,
-                  description: e.description,
-                  duration: e.duration,
-                  image: e.image,
-                ))
-            .toList();
-      } else {
-        // Fetch fresh data
-        final feedResponse = await api.getFeedById(widget.id);
-        final episodeResponse = await api.getEpisodesByFeedId(widget.id);
-        feed = feedResponse.feed;
-        episodes = episodeResponse.items;
+        final color =
+            palette.lightVibrantColor?.color ?? Colors.blueGrey.shade100;
+
+        await db.insertShow(show.copyWith(paletteColor: color.value));
+        await db.insertEpisodes(episodes);
       }
 
-      final generator = await PaletteGenerator.fromImageProvider(
-        CachedNetworkImageProvider(feed.image),
-        size: const Size(200, 200), // Smaller size for faster processing
-      );
-
-      // Sync show and episodes in database
-      await db.syncShow(
-        ShowsCompanion.insert(
-        id: drift.Value(feed.id),
-        name: feed.title,
-        image: feed.image,
-        author: feed.author,
-        description: feed.description,
-        lastUpdateTime: feed.lastUpdateTime,
-        episodeCount: feed.episodeCount,
-        url: feed.url,
-        link: feed.link,
-        artwork: feed.artwork,
-        paletteColor: drift.Value(generator.dominantColor?.color.value),
-        lastEpisodeFetchTime: drift.Value(DateTime.now().millisecondsSinceEpoch ~/ 1000),
-      ),
-      episodes.map((item) => EpisodesCompanion.insert(
-          id: drift.Value(item.id),
-          title: item.title,
-          description: item.description,
-          image: item.image,
-          duration: item.duration,
-          datePublished: item.datePublished,
-          link: item.link,
-          showId: feed.id,
-        )).toList(),
-      );
-
-      setState(() {
-        _feed = feedResponse.feed;
-        _episodes = episodeResponse.items;
-        _palette = generator;
-        _isLoading = false;
-      });
-
+      // _notifier = ShowHomePageNotifier()..initStreams(widget.showId);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to load podcast: $e')),
         );
       }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
+  }
+}
+
+class _AppBarIconButtonVisibility extends StatefulWidget {
+  const _AppBarIconButtonVisibility(this.scrollController);
+
+  final ScrollController scrollController;
+
+  @override
+  State<_AppBarIconButtonVisibility> createState() =>
+      _AppBarIconButtonVisibilityState();
+}
+
+class _AppBarIconButtonVisibilityState
+    extends State<_AppBarIconButtonVisibility> {
+  bool _showIcons = false;
+  double _thresholdToShowIcons = 0;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final height = MediaQuery.of(context).size.height - 64;
+      _setThreshold(height);
+    });
+
+    widget.scrollController.addListener(() {
+      if (!_showIcons &&
+          widget.scrollController.offset >= _thresholdToShowIcons) {
+        _setShowIcons(true);
+      } else if (_showIcons &&
+          widget.scrollController.offset < _thresholdToShowIcons) {
+        _setShowIcons(false);
+      }
+    });
+
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-
-    if (_feed == null) {
-      return Scaffold(
-        appBar: AppBar(
-          leading: const BackIconButton(),
-        ),
-        body: const Center(
-          child: Text('Failed to load podcast'),
-        ),
-      );
-    }
-
-    final sortedEpisodes = _episodes..sort((a, b) => b.datePublished.compareTo(a.datePublished));
-
-    final double _expandedHeight = MediaQuery.of(context).size.height;
-    print('expanded heigh $_expandedHeight');
-
-    return Scaffold(
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          SliverAppBar.large(
-            actions: [
-              Visibility(
-                visible: _showIcons,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: FollowShowIconButton(widget.id),
-                ),
-              )
-            ],
-            expandedHeight: _expandedHeight,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        _palette?.lightVibrantColor?.color ??
-                            Colors.blueGrey.shade100,
-                        Theme.of(context).colorScheme.surface,
-                      ],
-                    )),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        bottom: 0, left: 40, right: 40, top: 128),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
-                                blurRadius: 20,
-                                offset: const Offset(0, 8),
-                                spreadRadius: 5,
-                              ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(24),
-                            child: SizedBox(
-                              child: CachedNetworkImageBuilder(
-                                image: _feed!.image,
-                                fit: BoxFit.fitWidth,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        Text(_feed!.title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineMedium
-                                ?.copyWith(fontWeight: FontWeight.bold)),
-                        Text(_feed!.author,
-                            style: Theme.of(context).textTheme.titleMedium),
-                        SizedBox(height: 8),
-                        Row(
-                          children: [
-                            ElevatedButton.icon(
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStatePropertyAll(
-                                    Theme.of(context).colorScheme.primary),
-                                foregroundColor: WidgetStatePropertyAll(
-                                    Theme.of(context).colorScheme.onPrimary),
-                              ),
-                              onPressed: () => print('play'),
-                              icon: Icon(Icons.play_arrow_rounded),
-                              label: const Text('Play latest'),
-                            ),
-                            IconButton(
-                                onPressed: () => print('info'),
-                                icon: Icon(Icons.info_outlined)),
-                            FollowShowIconButton(widget.id)
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            leading: IconButton(
-                //color: Colors.transparent,
-                onPressed: Navigator.of(context).pop,
-                icon: Icon(Icons.arrow_back_rounded)),
-            title: Text(_feed!.title),
-          ),
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: _SliverAppBarDelegate(
-              child: Container(
-                color: Theme.of(context).colorScheme.surface,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SegmentedButton<int>(
-                        emptySelectionAllowed: true,
-                        onSelectionChanged: (p0) => setState(() {
-                          _index = p0;
-                        }),
-                        segments: const [
-                          ButtonSegment(value: 0, label: Text('Unplayed')),
-                          ButtonSegment(value: 1, label: Text('Played')),
-                        ],
-                        selected: _index,
-                      ),
-                      TextButton.icon(
-                        icon: Icon(Icons.arrow_drop_down_rounded),
-                        iconAlignment: IconAlignment.end,
-                        label: Text(
-                          'Latest',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        onPressed: () => print('sort date'),
-                        style: ButtonStyle(
-                            padding: WidgetStatePropertyAll(EdgeInsets.zero)),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SliverList.separated(
-            separatorBuilder: (context, index) => const Divider(
-              indent: 16,
-              endIndent: 16,
-            ),
-            itemCount: sortedEpisodes.length,
-            itemBuilder: (context, index) {
-              return EpisodeListTile(sortedEpisodes[index], showImage: _feed!.image);
-            },
-          ),
-          const SliverToBoxAdapter(child: SizedBox(height: 96)),
-        ],
+    return Visibility(
+      visible: _showIcons,
+      child: const Padding(
+        padding: EdgeInsets.only(right: 16),
+        child: FollowShowIconButton(),
       ),
     );
+  }
+
+  void _setShowIcons(bool value) {
+    setState(() {
+      _showIcons = value;
+    });
+  }
+
+  void _setThreshold(double height) {
+    setState(() {
+      _thresholdToShowIcons = height;
+    });
   }
 }
 

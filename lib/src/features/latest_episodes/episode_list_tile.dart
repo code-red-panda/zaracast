@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:zaracast/src/core/api/models/episode_response.dart';
+import 'package:zaracast/src/core/database/app_database.dart';
 import 'package:zaracast/src/core/functions/format_duration.dart';
 import 'package:zaracast/src/core/functions/format_publish_date.dart';
-import 'package:zaracast/src/models/episode_model.dart';
 import 'package:zaracast/src/shared/icon_buttons/add_to_queue_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/mark_as_played_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/play_icon_button.dart';
 import 'package:zaracast/src/shared/icon_buttons/play_next_icon_button.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
 
+// TODO(red): should this be a stream of the ID to get changed durations and played etc?
+// OR not because that would rebuild too many components? I think I need my own inherited provider here
+// And the use my own selectors
 class EpisodeListTile extends StatelessWidget {
-  const EpisodeListTile(
-    this.episode, {
-    required this.showImage,
-    super.key,
-  });
+  const EpisodeListTile(this.episode, {super.key});
 
-  final EpisodeItem episode;
-  final String showImage;
+  final Episode episode;
 
   @override
   Widget build(BuildContext context) {
-    print('episode image: ${episode.image}');
     return Dismissible(
       key: ValueKey(episode.id),
       direction: DismissDirection.endToStart,
@@ -64,7 +60,9 @@ class EpisodeListTile extends StatelessWidget {
                   height: 128,
                   width: 128,
                   child: CachedNetworkImageBuilder(
-                    image: episode.image.isEmpty ? showImage : episode.image,
+                    image: episode.image.isEmpty
+                        ? episode.feedImage
+                        : episode.image,
                   ),
                 ),
               ),
@@ -104,7 +102,7 @@ class EpisodeListTile extends StatelessWidget {
                                 width: 70,
                                 child: LinearProgressIndicator(
                                   // TODO(red): create duration remaining
-                                  value: 600 / episode.duration,
+                                  value: episode.duration * .5,
                                 ),
                               ),
                               const SizedBox(width: 8),

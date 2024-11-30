@@ -20,8 +20,6 @@ class Episodes extends Table {
   IntColumn get showId => integer().references(Shows, #id)();
   TextColumn get chaptersUrl => text()();
   TextColumn get transcriptUrl => text()();
-  
-  // New fields from API
   TextColumn get feedGuid => text()();
   TextColumn get feedUrl => text()();
   TextColumn get feedImage => text()();

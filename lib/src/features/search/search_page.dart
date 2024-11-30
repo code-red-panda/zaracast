@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zaracast/src/core/api/models/search_response.dart';
+import 'package:zaracast/src/core/api/models/search_shows_response.dart';
 import 'package:zaracast/src/core/service_locator.dart';
 import 'package:zaracast/src/features/search/search_list_tile.dart';
 
@@ -14,7 +14,7 @@ class _SearchPageState extends State<SearchPage> {
   final _searchController = SearchController();
   final _textController = TextEditingController();
 
-  List<Feed> _searchResults = [];
+  List<SearchShowsModel> _searchResults = [];
 
   @override
   void dispose() {
@@ -26,9 +26,9 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          body: CustomScrollView(
+      body: CustomScrollView(
         slivers: [
-          SliverAppBar.large(title: Text('Search')),
+          const SliverAppBar.large(title: Text('Search')),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
@@ -36,22 +36,24 @@ class _SearchPageState extends State<SearchPage> {
                 controller: _textController,
                 trailing: [
                   IconButton(
-                      onPressed: () async {
-                        try {
-                          final response =
-                              await api.searchPodcasts(_textController.text);
-                          setState(() {
-                            _searchResults = response.feeds;
-                          });
-                        } catch (e) {
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Search failed: $e')),
-                            );
-                          }
+                    onPressed: () async {
+                      try {
+                        final response =
+                            await api.searchShows(_textController.text);
+
+                        setState(() {
+                          _searchResults = response.shows;
+                        });
+                      } catch (e) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Search failed: $e')),
+                          );
                         }
-                      },
-                      icon: Icon(Icons.search_rounded))
+                      }
+                    },
+                    icon: const Icon(Icons.search_rounded),
+                  )
                 ],
               ),
             ),
@@ -61,13 +63,8 @@ class _SearchPageState extends State<SearchPage> {
             separatorBuilder: (context, index) =>
                 const Divider(indent: 16, endIndent: 16),
             itemBuilder: (context, index) {
-              final feed = _searchResults[index];
-              return SearchListTile(
-                feed.id,
-                feed.title,
-                feed.image,
-                subtitle: feed.author,
-              );
+              final show = _searchResults[index];
+              return SearchListTile(show);
             },
           ),
         ],
