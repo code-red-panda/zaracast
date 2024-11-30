@@ -57,18 +57,18 @@ class _ShowHomePageState extends State<ShowHomePage> {
         ),
       );
     } else {
-      return StreamBuilder<Show>(
-        stream: db.watchShow(widget.showId),
-        builder: (context, snapshot) {
-          final show = snapshot.data;
-          if (show == null) {
-            print('show is null');
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
+      return Consumer(
+        builder: (context, ref, child) {
+          final showAsync = ref.watch(showProvider(widget.showId));
+          
+          return showAsync.when(
+            loading: () => const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            ),
+            error: (err, stack) => Scaffold(
+              body: Center(child: Text('Error: $err')),
+            ),
+            data: (show) {
 
           if (show == null) {
             print('show is null');
