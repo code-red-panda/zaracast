@@ -7,7 +7,6 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 import 'package:zaracast/src/core/database/app_database.dart';
 import 'package:zaracast/src/core/service_locator.dart';
-import 'package:zaracast/src/features/show_home/show_home_episodes.dart';
 import 'package:zaracast/src/shared/icon_buttons/follow_show_icon_buttons.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
 
