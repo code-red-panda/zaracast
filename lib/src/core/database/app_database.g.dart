@@ -1050,11 +1050,10 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _episodeGuidMeta =
-      const VerificationMeta('episodeGuid');
+  static const VerificationMeta _guidMeta = const VerificationMeta('guid');
   @override
-  late final GeneratedColumn<String> episodeGuid = GeneratedColumn<String>(
-      'episode_guid', aliasedName, false,
+  late final GeneratedColumn<String> guid = GeneratedColumn<String>(
+      'guid', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
@@ -1134,38 +1133,6 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
   late final GeneratedColumn<String> image = GeneratedColumn<String>(
       'image', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _showIdMeta = const VerificationMeta('showId');
-  @override
-  late final GeneratedColumn<int> showId = GeneratedColumn<int>(
-      'show_id', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES shows (id)'));
-  static const VerificationMeta _chaptersUrlMeta =
-      const VerificationMeta('chaptersUrl');
-  @override
-  late final GeneratedColumn<String> chaptersUrl = GeneratedColumn<String>(
-      'chapters_url', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _transcriptUrlMeta =
-      const VerificationMeta('transcriptUrl');
-  @override
-  late final GeneratedColumn<String> transcriptUrl = GeneratedColumn<String>(
-      'transcript_url', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _feedGuidMeta =
-      const VerificationMeta('feedGuid');
-  @override
-  late final GeneratedColumn<String> feedGuid = GeneratedColumn<String>(
-      'feed_guid', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _feedUrlMeta =
-      const VerificationMeta('feedUrl');
-  @override
-  late final GeneratedColumn<String> feedUrl = GeneratedColumn<String>(
-      'feed_url', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _feedImageMeta =
       const VerificationMeta('feedImage');
   @override
@@ -1174,70 +1141,8 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
       type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _feedIdMeta = const VerificationMeta('feedId');
   @override
-  late final GeneratedColumn<String> feedId = GeneratedColumn<String>(
+  late final GeneratedColumn<int> feedId = GeneratedColumn<int>(
       'feed_id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _feedLanguageMeta =
-      const VerificationMeta('feedLanguage');
-  @override
-  late final GeneratedColumn<String> feedLanguage = GeneratedColumn<String>(
-      'feed_language', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _feedDeadMeta =
-      const VerificationMeta('feedDead');
-  @override
-  late final GeneratedColumn<String> feedDead = GeneratedColumn<String>(
-      'feed_dead', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _contentTypeMeta =
-      const VerificationMeta('contentType');
-  @override
-  late final GeneratedColumn<String> contentType = GeneratedColumn<String>(
-      'content_type', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _mediumMeta = const VerificationMeta('medium');
-  @override
-  late final GeneratedColumn<String> medium = GeneratedColumn<String>(
-      'medium', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _completeMeta =
-      const VerificationMeta('complete');
-  @override
-  late final GeneratedColumn<bool> complete = GeneratedColumn<bool>(
-      'complete', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("complete" IN (0, 1))'),
-      defaultValue: const Constant(false));
-  static const VerificationMeta _socialInteractMeta =
-      const VerificationMeta('socialInteract');
-  @override
-  late final GeneratedColumn<String> socialInteract = GeneratedColumn<String>(
-      'social_interact', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _valueMeta = const VerificationMeta('value');
-  @override
-  late final GeneratedColumn<String> value = GeneratedColumn<String>(
-      'value', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _liveItemsMeta =
-      const VerificationMeta('liveItems');
-  @override
-  late final GeneratedColumn<String> liveItems = GeneratedColumn<String>(
-      'live_items', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _soundbiteMeta =
-      const VerificationMeta('soundbite');
-  @override
-  late final GeneratedColumn<String> soundbite = GeneratedColumn<String>(
-      'soundbite', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _durationRemainingMeta =
-      const VerificationMeta('durationRemaining');
-  @override
-  late final GeneratedColumn<int> durationRemaining = GeneratedColumn<int>(
-      'duration_remaining', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _isPlayedMeta =
       const VerificationMeta('isPlayed');
@@ -1245,24 +1150,13 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
   late final GeneratedColumn<bool> isPlayed = GeneratedColumn<bool>(
       'is_played', aliasedName, false,
       type: DriftSqlType.bool,
-      requiredDuringInsert: false,
+      requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("is_played" IN (0, 1))'),
-      defaultValue: const Constant(false));
-  static const VerificationMeta _isPlayingMeta =
-      const VerificationMeta('isPlaying');
-  @override
-  late final GeneratedColumn<bool> isPlaying = GeneratedColumn<bool>(
-      'is_playing', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("is_playing" IN (0, 1))'),
-      defaultValue: const Constant(false));
+          GeneratedColumn.constraintIsAlways('CHECK ("is_played" IN (0, 1))'));
   @override
   List<GeneratedColumn> get $columns => [
         id,
-        episodeGuid,
+        guid,
         title,
         link,
         description,
@@ -1276,25 +1170,9 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
         episodeType,
         seasonNumber,
         image,
-        showId,
-        chaptersUrl,
-        transcriptUrl,
-        feedGuid,
-        feedUrl,
         feedImage,
         feedId,
-        feedLanguage,
-        feedDead,
-        contentType,
-        medium,
-        complete,
-        socialInteract,
-        value,
-        liveItems,
-        soundbite,
-        durationRemaining,
-        isPlayed,
-        isPlaying
+        isPlayed
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1309,13 +1187,11 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('episode_guid')) {
+    if (data.containsKey('guid')) {
       context.handle(
-          _episodeGuidMeta,
-          episodeGuid.isAcceptableOrUnknown(
-              data['episode_guid']!, _episodeGuidMeta));
+          _guidMeta, guid.isAcceptableOrUnknown(data['guid']!, _guidMeta));
     } else if (isInserting) {
-      context.missing(_episodeGuidMeta);
+      context.missing(_guidMeta);
     }
     if (data.containsKey('title')) {
       context.handle(
@@ -1411,40 +1287,6 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
     } else if (isInserting) {
       context.missing(_imageMeta);
     }
-    if (data.containsKey('show_id')) {
-      context.handle(_showIdMeta,
-          showId.isAcceptableOrUnknown(data['show_id']!, _showIdMeta));
-    } else if (isInserting) {
-      context.missing(_showIdMeta);
-    }
-    if (data.containsKey('chapters_url')) {
-      context.handle(
-          _chaptersUrlMeta,
-          chaptersUrl.isAcceptableOrUnknown(
-              data['chapters_url']!, _chaptersUrlMeta));
-    } else if (isInserting) {
-      context.missing(_chaptersUrlMeta);
-    }
-    if (data.containsKey('transcript_url')) {
-      context.handle(
-          _transcriptUrlMeta,
-          transcriptUrl.isAcceptableOrUnknown(
-              data['transcript_url']!, _transcriptUrlMeta));
-    } else if (isInserting) {
-      context.missing(_transcriptUrlMeta);
-    }
-    if (data.containsKey('feed_guid')) {
-      context.handle(_feedGuidMeta,
-          feedGuid.isAcceptableOrUnknown(data['feed_guid']!, _feedGuidMeta));
-    } else if (isInserting) {
-      context.missing(_feedGuidMeta);
-    }
-    if (data.containsKey('feed_url')) {
-      context.handle(_feedUrlMeta,
-          feedUrl.isAcceptableOrUnknown(data['feed_url']!, _feedUrlMeta));
-    } else if (isInserting) {
-      context.missing(_feedUrlMeta);
-    }
     if (data.containsKey('feed_image')) {
       context.handle(_feedImageMeta,
           feedImage.isAcceptableOrUnknown(data['feed_image']!, _feedImageMeta));
@@ -1457,79 +1299,11 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
     } else if (isInserting) {
       context.missing(_feedIdMeta);
     }
-    if (data.containsKey('feed_language')) {
-      context.handle(
-          _feedLanguageMeta,
-          feedLanguage.isAcceptableOrUnknown(
-              data['feed_language']!, _feedLanguageMeta));
-    } else if (isInserting) {
-      context.missing(_feedLanguageMeta);
-    }
-    if (data.containsKey('feed_dead')) {
-      context.handle(_feedDeadMeta,
-          feedDead.isAcceptableOrUnknown(data['feed_dead']!, _feedDeadMeta));
-    } else if (isInserting) {
-      context.missing(_feedDeadMeta);
-    }
-    if (data.containsKey('content_type')) {
-      context.handle(
-          _contentTypeMeta,
-          contentType.isAcceptableOrUnknown(
-              data['content_type']!, _contentTypeMeta));
-    } else if (isInserting) {
-      context.missing(_contentTypeMeta);
-    }
-    if (data.containsKey('medium')) {
-      context.handle(_mediumMeta,
-          medium.isAcceptableOrUnknown(data['medium']!, _mediumMeta));
-    } else if (isInserting) {
-      context.missing(_mediumMeta);
-    }
-    if (data.containsKey('complete')) {
-      context.handle(_completeMeta,
-          complete.isAcceptableOrUnknown(data['complete']!, _completeMeta));
-    }
-    if (data.containsKey('social_interact')) {
-      context.handle(
-          _socialInteractMeta,
-          socialInteract.isAcceptableOrUnknown(
-              data['social_interact']!, _socialInteractMeta));
-    } else if (isInserting) {
-      context.missing(_socialInteractMeta);
-    }
-    if (data.containsKey('value')) {
-      context.handle(
-          _valueMeta, value.isAcceptableOrUnknown(data['value']!, _valueMeta));
-    } else if (isInserting) {
-      context.missing(_valueMeta);
-    }
-    if (data.containsKey('live_items')) {
-      context.handle(_liveItemsMeta,
-          liveItems.isAcceptableOrUnknown(data['live_items']!, _liveItemsMeta));
-    } else if (isInserting) {
-      context.missing(_liveItemsMeta);
-    }
-    if (data.containsKey('soundbite')) {
-      context.handle(_soundbiteMeta,
-          soundbite.isAcceptableOrUnknown(data['soundbite']!, _soundbiteMeta));
-    } else if (isInserting) {
-      context.missing(_soundbiteMeta);
-    }
-    if (data.containsKey('duration_remaining')) {
-      context.handle(
-          _durationRemainingMeta,
-          durationRemaining.isAcceptableOrUnknown(
-              data['duration_remaining']!, _durationRemainingMeta));
-    } else if (isInserting) {
-      context.missing(_durationRemainingMeta);
-    }
     if (data.containsKey('is_played')) {
       context.handle(_isPlayedMeta,
           isPlayed.isAcceptableOrUnknown(data['is_played']!, _isPlayedMeta));
-    }
-    if (data.containsKey('is_playing')) {
-      context.handle(_isPlayingMeta,
-          isPlaying.isAcceptableOrUnknown(data['is_playing']!, _isPlayingMeta));
+    } else if (isInserting) {
+      context.missing(_isPlayedMeta);
     }
     return context;
   }
@@ -1542,8 +1316,8 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
     return Episode(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      episodeGuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}episode_guid'])!,
+      guid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}guid'])!,
       title: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
       link: attachedDatabase.typeMapping
@@ -1570,44 +1344,12 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
           .read(DriftSqlType.int, data['${effectivePrefix}season_number'])!,
       image: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}image'])!,
-      showId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}show_id'])!,
-      chaptersUrl: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}chapters_url'])!,
-      transcriptUrl: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}transcript_url'])!,
-      feedGuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}feed_guid'])!,
-      feedUrl: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}feed_url'])!,
       feedImage: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}feed_image'])!,
       feedId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}feed_id'])!,
-      feedLanguage: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}feed_language'])!,
-      feedDead: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}feed_dead'])!,
-      contentType: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}content_type'])!,
-      medium: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}medium'])!,
-      complete: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}complete'])!,
-      socialInteract: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}social_interact'])!,
-      value: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}value'])!,
-      liveItems: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}live_items'])!,
-      soundbite: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}soundbite'])!,
-      durationRemaining: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}duration_remaining'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}feed_id'])!,
       isPlayed: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_played'])!,
-      isPlaying: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}is_playing'])!,
     );
   }
 
@@ -1619,7 +1361,7 @@ class $EpisodesTable extends Episodes with TableInfo<$EpisodesTable, Episode> {
 
 class Episode extends DataClass implements Insertable<Episode> {
   final int id;
-  final String episodeGuid;
+  final String guid;
   final String title;
   final String link;
   final String description;
@@ -1633,28 +1375,12 @@ class Episode extends DataClass implements Insertable<Episode> {
   final String episodeType;
   final int seasonNumber;
   final String image;
-  final int showId;
-  final String chaptersUrl;
-  final String transcriptUrl;
-  final String feedGuid;
-  final String feedUrl;
   final String feedImage;
-  final String feedId;
-  final String feedLanguage;
-  final String feedDead;
-  final String contentType;
-  final String medium;
-  final bool complete;
-  final String socialInteract;
-  final String value;
-  final String liveItems;
-  final String soundbite;
-  final int durationRemaining;
+  final int feedId;
   final bool isPlayed;
-  final bool isPlaying;
   const Episode(
       {required this.id,
-      required this.episodeGuid,
+      required this.guid,
       required this.title,
       required this.link,
       required this.description,
@@ -1668,30 +1394,14 @@ class Episode extends DataClass implements Insertable<Episode> {
       required this.episodeType,
       required this.seasonNumber,
       required this.image,
-      required this.showId,
-      required this.chaptersUrl,
-      required this.transcriptUrl,
-      required this.feedGuid,
-      required this.feedUrl,
       required this.feedImage,
       required this.feedId,
-      required this.feedLanguage,
-      required this.feedDead,
-      required this.contentType,
-      required this.medium,
-      required this.complete,
-      required this.socialInteract,
-      required this.value,
-      required this.liveItems,
-      required this.soundbite,
-      required this.durationRemaining,
-      required this.isPlayed,
-      required this.isPlaying});
+      required this.isPlayed});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['episode_guid'] = Variable<String>(episodeGuid);
+    map['guid'] = Variable<String>(guid);
     map['title'] = Variable<String>(title);
     map['link'] = Variable<String>(link);
     map['description'] = Variable<String>(description);
@@ -1705,32 +1415,16 @@ class Episode extends DataClass implements Insertable<Episode> {
     map['episode_type'] = Variable<String>(episodeType);
     map['season_number'] = Variable<int>(seasonNumber);
     map['image'] = Variable<String>(image);
-    map['show_id'] = Variable<int>(showId);
-    map['chapters_url'] = Variable<String>(chaptersUrl);
-    map['transcript_url'] = Variable<String>(transcriptUrl);
-    map['feed_guid'] = Variable<String>(feedGuid);
-    map['feed_url'] = Variable<String>(feedUrl);
     map['feed_image'] = Variable<String>(feedImage);
-    map['feed_id'] = Variable<String>(feedId);
-    map['feed_language'] = Variable<String>(feedLanguage);
-    map['feed_dead'] = Variable<String>(feedDead);
-    map['content_type'] = Variable<String>(contentType);
-    map['medium'] = Variable<String>(medium);
-    map['complete'] = Variable<bool>(complete);
-    map['social_interact'] = Variable<String>(socialInteract);
-    map['value'] = Variable<String>(value);
-    map['live_items'] = Variable<String>(liveItems);
-    map['soundbite'] = Variable<String>(soundbite);
-    map['duration_remaining'] = Variable<int>(durationRemaining);
+    map['feed_id'] = Variable<int>(feedId);
     map['is_played'] = Variable<bool>(isPlayed);
-    map['is_playing'] = Variable<bool>(isPlaying);
     return map;
   }
 
   EpisodesCompanion toCompanion(bool nullToAbsent) {
     return EpisodesCompanion(
       id: Value(id),
-      episodeGuid: Value(episodeGuid),
+      guid: Value(guid),
       title: Value(title),
       link: Value(link),
       description: Value(description),
@@ -1744,25 +1438,9 @@ class Episode extends DataClass implements Insertable<Episode> {
       episodeType: Value(episodeType),
       seasonNumber: Value(seasonNumber),
       image: Value(image),
-      showId: Value(showId),
-      chaptersUrl: Value(chaptersUrl),
-      transcriptUrl: Value(transcriptUrl),
-      feedGuid: Value(feedGuid),
-      feedUrl: Value(feedUrl),
       feedImage: Value(feedImage),
       feedId: Value(feedId),
-      feedLanguage: Value(feedLanguage),
-      feedDead: Value(feedDead),
-      contentType: Value(contentType),
-      medium: Value(medium),
-      complete: Value(complete),
-      socialInteract: Value(socialInteract),
-      value: Value(value),
-      liveItems: Value(liveItems),
-      soundbite: Value(soundbite),
-      durationRemaining: Value(durationRemaining),
       isPlayed: Value(isPlayed),
-      isPlaying: Value(isPlaying),
     );
   }
 
@@ -1771,7 +1449,7 @@ class Episode extends DataClass implements Insertable<Episode> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Episode(
       id: serializer.fromJson<int>(json['id']),
-      episodeGuid: serializer.fromJson<String>(json['episodeGuid']),
+      guid: serializer.fromJson<String>(json['guid']),
       title: serializer.fromJson<String>(json['title']),
       link: serializer.fromJson<String>(json['link']),
       description: serializer.fromJson<String>(json['description']),
@@ -1785,25 +1463,9 @@ class Episode extends DataClass implements Insertable<Episode> {
       episodeType: serializer.fromJson<String>(json['episodeType']),
       seasonNumber: serializer.fromJson<int>(json['seasonNumber']),
       image: serializer.fromJson<String>(json['image']),
-      showId: serializer.fromJson<int>(json['showId']),
-      chaptersUrl: serializer.fromJson<String>(json['chaptersUrl']),
-      transcriptUrl: serializer.fromJson<String>(json['transcriptUrl']),
-      feedGuid: serializer.fromJson<String>(json['feedGuid']),
-      feedUrl: serializer.fromJson<String>(json['feedUrl']),
       feedImage: serializer.fromJson<String>(json['feedImage']),
-      feedId: serializer.fromJson<String>(json['feedId']),
-      feedLanguage: serializer.fromJson<String>(json['feedLanguage']),
-      feedDead: serializer.fromJson<String>(json['feedDead']),
-      contentType: serializer.fromJson<String>(json['contentType']),
-      medium: serializer.fromJson<String>(json['medium']),
-      complete: serializer.fromJson<bool>(json['complete']),
-      socialInteract: serializer.fromJson<String>(json['socialInteract']),
-      value: serializer.fromJson<String>(json['value']),
-      liveItems: serializer.fromJson<String>(json['liveItems']),
-      soundbite: serializer.fromJson<String>(json['soundbite']),
-      durationRemaining: serializer.fromJson<int>(json['durationRemaining']),
+      feedId: serializer.fromJson<int>(json['feedId']),
       isPlayed: serializer.fromJson<bool>(json['isPlayed']),
-      isPlaying: serializer.fromJson<bool>(json['isPlaying']),
     );
   }
   @override
@@ -1811,7 +1473,7 @@ class Episode extends DataClass implements Insertable<Episode> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'episodeGuid': serializer.toJson<String>(episodeGuid),
+      'guid': serializer.toJson<String>(guid),
       'title': serializer.toJson<String>(title),
       'link': serializer.toJson<String>(link),
       'description': serializer.toJson<String>(description),
@@ -1825,31 +1487,15 @@ class Episode extends DataClass implements Insertable<Episode> {
       'episodeType': serializer.toJson<String>(episodeType),
       'seasonNumber': serializer.toJson<int>(seasonNumber),
       'image': serializer.toJson<String>(image),
-      'showId': serializer.toJson<int>(showId),
-      'chaptersUrl': serializer.toJson<String>(chaptersUrl),
-      'transcriptUrl': serializer.toJson<String>(transcriptUrl),
-      'feedGuid': serializer.toJson<String>(feedGuid),
-      'feedUrl': serializer.toJson<String>(feedUrl),
       'feedImage': serializer.toJson<String>(feedImage),
-      'feedId': serializer.toJson<String>(feedId),
-      'feedLanguage': serializer.toJson<String>(feedLanguage),
-      'feedDead': serializer.toJson<String>(feedDead),
-      'contentType': serializer.toJson<String>(contentType),
-      'medium': serializer.toJson<String>(medium),
-      'complete': serializer.toJson<bool>(complete),
-      'socialInteract': serializer.toJson<String>(socialInteract),
-      'value': serializer.toJson<String>(value),
-      'liveItems': serializer.toJson<String>(liveItems),
-      'soundbite': serializer.toJson<String>(soundbite),
-      'durationRemaining': serializer.toJson<int>(durationRemaining),
+      'feedId': serializer.toJson<int>(feedId),
       'isPlayed': serializer.toJson<bool>(isPlayed),
-      'isPlaying': serializer.toJson<bool>(isPlaying),
     };
   }
 
   Episode copyWith(
           {int? id,
-          String? episodeGuid,
+          String? guid,
           String? title,
           String? link,
           String? description,
@@ -1863,28 +1509,12 @@ class Episode extends DataClass implements Insertable<Episode> {
           String? episodeType,
           int? seasonNumber,
           String? image,
-          int? showId,
-          String? chaptersUrl,
-          String? transcriptUrl,
-          String? feedGuid,
-          String? feedUrl,
           String? feedImage,
-          String? feedId,
-          String? feedLanguage,
-          String? feedDead,
-          String? contentType,
-          String? medium,
-          bool? complete,
-          String? socialInteract,
-          String? value,
-          String? liveItems,
-          String? soundbite,
-          int? durationRemaining,
-          bool? isPlayed,
-          bool? isPlaying}) =>
+          int? feedId,
+          bool? isPlayed}) =>
       Episode(
         id: id ?? this.id,
-        episodeGuid: episodeGuid ?? this.episodeGuid,
+        guid: guid ?? this.guid,
         title: title ?? this.title,
         link: link ?? this.link,
         description: description ?? this.description,
@@ -1898,31 +1528,14 @@ class Episode extends DataClass implements Insertable<Episode> {
         episodeType: episodeType ?? this.episodeType,
         seasonNumber: seasonNumber ?? this.seasonNumber,
         image: image ?? this.image,
-        showId: showId ?? this.showId,
-        chaptersUrl: chaptersUrl ?? this.chaptersUrl,
-        transcriptUrl: transcriptUrl ?? this.transcriptUrl,
-        feedGuid: feedGuid ?? this.feedGuid,
-        feedUrl: feedUrl ?? this.feedUrl,
         feedImage: feedImage ?? this.feedImage,
         feedId: feedId ?? this.feedId,
-        feedLanguage: feedLanguage ?? this.feedLanguage,
-        feedDead: feedDead ?? this.feedDead,
-        contentType: contentType ?? this.contentType,
-        medium: medium ?? this.medium,
-        complete: complete ?? this.complete,
-        socialInteract: socialInteract ?? this.socialInteract,
-        value: value ?? this.value,
-        liveItems: liveItems ?? this.liveItems,
-        soundbite: soundbite ?? this.soundbite,
-        durationRemaining: durationRemaining ?? this.durationRemaining,
         isPlayed: isPlayed ?? this.isPlayed,
-        isPlaying: isPlaying ?? this.isPlaying,
       );
   Episode copyWithCompanion(EpisodesCompanion data) {
     return Episode(
       id: data.id.present ? data.id.value : this.id,
-      episodeGuid:
-          data.episodeGuid.present ? data.episodeGuid.value : this.episodeGuid,
+      guid: data.guid.present ? data.guid.value : this.guid,
       title: data.title.present ? data.title.value : this.title,
       link: data.link.present ? data.link.value : this.link,
       description:
@@ -1950,35 +1563,9 @@ class Episode extends DataClass implements Insertable<Episode> {
           ? data.seasonNumber.value
           : this.seasonNumber,
       image: data.image.present ? data.image.value : this.image,
-      showId: data.showId.present ? data.showId.value : this.showId,
-      chaptersUrl:
-          data.chaptersUrl.present ? data.chaptersUrl.value : this.chaptersUrl,
-      transcriptUrl: data.transcriptUrl.present
-          ? data.transcriptUrl.value
-          : this.transcriptUrl,
-      feedGuid: data.feedGuid.present ? data.feedGuid.value : this.feedGuid,
-      feedUrl: data.feedUrl.present ? data.feedUrl.value : this.feedUrl,
       feedImage: data.feedImage.present ? data.feedImage.value : this.feedImage,
       feedId: data.feedId.present ? data.feedId.value : this.feedId,
-      feedLanguage: data.feedLanguage.present
-          ? data.feedLanguage.value
-          : this.feedLanguage,
-      feedDead: data.feedDead.present ? data.feedDead.value : this.feedDead,
-      contentType:
-          data.contentType.present ? data.contentType.value : this.contentType,
-      medium: data.medium.present ? data.medium.value : this.medium,
-      complete: data.complete.present ? data.complete.value : this.complete,
-      socialInteract: data.socialInteract.present
-          ? data.socialInteract.value
-          : this.socialInteract,
-      value: data.value.present ? data.value.value : this.value,
-      liveItems: data.liveItems.present ? data.liveItems.value : this.liveItems,
-      soundbite: data.soundbite.present ? data.soundbite.value : this.soundbite,
-      durationRemaining: data.durationRemaining.present
-          ? data.durationRemaining.value
-          : this.durationRemaining,
       isPlayed: data.isPlayed.present ? data.isPlayed.value : this.isPlayed,
-      isPlaying: data.isPlaying.present ? data.isPlaying.value : this.isPlaying,
     );
   }
 
@@ -1986,7 +1573,7 @@ class Episode extends DataClass implements Insertable<Episode> {
   String toString() {
     return (StringBuffer('Episode(')
           ..write('id: $id, ')
-          ..write('episodeGuid: $episodeGuid, ')
+          ..write('guid: $guid, ')
           ..write('title: $title, ')
           ..write('link: $link, ')
           ..write('description: $description, ')
@@ -2000,72 +1587,39 @@ class Episode extends DataClass implements Insertable<Episode> {
           ..write('episodeType: $episodeType, ')
           ..write('seasonNumber: $seasonNumber, ')
           ..write('image: $image, ')
-          ..write('showId: $showId, ')
-          ..write('chaptersUrl: $chaptersUrl, ')
-          ..write('transcriptUrl: $transcriptUrl, ')
-          ..write('feedGuid: $feedGuid, ')
-          ..write('feedUrl: $feedUrl, ')
           ..write('feedImage: $feedImage, ')
           ..write('feedId: $feedId, ')
-          ..write('feedLanguage: $feedLanguage, ')
-          ..write('feedDead: $feedDead, ')
-          ..write('contentType: $contentType, ')
-          ..write('medium: $medium, ')
-          ..write('complete: $complete, ')
-          ..write('socialInteract: $socialInteract, ')
-          ..write('value: $value, ')
-          ..write('liveItems: $liveItems, ')
-          ..write('soundbite: $soundbite, ')
-          ..write('durationRemaining: $durationRemaining, ')
-          ..write('isPlayed: $isPlayed, ')
-          ..write('isPlaying: $isPlaying')
+          ..write('isPlayed: $isPlayed')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hashAll([
-        id,
-        episodeGuid,
-        title,
-        link,
-        description,
-        datePublished,
-        enclosureUrl,
-        enclosureType,
-        enclosureLength,
-        duration,
-        explicit,
-        episodeNumber,
-        episodeType,
-        seasonNumber,
-        image,
-        showId,
-        chaptersUrl,
-        transcriptUrl,
-        feedGuid,
-        feedUrl,
-        feedImage,
-        feedId,
-        feedLanguage,
-        feedDead,
-        contentType,
-        medium,
-        complete,
-        socialInteract,
-        value,
-        liveItems,
-        soundbite,
-        durationRemaining,
-        isPlayed,
-        isPlaying
-      ]);
+  int get hashCode => Object.hash(
+      id,
+      guid,
+      title,
+      link,
+      description,
+      datePublished,
+      enclosureUrl,
+      enclosureType,
+      enclosureLength,
+      duration,
+      explicit,
+      episodeNumber,
+      episodeType,
+      seasonNumber,
+      image,
+      feedImage,
+      feedId,
+      isPlayed);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Episode &&
           other.id == this.id &&
-          other.episodeGuid == this.episodeGuid &&
+          other.guid == this.guid &&
           other.title == this.title &&
           other.link == this.link &&
           other.description == this.description &&
@@ -2079,30 +1633,14 @@ class Episode extends DataClass implements Insertable<Episode> {
           other.episodeType == this.episodeType &&
           other.seasonNumber == this.seasonNumber &&
           other.image == this.image &&
-          other.showId == this.showId &&
-          other.chaptersUrl == this.chaptersUrl &&
-          other.transcriptUrl == this.transcriptUrl &&
-          other.feedGuid == this.feedGuid &&
-          other.feedUrl == this.feedUrl &&
           other.feedImage == this.feedImage &&
           other.feedId == this.feedId &&
-          other.feedLanguage == this.feedLanguage &&
-          other.feedDead == this.feedDead &&
-          other.contentType == this.contentType &&
-          other.medium == this.medium &&
-          other.complete == this.complete &&
-          other.socialInteract == this.socialInteract &&
-          other.value == this.value &&
-          other.liveItems == this.liveItems &&
-          other.soundbite == this.soundbite &&
-          other.durationRemaining == this.durationRemaining &&
-          other.isPlayed == this.isPlayed &&
-          other.isPlaying == this.isPlaying);
+          other.isPlayed == this.isPlayed);
 }
 
 class EpisodesCompanion extends UpdateCompanion<Episode> {
   final Value<int> id;
-  final Value<String> episodeGuid;
+  final Value<String> guid;
   final Value<String> title;
   final Value<String> link;
   final Value<String> description;
@@ -2116,28 +1654,12 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
   final Value<String> episodeType;
   final Value<int> seasonNumber;
   final Value<String> image;
-  final Value<int> showId;
-  final Value<String> chaptersUrl;
-  final Value<String> transcriptUrl;
-  final Value<String> feedGuid;
-  final Value<String> feedUrl;
   final Value<String> feedImage;
-  final Value<String> feedId;
-  final Value<String> feedLanguage;
-  final Value<String> feedDead;
-  final Value<String> contentType;
-  final Value<String> medium;
-  final Value<bool> complete;
-  final Value<String> socialInteract;
-  final Value<String> value;
-  final Value<String> liveItems;
-  final Value<String> soundbite;
-  final Value<int> durationRemaining;
+  final Value<int> feedId;
   final Value<bool> isPlayed;
-  final Value<bool> isPlaying;
   const EpisodesCompanion({
     this.id = const Value.absent(),
-    this.episodeGuid = const Value.absent(),
+    this.guid = const Value.absent(),
     this.title = const Value.absent(),
     this.link = const Value.absent(),
     this.description = const Value.absent(),
@@ -2151,29 +1673,13 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
     this.episodeType = const Value.absent(),
     this.seasonNumber = const Value.absent(),
     this.image = const Value.absent(),
-    this.showId = const Value.absent(),
-    this.chaptersUrl = const Value.absent(),
-    this.transcriptUrl = const Value.absent(),
-    this.feedGuid = const Value.absent(),
-    this.feedUrl = const Value.absent(),
     this.feedImage = const Value.absent(),
     this.feedId = const Value.absent(),
-    this.feedLanguage = const Value.absent(),
-    this.feedDead = const Value.absent(),
-    this.contentType = const Value.absent(),
-    this.medium = const Value.absent(),
-    this.complete = const Value.absent(),
-    this.socialInteract = const Value.absent(),
-    this.value = const Value.absent(),
-    this.liveItems = const Value.absent(),
-    this.soundbite = const Value.absent(),
-    this.durationRemaining = const Value.absent(),
     this.isPlayed = const Value.absent(),
-    this.isPlaying = const Value.absent(),
   });
   EpisodesCompanion.insert({
     this.id = const Value.absent(),
-    required String episodeGuid,
+    required String guid,
     required String title,
     required String link,
     required String description,
@@ -2187,26 +1693,10 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
     required String episodeType,
     required int seasonNumber,
     required String image,
-    required int showId,
-    required String chaptersUrl,
-    required String transcriptUrl,
-    required String feedGuid,
-    required String feedUrl,
     required String feedImage,
-    required String feedId,
-    required String feedLanguage,
-    required String feedDead,
-    required String contentType,
-    required String medium,
-    this.complete = const Value.absent(),
-    required String socialInteract,
-    required String value,
-    required String liveItems,
-    required String soundbite,
-    required int durationRemaining,
-    this.isPlayed = const Value.absent(),
-    this.isPlaying = const Value.absent(),
-  })  : episodeGuid = Value(episodeGuid),
+    required int feedId,
+    required bool isPlayed,
+  })  : guid = Value(guid),
         title = Value(title),
         link = Value(link),
         description = Value(description),
@@ -2220,25 +1710,12 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
         episodeType = Value(episodeType),
         seasonNumber = Value(seasonNumber),
         image = Value(image),
-        showId = Value(showId),
-        chaptersUrl = Value(chaptersUrl),
-        transcriptUrl = Value(transcriptUrl),
-        feedGuid = Value(feedGuid),
-        feedUrl = Value(feedUrl),
         feedImage = Value(feedImage),
         feedId = Value(feedId),
-        feedLanguage = Value(feedLanguage),
-        feedDead = Value(feedDead),
-        contentType = Value(contentType),
-        medium = Value(medium),
-        socialInteract = Value(socialInteract),
-        value = Value(value),
-        liveItems = Value(liveItems),
-        soundbite = Value(soundbite),
-        durationRemaining = Value(durationRemaining);
+        isPlayed = Value(isPlayed);
   static Insertable<Episode> custom({
     Expression<int>? id,
-    Expression<String>? episodeGuid,
+    Expression<String>? guid,
     Expression<String>? title,
     Expression<String>? link,
     Expression<String>? description,
@@ -2252,29 +1729,13 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
     Expression<String>? episodeType,
     Expression<int>? seasonNumber,
     Expression<String>? image,
-    Expression<int>? showId,
-    Expression<String>? chaptersUrl,
-    Expression<String>? transcriptUrl,
-    Expression<String>? feedGuid,
-    Expression<String>? feedUrl,
     Expression<String>? feedImage,
-    Expression<String>? feedId,
-    Expression<String>? feedLanguage,
-    Expression<String>? feedDead,
-    Expression<String>? contentType,
-    Expression<String>? medium,
-    Expression<bool>? complete,
-    Expression<String>? socialInteract,
-    Expression<String>? value,
-    Expression<String>? liveItems,
-    Expression<String>? soundbite,
-    Expression<int>? durationRemaining,
+    Expression<int>? feedId,
     Expression<bool>? isPlayed,
-    Expression<bool>? isPlaying,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (episodeGuid != null) 'episode_guid': episodeGuid,
+      if (guid != null) 'guid': guid,
       if (title != null) 'title': title,
       if (link != null) 'link': link,
       if (description != null) 'description': description,
@@ -2288,31 +1749,15 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
       if (episodeType != null) 'episode_type': episodeType,
       if (seasonNumber != null) 'season_number': seasonNumber,
       if (image != null) 'image': image,
-      if (showId != null) 'show_id': showId,
-      if (chaptersUrl != null) 'chapters_url': chaptersUrl,
-      if (transcriptUrl != null) 'transcript_url': transcriptUrl,
-      if (feedGuid != null) 'feed_guid': feedGuid,
-      if (feedUrl != null) 'feed_url': feedUrl,
       if (feedImage != null) 'feed_image': feedImage,
       if (feedId != null) 'feed_id': feedId,
-      if (feedLanguage != null) 'feed_language': feedLanguage,
-      if (feedDead != null) 'feed_dead': feedDead,
-      if (contentType != null) 'content_type': contentType,
-      if (medium != null) 'medium': medium,
-      if (complete != null) 'complete': complete,
-      if (socialInteract != null) 'social_interact': socialInteract,
-      if (value != null) 'value': value,
-      if (liveItems != null) 'live_items': liveItems,
-      if (soundbite != null) 'soundbite': soundbite,
-      if (durationRemaining != null) 'duration_remaining': durationRemaining,
       if (isPlayed != null) 'is_played': isPlayed,
-      if (isPlaying != null) 'is_playing': isPlaying,
     });
   }
 
   EpisodesCompanion copyWith(
       {Value<int>? id,
-      Value<String>? episodeGuid,
+      Value<String>? guid,
       Value<String>? title,
       Value<String>? link,
       Value<String>? description,
@@ -2326,28 +1771,12 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
       Value<String>? episodeType,
       Value<int>? seasonNumber,
       Value<String>? image,
-      Value<int>? showId,
-      Value<String>? chaptersUrl,
-      Value<String>? transcriptUrl,
-      Value<String>? feedGuid,
-      Value<String>? feedUrl,
       Value<String>? feedImage,
-      Value<String>? feedId,
-      Value<String>? feedLanguage,
-      Value<String>? feedDead,
-      Value<String>? contentType,
-      Value<String>? medium,
-      Value<bool>? complete,
-      Value<String>? socialInteract,
-      Value<String>? value,
-      Value<String>? liveItems,
-      Value<String>? soundbite,
-      Value<int>? durationRemaining,
-      Value<bool>? isPlayed,
-      Value<bool>? isPlaying}) {
+      Value<int>? feedId,
+      Value<bool>? isPlayed}) {
     return EpisodesCompanion(
       id: id ?? this.id,
-      episodeGuid: episodeGuid ?? this.episodeGuid,
+      guid: guid ?? this.guid,
       title: title ?? this.title,
       link: link ?? this.link,
       description: description ?? this.description,
@@ -2361,25 +1790,9 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
       episodeType: episodeType ?? this.episodeType,
       seasonNumber: seasonNumber ?? this.seasonNumber,
       image: image ?? this.image,
-      showId: showId ?? this.showId,
-      chaptersUrl: chaptersUrl ?? this.chaptersUrl,
-      transcriptUrl: transcriptUrl ?? this.transcriptUrl,
-      feedGuid: feedGuid ?? this.feedGuid,
-      feedUrl: feedUrl ?? this.feedUrl,
       feedImage: feedImage ?? this.feedImage,
       feedId: feedId ?? this.feedId,
-      feedLanguage: feedLanguage ?? this.feedLanguage,
-      feedDead: feedDead ?? this.feedDead,
-      contentType: contentType ?? this.contentType,
-      medium: medium ?? this.medium,
-      complete: complete ?? this.complete,
-      socialInteract: socialInteract ?? this.socialInteract,
-      value: value ?? this.value,
-      liveItems: liveItems ?? this.liveItems,
-      soundbite: soundbite ?? this.soundbite,
-      durationRemaining: durationRemaining ?? this.durationRemaining,
       isPlayed: isPlayed ?? this.isPlayed,
-      isPlaying: isPlaying ?? this.isPlaying,
     );
   }
 
@@ -2389,8 +1802,8 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (episodeGuid.present) {
-      map['episode_guid'] = Variable<String>(episodeGuid.value);
+    if (guid.present) {
+      map['guid'] = Variable<String>(guid.value);
     }
     if (title.present) {
       map['title'] = Variable<String>(title.value);
@@ -2431,62 +1844,14 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
     if (image.present) {
       map['image'] = Variable<String>(image.value);
     }
-    if (showId.present) {
-      map['show_id'] = Variable<int>(showId.value);
-    }
-    if (chaptersUrl.present) {
-      map['chapters_url'] = Variable<String>(chaptersUrl.value);
-    }
-    if (transcriptUrl.present) {
-      map['transcript_url'] = Variable<String>(transcriptUrl.value);
-    }
-    if (feedGuid.present) {
-      map['feed_guid'] = Variable<String>(feedGuid.value);
-    }
-    if (feedUrl.present) {
-      map['feed_url'] = Variable<String>(feedUrl.value);
-    }
     if (feedImage.present) {
       map['feed_image'] = Variable<String>(feedImage.value);
     }
     if (feedId.present) {
-      map['feed_id'] = Variable<String>(feedId.value);
-    }
-    if (feedLanguage.present) {
-      map['feed_language'] = Variable<String>(feedLanguage.value);
-    }
-    if (feedDead.present) {
-      map['feed_dead'] = Variable<String>(feedDead.value);
-    }
-    if (contentType.present) {
-      map['content_type'] = Variable<String>(contentType.value);
-    }
-    if (medium.present) {
-      map['medium'] = Variable<String>(medium.value);
-    }
-    if (complete.present) {
-      map['complete'] = Variable<bool>(complete.value);
-    }
-    if (socialInteract.present) {
-      map['social_interact'] = Variable<String>(socialInteract.value);
-    }
-    if (value.present) {
-      map['value'] = Variable<String>(value.value);
-    }
-    if (liveItems.present) {
-      map['live_items'] = Variable<String>(liveItems.value);
-    }
-    if (soundbite.present) {
-      map['soundbite'] = Variable<String>(soundbite.value);
-    }
-    if (durationRemaining.present) {
-      map['duration_remaining'] = Variable<int>(durationRemaining.value);
+      map['feed_id'] = Variable<int>(feedId.value);
     }
     if (isPlayed.present) {
       map['is_played'] = Variable<bool>(isPlayed.value);
-    }
-    if (isPlaying.present) {
-      map['is_playing'] = Variable<bool>(isPlaying.value);
     }
     return map;
   }
@@ -2495,7 +1860,7 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
   String toString() {
     return (StringBuffer('EpisodesCompanion(')
           ..write('id: $id, ')
-          ..write('episodeGuid: $episodeGuid, ')
+          ..write('guid: $guid, ')
           ..write('title: $title, ')
           ..write('link: $link, ')
           ..write('description: $description, ')
@@ -2509,25 +1874,9 @@ class EpisodesCompanion extends UpdateCompanion<Episode> {
           ..write('episodeType: $episodeType, ')
           ..write('seasonNumber: $seasonNumber, ')
           ..write('image: $image, ')
-          ..write('showId: $showId, ')
-          ..write('chaptersUrl: $chaptersUrl, ')
-          ..write('transcriptUrl: $transcriptUrl, ')
-          ..write('feedGuid: $feedGuid, ')
-          ..write('feedUrl: $feedUrl, ')
           ..write('feedImage: $feedImage, ')
           ..write('feedId: $feedId, ')
-          ..write('feedLanguage: $feedLanguage, ')
-          ..write('feedDead: $feedDead, ')
-          ..write('contentType: $contentType, ')
-          ..write('medium: $medium, ')
-          ..write('complete: $complete, ')
-          ..write('socialInteract: $socialInteract, ')
-          ..write('value: $value, ')
-          ..write('liveItems: $liveItems, ')
-          ..write('soundbite: $soundbite, ')
-          ..write('durationRemaining: $durationRemaining, ')
-          ..write('isPlayed: $isPlayed, ')
-          ..write('isPlaying: $isPlaying')
+          ..write('isPlayed: $isPlayed')
           ..write(')'))
         .toString();
   }
@@ -2948,25 +2297,6 @@ typedef $$ShowsTableUpdateCompanionBuilder = ShowsCompanion Function({
   Value<bool> isFollowed,
 });
 
-final class $$ShowsTableReferences
-    extends BaseReferences<_$AppDatabase, $ShowsTable, Show> {
-  $$ShowsTableReferences(super.$_db, super.$_table, super.$_typedResult);
-
-  static MultiTypedResultKey<$EpisodesTable, List<Episode>> _episodesRefsTable(
-          _$AppDatabase db) =>
-      MultiTypedResultKey.fromTable(db.episodes,
-          aliasName: $_aliasNameGenerator(db.shows.id, db.episodes.showId));
-
-  $$EpisodesTableProcessedTableManager get episodesRefs {
-    final manager = $$EpisodesTableTableManager($_db, $_db.episodes)
-        .filter((f) => f.showId.id($_item.id));
-
-    final cache = $_typedResult.readTableOrNull(_episodesRefsTable($_db));
-    return ProcessedTableManager(
-        manager.$state.copyWith(prefetchedData: cache));
-  }
-}
-
 class $$ShowsTableFilterComposer extends Composer<_$AppDatabase, $ShowsTable> {
   $$ShowsTableFilterComposer({
     required super.$db,
@@ -3047,27 +2377,6 @@ class $$ShowsTableFilterComposer extends Composer<_$AppDatabase, $ShowsTable> {
 
   ColumnFilters<bool> get isFollowed => $composableBuilder(
       column: $table.isFollowed, builder: (column) => ColumnFilters(column));
-
-  Expression<bool> episodesRefs(
-      Expression<bool> Function($$EpisodesTableFilterComposer f) f) {
-    final $$EpisodesTableFilterComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.id,
-        referencedTable: $db.episodes,
-        getReferencedColumn: (t) => t.showId,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$EpisodesTableFilterComposer(
-              $db: $db,
-              $table: $db.episodes,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
-    return f(composer);
-  }
 }
 
 class $$ShowsTableOrderingComposer
@@ -3230,27 +2539,6 @@ class $$ShowsTableAnnotationComposer
 
   GeneratedColumn<bool> get isFollowed => $composableBuilder(
       column: $table.isFollowed, builder: (column) => column);
-
-  Expression<T> episodesRefs<T extends Object>(
-      Expression<T> Function($$EpisodesTableAnnotationComposer a) f) {
-    final $$EpisodesTableAnnotationComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.id,
-        referencedTable: $db.episodes,
-        getReferencedColumn: (t) => t.showId,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$EpisodesTableAnnotationComposer(
-              $db: $db,
-              $table: $db.episodes,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
-    return f(composer);
-  }
 }
 
 class $$ShowsTableTableManager extends RootTableManager<
@@ -3262,9 +2550,9 @@ class $$ShowsTableTableManager extends RootTableManager<
     $$ShowsTableAnnotationComposer,
     $$ShowsTableCreateCompanionBuilder,
     $$ShowsTableUpdateCompanionBuilder,
-    (Show, $$ShowsTableReferences),
+    (Show, BaseReferences<_$AppDatabase, $ShowsTable, Show>),
     Show,
-    PrefetchHooks Function({bool episodesRefs})> {
+    PrefetchHooks Function()> {
   $$ShowsTableTableManager(_$AppDatabase db, $ShowsTable table)
       : super(TableManagerState(
           db: db,
@@ -3376,31 +2664,9 @@ class $$ShowsTableTableManager extends RootTableManager<
             isFollowed: isFollowed,
           ),
           withReferenceMapper: (p0) => p0
-              .map((e) =>
-                  (e.readTable(table), $$ShowsTableReferences(db, table, e)))
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
-          prefetchHooksCallback: ({episodesRefs = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [if (episodesRefs) db.episodes],
-              addJoins: null,
-              getPrefetchedDataCallback: (items) async {
-                return [
-                  if (episodesRefs)
-                    await $_getPrefetchedData(
-                        currentTable: table,
-                        referencedTable:
-                            $$ShowsTableReferences._episodesRefsTable(db),
-                        managerFromTypedResult: (p0) =>
-                            $$ShowsTableReferences(db, table, p0).episodesRefs,
-                        referencedItemsForCurrentItem: (item,
-                                referencedItems) =>
-                            referencedItems.where((e) => e.showId == item.id),
-                        typedResults: items)
-                ];
-              },
-            );
-          },
+          prefetchHooksCallback: null,
         ));
 }
 
@@ -3413,12 +2679,12 @@ typedef $$ShowsTableProcessedTableManager = ProcessedTableManager<
     $$ShowsTableAnnotationComposer,
     $$ShowsTableCreateCompanionBuilder,
     $$ShowsTableUpdateCompanionBuilder,
-    (Show, $$ShowsTableReferences),
+    (Show, BaseReferences<_$AppDatabase, $ShowsTable, Show>),
     Show,
-    PrefetchHooks Function({bool episodesRefs})>;
+    PrefetchHooks Function()>;
 typedef $$EpisodesTableCreateCompanionBuilder = EpisodesCompanion Function({
   Value<int> id,
-  required String episodeGuid,
+  required String guid,
   required String title,
   required String link,
   required String description,
@@ -3432,29 +2698,13 @@ typedef $$EpisodesTableCreateCompanionBuilder = EpisodesCompanion Function({
   required String episodeType,
   required int seasonNumber,
   required String image,
-  required int showId,
-  required String chaptersUrl,
-  required String transcriptUrl,
-  required String feedGuid,
-  required String feedUrl,
   required String feedImage,
-  required String feedId,
-  required String feedLanguage,
-  required String feedDead,
-  required String contentType,
-  required String medium,
-  Value<bool> complete,
-  required String socialInteract,
-  required String value,
-  required String liveItems,
-  required String soundbite,
-  required int durationRemaining,
-  Value<bool> isPlayed,
-  Value<bool> isPlaying,
+  required int feedId,
+  required bool isPlayed,
 });
 typedef $$EpisodesTableUpdateCompanionBuilder = EpisodesCompanion Function({
   Value<int> id,
-  Value<String> episodeGuid,
+  Value<String> guid,
   Value<String> title,
   Value<String> link,
   Value<String> description,
@@ -3468,43 +2718,14 @@ typedef $$EpisodesTableUpdateCompanionBuilder = EpisodesCompanion Function({
   Value<String> episodeType,
   Value<int> seasonNumber,
   Value<String> image,
-  Value<int> showId,
-  Value<String> chaptersUrl,
-  Value<String> transcriptUrl,
-  Value<String> feedGuid,
-  Value<String> feedUrl,
   Value<String> feedImage,
-  Value<String> feedId,
-  Value<String> feedLanguage,
-  Value<String> feedDead,
-  Value<String> contentType,
-  Value<String> medium,
-  Value<bool> complete,
-  Value<String> socialInteract,
-  Value<String> value,
-  Value<String> liveItems,
-  Value<String> soundbite,
-  Value<int> durationRemaining,
+  Value<int> feedId,
   Value<bool> isPlayed,
-  Value<bool> isPlaying,
 });
 
 final class $$EpisodesTableReferences
     extends BaseReferences<_$AppDatabase, $EpisodesTable, Episode> {
   $$EpisodesTableReferences(super.$_db, super.$_table, super.$_typedResult);
-
-  static $ShowsTable _showIdTable(_$AppDatabase db) => db.shows
-      .createAlias($_aliasNameGenerator(db.episodes.showId, db.shows.id));
-
-  $$ShowsTableProcessedTableManager? get showId {
-    if ($_item.showId == null) return null;
-    final manager = $$ShowsTableTableManager($_db, $_db.shows)
-        .filter((f) => f.id($_item.showId!));
-    final item = $_typedResult.readTableOrNull(_showIdTable($_db));
-    if (item == null) return manager;
-    return ProcessedTableManager(
-        manager.$state.copyWith(prefetchedData: [item]));
-  }
 
   static MultiTypedResultKey<$PlayedEpisodesTable, List<PlayedEpisode>>
       _playedEpisodesRefsTable(_$AppDatabase db) =>
@@ -3534,8 +2755,8 @@ class $$EpisodesTableFilterComposer
   ColumnFilters<int> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get episodeGuid => $composableBuilder(
-      column: $table.episodeGuid, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get guid => $composableBuilder(
+      column: $table.guid, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get title => $composableBuilder(
       column: $table.title, builder: (column) => ColumnFilters(column));
@@ -3577,81 +2798,14 @@ class $$EpisodesTableFilterComposer
   ColumnFilters<String> get image => $composableBuilder(
       column: $table.image, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get chaptersUrl => $composableBuilder(
-      column: $table.chaptersUrl, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get transcriptUrl => $composableBuilder(
-      column: $table.transcriptUrl, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get feedGuid => $composableBuilder(
-      column: $table.feedGuid, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get feedUrl => $composableBuilder(
-      column: $table.feedUrl, builder: (column) => ColumnFilters(column));
-
   ColumnFilters<String> get feedImage => $composableBuilder(
       column: $table.feedImage, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get feedId => $composableBuilder(
+  ColumnFilters<int> get feedId => $composableBuilder(
       column: $table.feedId, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get feedLanguage => $composableBuilder(
-      column: $table.feedLanguage, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get feedDead => $composableBuilder(
-      column: $table.feedDead, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get contentType => $composableBuilder(
-      column: $table.contentType, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get medium => $composableBuilder(
-      column: $table.medium, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<bool> get complete => $composableBuilder(
-      column: $table.complete, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get socialInteract => $composableBuilder(
-      column: $table.socialInteract,
-      builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get value => $composableBuilder(
-      column: $table.value, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get liveItems => $composableBuilder(
-      column: $table.liveItems, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get soundbite => $composableBuilder(
-      column: $table.soundbite, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<int> get durationRemaining => $composableBuilder(
-      column: $table.durationRemaining,
-      builder: (column) => ColumnFilters(column));
 
   ColumnFilters<bool> get isPlayed => $composableBuilder(
       column: $table.isPlayed, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<bool> get isPlaying => $composableBuilder(
-      column: $table.isPlaying, builder: (column) => ColumnFilters(column));
-
-  $$ShowsTableFilterComposer get showId {
-    final $$ShowsTableFilterComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.showId,
-        referencedTable: $db.shows,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$ShowsTableFilterComposer(
-              $db: $db,
-              $table: $db.shows,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
-    return composer;
-  }
 
   Expression<bool> playedEpisodesRefs(
       Expression<bool> Function($$PlayedEpisodesTableFilterComposer f) f) {
@@ -3687,8 +2841,8 @@ class $$EpisodesTableOrderingComposer
   ColumnOrderings<int> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get episodeGuid => $composableBuilder(
-      column: $table.episodeGuid, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get guid => $composableBuilder(
+      column: $table.guid, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get title => $composableBuilder(
       column: $table.title, builder: (column) => ColumnOrderings(column));
@@ -3735,83 +2889,14 @@ class $$EpisodesTableOrderingComposer
   ColumnOrderings<String> get image => $composableBuilder(
       column: $table.image, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get chaptersUrl => $composableBuilder(
-      column: $table.chaptersUrl, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get transcriptUrl => $composableBuilder(
-      column: $table.transcriptUrl,
-      builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get feedGuid => $composableBuilder(
-      column: $table.feedGuid, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get feedUrl => $composableBuilder(
-      column: $table.feedUrl, builder: (column) => ColumnOrderings(column));
-
   ColumnOrderings<String> get feedImage => $composableBuilder(
       column: $table.feedImage, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get feedId => $composableBuilder(
+  ColumnOrderings<int> get feedId => $composableBuilder(
       column: $table.feedId, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get feedLanguage => $composableBuilder(
-      column: $table.feedLanguage,
-      builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get feedDead => $composableBuilder(
-      column: $table.feedDead, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get contentType => $composableBuilder(
-      column: $table.contentType, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get medium => $composableBuilder(
-      column: $table.medium, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<bool> get complete => $composableBuilder(
-      column: $table.complete, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get socialInteract => $composableBuilder(
-      column: $table.socialInteract,
-      builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get value => $composableBuilder(
-      column: $table.value, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get liveItems => $composableBuilder(
-      column: $table.liveItems, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get soundbite => $composableBuilder(
-      column: $table.soundbite, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<int> get durationRemaining => $composableBuilder(
-      column: $table.durationRemaining,
-      builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<bool> get isPlayed => $composableBuilder(
       column: $table.isPlayed, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<bool> get isPlaying => $composableBuilder(
-      column: $table.isPlaying, builder: (column) => ColumnOrderings(column));
-
-  $$ShowsTableOrderingComposer get showId {
-    final $$ShowsTableOrderingComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.showId,
-        referencedTable: $db.shows,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$ShowsTableOrderingComposer(
-              $db: $db,
-              $table: $db.shows,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
-    return composer;
-  }
 }
 
 class $$EpisodesTableAnnotationComposer
@@ -3826,8 +2911,8 @@ class $$EpisodesTableAnnotationComposer
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get episodeGuid => $composableBuilder(
-      column: $table.episodeGuid, builder: (column) => column);
+  GeneratedColumn<String> get guid =>
+      $composableBuilder(column: $table.guid, builder: (column) => column);
 
   GeneratedColumn<String> get title =>
       $composableBuilder(column: $table.title, builder: (column) => column);
@@ -3868,79 +2953,14 @@ class $$EpisodesTableAnnotationComposer
   GeneratedColumn<String> get image =>
       $composableBuilder(column: $table.image, builder: (column) => column);
 
-  GeneratedColumn<String> get chaptersUrl => $composableBuilder(
-      column: $table.chaptersUrl, builder: (column) => column);
-
-  GeneratedColumn<String> get transcriptUrl => $composableBuilder(
-      column: $table.transcriptUrl, builder: (column) => column);
-
-  GeneratedColumn<String> get feedGuid =>
-      $composableBuilder(column: $table.feedGuid, builder: (column) => column);
-
-  GeneratedColumn<String> get feedUrl =>
-      $composableBuilder(column: $table.feedUrl, builder: (column) => column);
-
   GeneratedColumn<String> get feedImage =>
       $composableBuilder(column: $table.feedImage, builder: (column) => column);
 
-  GeneratedColumn<String> get feedId =>
+  GeneratedColumn<int> get feedId =>
       $composableBuilder(column: $table.feedId, builder: (column) => column);
-
-  GeneratedColumn<String> get feedLanguage => $composableBuilder(
-      column: $table.feedLanguage, builder: (column) => column);
-
-  GeneratedColumn<String> get feedDead =>
-      $composableBuilder(column: $table.feedDead, builder: (column) => column);
-
-  GeneratedColumn<String> get contentType => $composableBuilder(
-      column: $table.contentType, builder: (column) => column);
-
-  GeneratedColumn<String> get medium =>
-      $composableBuilder(column: $table.medium, builder: (column) => column);
-
-  GeneratedColumn<bool> get complete =>
-      $composableBuilder(column: $table.complete, builder: (column) => column);
-
-  GeneratedColumn<String> get socialInteract => $composableBuilder(
-      column: $table.socialInteract, builder: (column) => column);
-
-  GeneratedColumn<String> get value =>
-      $composableBuilder(column: $table.value, builder: (column) => column);
-
-  GeneratedColumn<String> get liveItems =>
-      $composableBuilder(column: $table.liveItems, builder: (column) => column);
-
-  GeneratedColumn<String> get soundbite =>
-      $composableBuilder(column: $table.soundbite, builder: (column) => column);
-
-  GeneratedColumn<int> get durationRemaining => $composableBuilder(
-      column: $table.durationRemaining, builder: (column) => column);
 
   GeneratedColumn<bool> get isPlayed =>
       $composableBuilder(column: $table.isPlayed, builder: (column) => column);
-
-  GeneratedColumn<bool> get isPlaying =>
-      $composableBuilder(column: $table.isPlaying, builder: (column) => column);
-
-  $$ShowsTableAnnotationComposer get showId {
-    final $$ShowsTableAnnotationComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.showId,
-        referencedTable: $db.shows,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$ShowsTableAnnotationComposer(
-              $db: $db,
-              $table: $db.shows,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
-    return composer;
-  }
 
   Expression<T> playedEpisodesRefs<T extends Object>(
       Expression<T> Function($$PlayedEpisodesTableAnnotationComposer a) f) {
@@ -3975,7 +2995,7 @@ class $$EpisodesTableTableManager extends RootTableManager<
     $$EpisodesTableUpdateCompanionBuilder,
     (Episode, $$EpisodesTableReferences),
     Episode,
-    PrefetchHooks Function({bool showId, bool playedEpisodesRefs})> {
+    PrefetchHooks Function({bool playedEpisodesRefs})> {
   $$EpisodesTableTableManager(_$AppDatabase db, $EpisodesTable table)
       : super(TableManagerState(
           db: db,
@@ -3988,7 +3008,7 @@ class $$EpisodesTableTableManager extends RootTableManager<
               $$EpisodesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
-            Value<String> episodeGuid = const Value.absent(),
+            Value<String> guid = const Value.absent(),
             Value<String> title = const Value.absent(),
             Value<String> link = const Value.absent(),
             Value<String> description = const Value.absent(),
@@ -4002,29 +3022,13 @@ class $$EpisodesTableTableManager extends RootTableManager<
             Value<String> episodeType = const Value.absent(),
             Value<int> seasonNumber = const Value.absent(),
             Value<String> image = const Value.absent(),
-            Value<int> showId = const Value.absent(),
-            Value<String> chaptersUrl = const Value.absent(),
-            Value<String> transcriptUrl = const Value.absent(),
-            Value<String> feedGuid = const Value.absent(),
-            Value<String> feedUrl = const Value.absent(),
             Value<String> feedImage = const Value.absent(),
-            Value<String> feedId = const Value.absent(),
-            Value<String> feedLanguage = const Value.absent(),
-            Value<String> feedDead = const Value.absent(),
-            Value<String> contentType = const Value.absent(),
-            Value<String> medium = const Value.absent(),
-            Value<bool> complete = const Value.absent(),
-            Value<String> socialInteract = const Value.absent(),
-            Value<String> value = const Value.absent(),
-            Value<String> liveItems = const Value.absent(),
-            Value<String> soundbite = const Value.absent(),
-            Value<int> durationRemaining = const Value.absent(),
+            Value<int> feedId = const Value.absent(),
             Value<bool> isPlayed = const Value.absent(),
-            Value<bool> isPlaying = const Value.absent(),
           }) =>
               EpisodesCompanion(
             id: id,
-            episodeGuid: episodeGuid,
+            guid: guid,
             title: title,
             link: link,
             description: description,
@@ -4038,29 +3042,13 @@ class $$EpisodesTableTableManager extends RootTableManager<
             episodeType: episodeType,
             seasonNumber: seasonNumber,
             image: image,
-            showId: showId,
-            chaptersUrl: chaptersUrl,
-            transcriptUrl: transcriptUrl,
-            feedGuid: feedGuid,
-            feedUrl: feedUrl,
             feedImage: feedImage,
             feedId: feedId,
-            feedLanguage: feedLanguage,
-            feedDead: feedDead,
-            contentType: contentType,
-            medium: medium,
-            complete: complete,
-            socialInteract: socialInteract,
-            value: value,
-            liveItems: liveItems,
-            soundbite: soundbite,
-            durationRemaining: durationRemaining,
             isPlayed: isPlayed,
-            isPlaying: isPlaying,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
-            required String episodeGuid,
+            required String guid,
             required String title,
             required String link,
             required String description,
@@ -4074,29 +3062,13 @@ class $$EpisodesTableTableManager extends RootTableManager<
             required String episodeType,
             required int seasonNumber,
             required String image,
-            required int showId,
-            required String chaptersUrl,
-            required String transcriptUrl,
-            required String feedGuid,
-            required String feedUrl,
             required String feedImage,
-            required String feedId,
-            required String feedLanguage,
-            required String feedDead,
-            required String contentType,
-            required String medium,
-            Value<bool> complete = const Value.absent(),
-            required String socialInteract,
-            required String value,
-            required String liveItems,
-            required String soundbite,
-            required int durationRemaining,
-            Value<bool> isPlayed = const Value.absent(),
-            Value<bool> isPlaying = const Value.absent(),
+            required int feedId,
+            required bool isPlayed,
           }) =>
               EpisodesCompanion.insert(
             id: id,
-            episodeGuid: episodeGuid,
+            guid: guid,
             title: title,
             link: link,
             description: description,
@@ -4110,62 +3082,21 @@ class $$EpisodesTableTableManager extends RootTableManager<
             episodeType: episodeType,
             seasonNumber: seasonNumber,
             image: image,
-            showId: showId,
-            chaptersUrl: chaptersUrl,
-            transcriptUrl: transcriptUrl,
-            feedGuid: feedGuid,
-            feedUrl: feedUrl,
             feedImage: feedImage,
             feedId: feedId,
-            feedLanguage: feedLanguage,
-            feedDead: feedDead,
-            contentType: contentType,
-            medium: medium,
-            complete: complete,
-            socialInteract: socialInteract,
-            value: value,
-            liveItems: liveItems,
-            soundbite: soundbite,
-            durationRemaining: durationRemaining,
             isPlayed: isPlayed,
-            isPlaying: isPlaying,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) =>
                   (e.readTable(table), $$EpisodesTableReferences(db, table, e)))
               .toList(),
-          prefetchHooksCallback: (
-              {showId = false, playedEpisodesRefs = false}) {
+          prefetchHooksCallback: ({playedEpisodesRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [
                 if (playedEpisodesRefs) db.playedEpisodes
               ],
-              addJoins: <
-                  T extends TableManagerState<
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic>>(state) {
-                if (showId) {
-                  state = state.withJoin(
-                    currentTable: table,
-                    currentColumn: table.showId,
-                    referencedTable: $$EpisodesTableReferences._showIdTable(db),
-                    referencedColumn:
-                        $$EpisodesTableReferences._showIdTable(db).id,
-                  ) as T;
-                }
-
-                return state;
-              },
+              addJoins: null,
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (playedEpisodesRefs)
@@ -4198,7 +3129,7 @@ typedef $$EpisodesTableProcessedTableManager = ProcessedTableManager<
     $$EpisodesTableUpdateCompanionBuilder,
     (Episode, $$EpisodesTableReferences),
     Episode,
-    PrefetchHooks Function({bool showId, bool playedEpisodesRefs})>;
+    PrefetchHooks Function({bool playedEpisodesRefs})>;
 typedef $$PlayedEpisodesTableCreateCompanionBuilder = PlayedEpisodesCompanion
     Function({
   Value<int> id,

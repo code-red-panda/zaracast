@@ -40,11 +40,21 @@ class Queries {
     return r != null;
   }
 
-  Stream<List<Episode>> watchEpisodes(int showId) {
-    final query = _db.select(_db.episodes)
-      ..where((tbl) => tbl.showId.equals(showId));
+  Stream<List<Episode>> watchEpisodes(int showId, int played, int sortBy) {
+    final isPlayed = played == 0;
+    final sortMode = sortBy == 0 ? OrderingMode.desc : OrderingMode.asc;
 
-    //return query.map((row) => ShowModel.fromJson(row.toJson())).watch();
+    print(
+        'watchEpisodes stream called showId: $showId isPlayed: $isPlayed sortMode: $sortMode');
+
+    final query = _db.select(_db.episodes)
+      ..where(
+        (tbl) => tbl.feedId.equals(showId) & tbl.isPlayed.equals(isPlayed),
+      )
+      ..orderBy(
+        [(t) => OrderingTerm(expression: t.datePublished, mode: sortMode)],
+      )
+      ..limit(10);
     return query.watch();
   }
 
@@ -62,6 +72,13 @@ class Queries {
 
     //return query.map((row) => ShowModel.fromJson(row.toJson())).watch();
     return query.watchSingleOrNull();
+  }
+
+  Future<String?> getShowTitle(int showId) async {
+    final query = _db.select(_db.shows)..where((tbl) => tbl.id.equals(showId));
+
+    final result = await query.getSingleOrNull();
+    return result?.title ?? 'no show';
   }
 
 /*

@@ -12,6 +12,7 @@ class GetEpisodesResponse {
 
     if (episodesJson != null) {
       for (final e in episodesJson) {
+        e.addAll({'isPlayed': false});
         episodes.add(Episode.fromJson(e));
       }
     }

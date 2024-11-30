@@ -7,6 +7,7 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 import 'package:zaracast/src/core/database/app_database.dart';
 import 'package:zaracast/src/core/service_locator.dart';
+import 'package:zaracast/src/features/latest_episodes/episode_list_tile.dart';
 import 'package:zaracast/src/shared/icon_buttons/follow_show_icon_buttons.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
 
@@ -14,34 +15,24 @@ class ShowHomePageNotifier with ChangeNotifier {
   Show? _show;
   Show? get show => _show;
 
-  Set<int> _index = {0};
-  Set<int> get index => _index;
+  // {0 = unplayed or 1 = played: 0 = desc or 1 = asc}
+  final _episodeFilters = {'played': 0, 'sortBy': 0};
+  Map<String, int> get episodeFilters => _episodeFilters;
 
-  StreamSubscription<List<Episode>>? _episodes;
-
-  void initStreams(int showId) {
-    _episodes?.cancel();
-    _episodes = db.watchEpisodes(showId).listen((episodes) {
-      // You can process episodes here if needed
-      notifyListeners();
-    });
+  void setPlayed(int value) {
+    _episodeFilters['played'] = value;
+    notifyListeners();
   }
 
-  void setIndex(Set<int> index) {
-    _index = index;
+  void setSortBy(int value) {
+    _episodeFilters['sortBy'] = value;
     notifyListeners();
   }
 
   void setShow(Show show) {
     _show = show;
-    initStreams(show.id);
-    notifyListeners();
-  }
 
-  @override
-  void dispose() {
-    _episodes?.cancel();
-    super.dispose();
+    notifyListeners();
   }
 }
 
@@ -69,13 +60,9 @@ class _ShowHomePageState extends State<ShowHomePage> {
       providers: [
         ChangeNotifierProvider<ShowHomePageNotifier>(
           create: (context) => _notifier,
-          child: const _ShowHomePageChild(),
-        ),
-        StreamProvider<List<Episode>>(
-          create: (context) => db.watchEpisodes(widget.showId),
-          initialData: const <Episode>[],
         ),
       ],
+      child: const _ShowHomePageChild(),
     );
   }
 
@@ -83,13 +70,13 @@ class _ShowHomePageState extends State<ShowHomePage> {
     try {
       final showExists = await db.getShow(widget.showId);
 
+      // TODO:(red) check for a last sync time
       if (showExists == null) {
         print('show doesnt exist fetching and inserting');
         final getShowResponse = await api.getShowById(widget.showId);
-        //final episodeResponse = await api.getEpisodesByFeedId(widget.showId);
+        final episodeResponse = await api.getEpisodesByFeedId(widget.showId);
         final show = getShowResponse.show;
-        final episodes = <Episode>[];
-        //episodeResponse.episodes;
+        final episodes = episodeResponse.episodes;
         final palette = await PaletteGenerator.fromImageProvider(
           CachedNetworkImageProvider(show.image),
           size: const Size(200, 200), // Smaller size for faster processing
@@ -97,6 +84,7 @@ class _ShowHomePageState extends State<ShowHomePage> {
         final color =
             palette.lightVibrantColor?.color ?? Colors.blueGrey.shade100;
 
+        // TODO(red): make this a trx so that all shows/epsidoes succeed or fail together when inserting
         await db.insertShow(show.copyWith(paletteColor: color.value));
         await db.insertEpisodes(episodes);
 
@@ -260,14 +248,15 @@ class _ShowHomePageChildState extends State<_ShowHomePageChild> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Selector<ShowHomePageNotifier, Set<int>>(
-                            selector: (context, notifier) => notifier.index,
-                            builder: (context, index, child) {
+                          Selector<ShowHomePageNotifier, int>(
+                            selector: (context, notifier) =>
+                                notifier.episodeFilters['played']!,
+                            builder: (context, played, child) {
                               return SegmentedButton<int>(
                                 emptySelectionAllowed: true,
                                 onSelectionChanged: (i) => context
                                     .read<ShowHomePageNotifier>()
-                                    .setIndex(i),
+                                    .setPlayed(i.first),
                                 segments: const [
                                   ButtonSegment(
                                     value: 0,
@@ -278,7 +267,7 @@ class _ShowHomePageChildState extends State<_ShowHomePageChild> {
                                     label: Text('Played'),
                                   ),
                                 ],
-                                selected: index,
+                                selected: {played},
                               );
                             },
                           ),
@@ -300,20 +289,37 @@ class _ShowHomePageChildState extends State<_ShowHomePageChild> {
                   ),
                 ),
               ),
-              Selector<ShowHomePageNotifier, Set<int>>(
-                selector: (context, notifier) => notifier.index,
-                builder: (context, index, child) {
-                  return SliverList.separated(
-                    separatorBuilder: (context, index) => const Divider(
-                      indent: 16,
-                      endIndent: 16,
+              Selector<ShowHomePageNotifier, Map<String, int>>(
+                selector: (context, notifier) => notifier.episodeFilters,
+                builder: (context, filters, child) {
+                  return StreamBuilder<List<Episode>>(
+                    stream: db.watchEpisodes(
+                      context.read<ShowHomePageNotifier>().show!.id,
+                      filters['played']!,
+                      filters['sortBy']!,
                     ),
-                    itemCount: 0, //sortedEpisodes.length,
-                    itemBuilder: (context, index) {
-                      return Text('ep');
-                      // return EpisodeListTile(
-                      //sortedEpisodes[index],
-                      // );
+                    initialData: const [],
+                    builder: (context, snapshot) {
+                      var eps = <Episode>[];
+                      if (snapshot.hasError) {
+                        print('ep stream error ${snapshot.error}');
+                      }
+
+                      if (snapshot.hasData && snapshot.data != null) {
+                        eps.addAll(snapshot.data!);
+                      }
+                      return SliverList.separated(
+                        separatorBuilder: (context, index) => const Divider(
+                          indent: 16,
+                          endIndent: 16,
+                        ),
+                        itemCount: eps.length,
+                        itemBuilder: (context, index) {
+                          return EpisodeListTile(
+                            eps[index],
+                          );
+                        },
+                      );
                     },
                   );
                 },
