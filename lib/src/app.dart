@@ -6,9 +6,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: buildRouter(),
-      title: 'ZaraCast',
+    return ProviderScope(
+      child: MaterialApp.router(
+        routerConfig: buildRouter(),
+        title: 'ZaraCast',
+      ),
     );
   }
 }
