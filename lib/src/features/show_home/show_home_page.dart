@@ -57,12 +57,18 @@ class _ShowHomePageState extends State<ShowHomePage> {
         ),
       );
     } else {
-      return Provider(
-        create: (context) => StreamProvider<Show?>(
-          create: (context) => db.watchShow(widget.showId),
-          initialData: null,
-        ),
-        child: Consumer<Show?>(
+      return StreamBuilder<Show>(
+        stream: db.watchShow(widget.showId),
+        builder: (context, snapshot) {
+          final show = snapshot.data;
+          if (show == null) {
+            print('show is null');
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
           builder: (context, show, child) {
             if (show == null) {
               print('show is null');
