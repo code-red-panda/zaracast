@@ -69,183 +69,179 @@ class _ShowHomePageState extends State<ShowHomePage> {
               ),
             );
           }
-          builder: (context, show, child) {
-            if (show == null) {
-              print('show is null');
-              return const Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            } else {
-              print(show.title);
-              return Scaffold(
-                body: CustomScrollView(
-                  controller: _scrollController,
-                  slivers: [
-                    SliverAppBar.large(
-                      actions: [_AppBarIconButtonVisibility(_scrollController)],
-                      expandedHeight: MediaQuery.of(context).size.height,
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: Stack(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  //Color.fromRGBO(r, g, b, opacity);
-                                  //MyProvider.of<ShowHomePageNotifier>(context)._show.paletteColor;
-                                  Colors.blueGrey.shade100,
-                                  Theme.of(context).colorScheme.surface,
-                                ],
-                              )),
+
+          if (show == null) {
+            print('show is null');
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else {
+            print(show.title);
+            return Scaffold(
+              body: CustomScrollView(
+                controller: _scrollController,
+                slivers: [
+                  SliverAppBar.large(
+                    actions: [_AppBarIconButtonVisibility(_scrollController)],
+                    expandedHeight: MediaQuery.of(context).size.height,
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                //Color.fromRGBO(r, g, b, opacity);
+                                //MyProvider.of<ShowHomePageNotifier>(context)._show.paletteColor;
+                                Colors.blueGrey.shade100,
+                                Theme.of(context).colorScheme.surface,
+                              ],
+                            )),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 0,
+                              left: 40,
+                              right: 40,
+                              top: 128,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                bottom: 0,
-                                left: 40,
-                                right: 40,
-                                top: 128,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.3),
-                                          blurRadius: 20,
-                                          offset: const Offset(0, 8),
-                                          spreadRadius: 5,
-                                        ),
-                                      ],
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(24),
-                                      child: SizedBox(
-                                        child: CachedNetworkImageBuilder(
-                                          image: show.image,
-                                          fit: BoxFit.fitWidth,
-                                        ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.3),
+                                        blurRadius: 20,
+                                        offset: const Offset(0, 8),
+                                        spreadRadius: 5,
                                       ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  Text(show.title,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineMedium
-                                          ?.copyWith(
-                                              fontWeight: FontWeight.bold)),
-                                  Text(show.author,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium),
-                                  SizedBox(height: 8),
-                                  Row(
-                                    children: [
-                                      ElevatedButton.icon(
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              WidgetStatePropertyAll(
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .primary),
-                                          foregroundColor:
-                                              WidgetStatePropertyAll(
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .onPrimary),
-                                        ),
-                                        onPressed: () => print('play'),
-                                        icon: Icon(Icons.play_arrow_rounded),
-                                        label: const Text('Play latest'),
-                                      ),
-                                      IconButton(
-                                          onPressed: () => print('info'),
-                                          icon: Icon(Icons.info_outlined)),
-                                      FollowShowIconButton()
                                     ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      leading: IconButton(
-                          //color: Colors.transparent,
-                          onPressed: Navigator.of(context).pop,
-                          icon: Icon(Icons.arrow_back_rounded)),
-                      title: Text(show.title),
-                    ),
-                    SliverPersistentHeader(
-                      pinned: true,
-                      delegate: _SliverAppBarDelegate(
-                        child: Container(
-                          color: Theme.of(context).colorScheme.surface,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SegmentedButton<int>(
-                                  emptySelectionAllowed: true,
-                                  onSelectionChanged: (p0) => setState(() {
-                                    _index = p0;
-                                  }),
-                                  segments: const [
-                                    ButtonSegment(
-                                        value: 0, label: Text('Unplayed')),
-                                    ButtonSegment(
-                                        value: 1, label: Text('Played')),
-                                  ],
-                                  selected: _index,
-                                ),
-                                TextButton.icon(
-                                  icon: Icon(Icons.arrow_drop_down_rounded),
-                                  iconAlignment: IconAlignment.end,
-                                  label: Text(
-                                    'Latest',
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(24),
+                                    child: SizedBox(
+                                      child: CachedNetworkImageBuilder(
+                                        image: show.image,
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                                    ),
                                   ),
-                                  onPressed: () => print('sort date'),
-                                  style: ButtonStyle(
-                                      padding: WidgetStatePropertyAll(
-                                          EdgeInsets.zero)),
+                                ),
+                                SizedBox(height: 16),
+                                Text(show.title,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium
+                                        ?.copyWith(
+                                            fontWeight: FontWeight.bold)),
+                                Text(show.author,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium),
+                                SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    ElevatedButton.icon(
+                                      style: ButtonStyle(
+                                        backgroundColor: WidgetStatePropertyAll(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary),
+                                        foregroundColor: WidgetStatePropertyAll(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary),
+                                      ),
+                                      onPressed: () => print('play'),
+                                      icon: Icon(Icons.play_arrow_rounded),
+                                      label: const Text('Play latest'),
+                                    ),
+                                    IconButton(
+                                        onPressed: () => print('info'),
+                                        icon: Icon(Icons.info_outlined)),
+                                    FollowShowIconButton()
+                                  ],
                                 ),
                               ],
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                    leading: IconButton(
+                        //color: Colors.transparent,
+                        onPressed: Navigator.of(context).pop,
+                        icon: Icon(Icons.arrow_back_rounded)),
+                    title: Text(show.title),
+                  ),
+                  SliverPersistentHeader(
+                    pinned: true,
+                    delegate: _SliverAppBarDelegate(
+                      child: Container(
+                        color: Theme.of(context).colorScheme.surface,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SegmentedButton<int>(
+                                emptySelectionAllowed: true,
+                                onSelectionChanged: (p0) => setState(() {
+                                  _index = p0;
+                                }),
+                                segments: const [
+                                  ButtonSegment(
+                                      value: 0, label: Text('Unplayed')),
+                                  ButtonSegment(
+                                      value: 1, label: Text('Played')),
+                                ],
+                                selected: _index,
+                              ),
+                              TextButton.icon(
+                                icon: Icon(Icons.arrow_drop_down_rounded),
+                                iconAlignment: IconAlignment.end,
+                                label: Text(
+                                  'Latest',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                onPressed: () => print('sort date'),
+                                style: ButtonStyle(
+                                    padding: WidgetStatePropertyAll(
+                                        EdgeInsets.zero)),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    SliverList.separated(
-                      separatorBuilder: (context, index) => const Divider(
-                        indent: 16,
-                        endIndent: 16,
-                      ),
-                      itemCount: 0, //sortedEpisodes.length,
-                      itemBuilder: (context, index) {
-                        return Text('ep');
-                        // return EpisodeListTile(
-                        //sortedEpisodes[index],
-                        // );
-                      },
+                  ),
+                  SliverList.separated(
+                    separatorBuilder: (context, index) => const Divider(
+                      indent: 16,
+                      endIndent: 16,
                     ),
-                    const SliverToBoxAdapter(child: SizedBox(height: 96)),
-                  ],
-                ),
-              );
-            }
-          },
-        ),
+                    itemCount: 0, //sortedEpisodes.length,
+                    itemBuilder: (context, index) {
+                      return Text('ep');
+                      // return EpisodeListTile(
+                      //sortedEpisodes[index],
+                      // );
+                    },
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 96)),
+                ],
+              ),
+            );
+          }
+        },
       );
     }
   }
