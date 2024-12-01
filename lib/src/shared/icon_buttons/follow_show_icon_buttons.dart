@@ -1,71 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:zaracast/src/core/service_locator.dart';
+import 'package:zaracast/src/features/show_home/show_home_page.dart';
 
-class FollowShowIconButton extends StatefulWidget {
+class FollowShowIconButton extends StatelessWidget {
   const FollowShowIconButton({super.key});
 
   @override
-  State<FollowShowIconButton> createState() => _FollowShowIconButtonState();
-}
-
-class _FollowShowIconButtonState extends State<FollowShowIconButton> {
-  var _isLoading = false;
-
-  @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: _isLoading,
-      replacement: const SizedBox(
+    final show = context.read<ShowHomePageNotifier>().show;
+
+    if (show == null) {
+      return const SizedBox(
         width: 24,
         height: 24,
         child: CircularProgressIndicator(strokeWidth: 2),
-      ),
-      child: IconButton(
-        icon: const Icon(Icons.my_library_add_rounded),
-        onPressed: () async {
-          setState(() {
-            _isLoading = true;
-          });
-          print('follow show button pressed');
-          // await _call trx to follow show
-          print('follow show button done');
-        },
-        visualDensity: VisualDensity.compact,
-      ),
-    );
-  }
-}
+      );
+    }
 
-class UnFollowShowIconButton extends StatefulWidget {
-  const UnFollowShowIconButton({super.key});
+    return StreamBuilder<bool?>(
+      stream: db.watchShowIsFollowed(show.id),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          print('follow show icon button error ${snapshot.error}');
+        }
 
-  @override
-  State<UnFollowShowIconButton> createState() => _UnFollowShowIconButtonState();
-}
+        var isFollowed = false;
 
-class _UnFollowShowIconButtonState extends State<UnFollowShowIconButton> {
-  var _isLoading = false;
+        if (snapshot.hasData && snapshot.data != null) {
+          isFollowed = snapshot.data!;
+        }
 
-  @override
-  Widget build(BuildContext context) {
-    return Visibility(
-      visible: _isLoading,
-      replacement: const SizedBox(
-        width: 24,
-        height: 24,
-        child: CircularProgressIndicator(strokeWidth: 2),
-      ),
-      child: IconButton(
-        icon: Icon(Icons.library_add_check_outlined),
-        onPressed: () async {
-          setState(() {
-            _isLoading = true;
-          });
-          print('unfollow show button pressed');
-          // await _call trx to follow show
-          print('unfollow show button done');
-        },
-        visualDensity: VisualDensity.compact,
-      ),
+        return Visibility(
+          visible: isFollowed,
+          replacement: IconButton(
+            icon: const Icon(Icons.library_add_rounded),
+            onPressed: () async => db.updateShowsIsFollowed(show.id),
+            visualDensity: VisualDensity.compact,
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.library_add_check_outlined),
+            onPressed: () async =>
+                db.updateShowsIsFollowed(show.id, follow: false),
+            visualDensity: VisualDensity.compact,
+          ),
+        );
+      },
     );
   }
 }

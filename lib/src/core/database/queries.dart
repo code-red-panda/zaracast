@@ -28,16 +28,22 @@ class Queries {
     return query.getSingleOrNull();
   }
 
-  Future<void> followShow(int showId, {bool follow = true}) async {
+  Future<void> updateShowsIsFollowed(int showId, {bool follow = true}) async {
     final q = _db.update(_db.shows)..where((tbl) => tbl.id.equals(showId));
     await q.write(ShowsCompanion(isFollowed: Value(follow)));
   }
 
-  Future<bool> isShowFollowed(int showId) async {
-    final r = await (_db.select(_db.shows)
-          ..where((tbl) => tbl.id.equals(showId) & tbl.isFollowed.equals(true)))
-        .getSingleOrNull();
-    return r != null;
+  Future<void> updateShowSettingsFilterEpisodesBy(
+      int showId, int filterBy) async {
+    final q = _db.update(_db.showSettings)
+      ..where((tbl) => tbl.showId.equals(showId));
+    await q.write(ShowSettingsCompanion(filterEpisodesBy: Value(filterBy)));
+  }
+
+  Future<void> updateShowSettingsSortEpisodesBy(int showId, int sortBy) async {
+    final q = _db.update(_db.showSettings)
+      ..where((tbl) => tbl.showId.equals(showId));
+    await q.write(ShowSettingsCompanion(sortEpisodesBy: Value(sortBy)));
   }
 
   Stream<List<Episode>> watchEpisodes(int showId, int played, int sortBy) {
@@ -63,22 +69,22 @@ class Queries {
     final query = _db.select(_db.shows)
       ..where((tbl) => tbl.isFollowed.equals(true));
 
-    //return query.map((row) => ShowModel.fromJson(row.toJson())).watch();
     return query.watch();
   }
 
-  Stream<Show?> watchShow(int showId) {
-    final query = _db.select(_db.shows)..where((tbl) => tbl.id.equals(showId));
-
-    //return query.map((row) => ShowModel.fromJson(row.toJson())).watch();
+  // Used by ShowHomePage
+  Stream<ShowSetting?> watchShowSettings(int showId) {
+    final query = _db.select(_db.showSettings)
+      ..where((tbl) => tbl.showId.equals(showId));
     return query.watchSingleOrNull();
   }
 
-  Future<String?> getShowTitle(int showId) async {
+  // Used by FollowShowIconButton
+  Stream<bool?> watchShowIsFollowed(int showId) {
     final query = _db.select(_db.shows)..where((tbl) => tbl.id.equals(showId));
 
-    final result = await query.getSingleOrNull();
-    return result?.title ?? 'no show';
+    //return query.map((row) => ShowModel.fromJson(row.toJson())).watch();
+    return query.map((row) => row.isFollowed).watchSingleOrNull();
   }
 
 /*

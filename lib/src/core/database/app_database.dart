@@ -2,13 +2,14 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:zaracast/src/core/database/tables/episodes_table.dart';
 import 'package:zaracast/src/core/database/tables/played_episodes_table.dart';
+import 'package:zaracast/src/core/database/tables/show_settings.dart';
 import 'package:zaracast/src/core/database/tables/shows_table.dart';
 import 'package:zaracast/src/core/database/utils/json_converter.dart';
 
 part 'app_database.g.dart';
 
 @DriftDatabase(
-  tables: [Shows, Episodes, PlayedEpisodes],
+  tables: [Episodes, Shows, ShowSettings],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());

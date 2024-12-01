@@ -29,6 +29,11 @@ class PodcastIndexClient {
       'q': term,
     });
 
+    print(uri);
+    print(apiKey);
+    print(timestamp);
+    print(authHash);
+
     final response = await http.get(
       uri,
       headers: {

@@ -12,6 +12,7 @@ import 'package:zaracast/src/shared/icon_buttons/follow_show_icon_buttons.dart';
 import 'package:zaracast/src/shared/images/cached_network_image_builder.dart';
 
 class ShowHomePageNotifier with ChangeNotifier {
+  //
   Show? _show;
   Show? get show => _show;
 
@@ -61,6 +62,10 @@ class _ShowHomePageState extends State<ShowHomePage> {
         ChangeNotifierProvider<ShowHomePageNotifier>(
           create: (context) => _notifier,
         ),
+        StreamProvider<ShowSetting?>(
+          create: (context) => db.watchShowSettings(widget.showId),
+          initialData: null,
+        ),
       ],
       child: const _ShowHomePageChild(),
     );
@@ -74,9 +79,9 @@ class _ShowHomePageState extends State<ShowHomePage> {
       if (showExists == null) {
         print('show doesnt exist fetching and inserting');
         final getShowResponse = await api.getShowById(widget.showId);
-        final episodeResponse = await api.getEpisodesByFeedId(widget.showId);
+        //final episodeResponse = await api.getEpisodesByFeedId(widget.showId);
         final show = getShowResponse.show;
-        final episodes = episodeResponse.episodes;
+        final episodes = <Episode>[]; //episodeResponse.episodes;
         final palette = await PaletteGenerator.fromImageProvider(
           CachedNetworkImageProvider(show.image),
           size: const Size(200, 200), // Smaller size for faster processing
@@ -230,8 +235,10 @@ class _ShowHomePageChildState extends State<_ShowHomePageChild> {
                   ),
                 ),
                 leading: IconButton(
-                    //color: Colors.transparent,
-                    onPressed: Navigator.of(context).pop,
+                    onPressed: () {
+                      // TODO(red): delete show and episodes
+                      context.pop();
+                    },
                     icon: Icon(Icons.arrow_back_rounded)),
                 title: Text(show!.title),
               ),
@@ -248,41 +255,89 @@ class _ShowHomePageChildState extends State<_ShowHomePageChild> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Selector<ShowHomePageNotifier, int>(
-                            selector: (context, notifier) =>
-                                notifier.episodeFilters['played']!,
-                            builder: (context, played, child) {
+                          Selector<ShowSetting?, int>(
+                            // Default to 1 = unplayed
+                            selector: (context, settings) =>
+                                settings?.filterEpisodesBy ?? 1,
+                            builder: (context, filterEpisodesBy, child) {
                               return SegmentedButton<int>(
                                 emptySelectionAllowed: true,
-                                onSelectionChanged: (i) => context
-                                    .read<ShowHomePageNotifier>()
-                                    .setPlayed(i.first),
+                                onSelectionChanged: (i) async {
+                                  var value = i.first;
+
+                                  // If the user taps the same value as the current
+                                  // value, then they want to filter by all = 0.
+                                  if (value == filterEpisodesBy) {
+                                    value = 0;
+                                  }
+
+                                  await db.updateShowSettingsFilterEpisodesBy(
+                                    show.id,
+                                    value,
+                                  );
+                                },
                                 segments: const [
                                   ButtonSegment(
-                                    value: 0,
+                                    value: 1,
                                     label: Text('Unplayed'),
                                   ),
                                   ButtonSegment(
-                                    value: 1,
+                                    value: 2,
                                     label: Text('Played'),
                                   ),
                                 ],
-                                selected: {played},
+                                selected: {filterEpisodesBy},
                               );
                             },
                           ),
-                          TextButton.icon(
-                            icon: const Icon(Icons.arrow_drop_down_rounded),
-                            iconAlignment: IconAlignment.end,
-                            label: Text(
-                              'Latest',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            onPressed: () => print('sort date'),
-                            style: const ButtonStyle(
-                              padding: WidgetStatePropertyAll(EdgeInsets.zero),
-                            ),
-                          ),
+                          Selector<ShowSetting?, int>(
+                              // Default to 0 = latest
+                              selector: (context, settings) =>
+                                  settings?.sortEpisodesBy ?? 0,
+                              builder: (context, sortEpisodesBy, child) {
+                                return Visibility(
+                                  visible: sortEpisodesBy == 0,
+                                  replacement: TextButton.icon(
+                                    icon: const Icon(
+                                      Icons.arrow_drop_up_rounded,
+                                    ),
+                                    iconAlignment: IconAlignment.end,
+                                    label: Text(
+                                      'Oldest',
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                    onPressed: () async =>
+                                        db.updateShowSettingsSortEpisodesBy(
+                                      show.id,
+                                      0,
+                                    ),
+                                    style: const ButtonStyle(
+                                      padding: WidgetStatePropertyAll(
+                                          EdgeInsets.zero),
+                                    ),
+                                  ),
+                                  child: TextButton.icon(
+                                    icon: const Icon(
+                                        Icons.arrow_drop_down_rounded),
+                                    iconAlignment: IconAlignment.end,
+                                    label: Text(
+                                      'Latest',
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                    onPressed: () async =>
+                                        db.updateShowSettingsSortEpisodesBy(
+                                      show.id,
+                                      1,
+                                    ),
+                                    style: const ButtonStyle(
+                                      padding: WidgetStatePropertyAll(
+                                          EdgeInsets.zero),
+                                    ),
+                                  ),
+                                );
+                              }),
                         ],
                       ),
                     ),
@@ -300,6 +355,7 @@ class _ShowHomePageChildState extends State<_ShowHomePageChild> {
                     ),
                     initialData: const [],
                     builder: (context, snapshot) {
+                      print('watch episodes stream builder');
                       var eps = <Episode>[];
                       if (snapshot.hasError) {
                         print('ep stream error ${snapshot.error}');
